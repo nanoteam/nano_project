@@ -33,14 +33,14 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 	float M = 0f, e = 0f;
 	//
 	int width, height;
-	
+
 	public static final int UP_SIDE = 1;
 	public static final int DOWN_SIDE = 2;
 	public static final int LEFT_SIDE = 3;
 	public static final int RIGHT_SIDE = 4;
+	public static final int FIRE = 5;
 	public static final float SPEED_CONTROL = 1f;
 
-	// вариант на будущее
 	// private ArrayList<ShipComponent> shipComponents;
 	// Player player;
 	// TODO add this class in game cycle
@@ -51,11 +51,12 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 		position = new Vector2f(x, y);
 		init();
 	}
-	
-	//TODO
+
+	// TODO
 	@Override
 	public void init() {
-		//magic const, I can give you help with this example of pure code(Artyom)
+		// magic const, I can give you help with this example of pure
+		// code(Artyom)
 		forceX = 1000f;
 		forceY = 8000f;
 		mass = 1000f;
@@ -70,56 +71,50 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 
 	@Override
 	public void update() {/*
-		switch (1) {
-		case 1:
-			dy += SPEED_CONTROL;
-			if (dy > maxYSpeed)
-				dy = maxYSpeed;
-			break;
-		case 2:
-			dy -= SPEED_CONTROL;
-			if (dy < -maxYSpeed)
-				dy = -maxYSpeed;
-			break;
-		case 3:
-			dx -= SPEED_CONTROL;
-			if (dx < -maxXSpeed)
-				dx = -maxXSpeed;
-			break;
-		case 4:
-			dx += SPEED_CONTROL;
-			if (dx > maxXSpeed)
-				dx = maxXSpeed;
-			break;
-		}
-*/
+						 * switch (1) { case 1: dy += SPEED_CONTROL; if (dy >
+						 * maxYSpeed) dy = maxYSpeed; break; case 2: dy -=
+						 * SPEED_CONTROL; if (dy < -maxYSpeed) dy = -maxYSpeed;
+						 * break; case 3: dx -= SPEED_CONTROL; if (dx <
+						 * -maxXSpeed) dx = -maxXSpeed; break; case 4: dx +=
+						 * SPEED_CONTROL; if (dx > maxXSpeed) dx = maxXSpeed;
+						 * break; }
+						 */
 	}
 
 	@Override
-	public void move() {
+	public void move(int side) {
 		// TODO add *dt
-	
-		fx = 0;
-		fy = 0;
-		M = 0;
+//
+//		fx = 0;
+//		fy = 0;
+//		M = 0;
+//
+//		fy = (float) (-mass * Level.gravity);
+//		fx = 0f;
+//		M = 100000;
+//
+//		ax = fx / mass;
+//		ay = fy / mass;
+//		e = M / I;
+//
+//		vx = vx + (float) (ax * 0.0166666);
+//		vy = vy + (float) (ay * 0.0166666);
+//		w = w + (float) (e * 0.0166666);
+//
+//		position.x = position.x + (float) (vx * 0.0166666);
+//		position.y = position.y + (float) (vy * 0.0166666);
+//		angle = angle + (float) (w * 0.0166666);
 		
-		fy = (float) (-mass * Level.gravity);
-		fx = 0f;
-		M = 100000;
 		
 		
-		ax = fx / mass;
-		ay = fy / mass;
-		e = M/I;
 		
 		
-		vx = vx + (float) (ax * 0.0166666);
-		vy = vy + (float) (ay * 0.0166666);
-		w = w + (float) (e * 0.0166666);
 		
-		position.x = position.x + (float) (vx * 0.0166666);
-		position.y = position.y + (float) (vy * 0.0166666);
-		angle = angle + (float) (w * 0.0166666);
+		
+		
+		
+		
+		
 	}
 
 	@Override
@@ -133,12 +128,12 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 		// 0.01f - angle
 		glRotatef(angle, 0, 0, 1.0f);
 		glBegin(GL_QUADS);
-		
-		glVertex2i(-width/2, -height/2);
-		glVertex2i(width/2, -height/2);
-		glVertex2i(width/2, height/2);
-		glVertex2i(-width/2, height/2);
-		
+
+		glVertex2i(-width / 2, -height / 2);
+		glVertex2i(width / 2, -height / 2);
+		glVertex2i(width / 2, height / 2);
+		glVertex2i(-width / 2, height / 2);
+
 		glEnd();
 		glPopMatrix();
 	}
@@ -150,6 +145,11 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 	@Override
 	public void doAction(int code) {
 		// TODO Auto-generated method stub
+		System.out.println(code);
+
+	}
+
+	void fire() {
 
 	}
 

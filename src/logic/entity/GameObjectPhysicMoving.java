@@ -31,7 +31,7 @@ abstract public class GameObjectPhysicMoving extends GameObjectSimpleMoving {
 	abstract public void update();
 
 	@Override
-	abstract public void move();
+	abstract public void move(int side);
 
 	@Override
 	abstract public void draw();

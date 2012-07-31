@@ -24,7 +24,7 @@ abstract public class GameObject {
 
 	abstract public void update();
 
-	abstract public void move();
+	abstract public void move(int side);
 
 	abstract public void draw();
 

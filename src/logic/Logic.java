@@ -7,6 +7,8 @@ package logic;
 import java.util.List;
 import org.lwjgl.input.Keyboard;
 import logic.entity.GameObject;
+import logic.entity.Ship;
+import logic.entity.Ship2;
 import main.Client;
 import main.Engine;
 
@@ -91,14 +93,30 @@ public class Logic implements Engine {
 	private void inputTick(){
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			client.exit();
+		}else{
+			
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_W))
+				level.getPlayer().getControlledObject().doAction(Ship2.UP_SIDE);
+			else if(Keyboard.isKeyDown(Keyboard.KEY_S))
+				level.getPlayer().getControlledObject().doAction(Ship2.DOWN_SIDE);
+		
+			if(Keyboard.isKeyDown(Keyboard.KEY_A))
+				level.getPlayer().getControlledObject().doAction(Ship2.LEFT_SIDE);
+			else if(Keyboard.isKeyDown(Keyboard.KEY_D))
+				level.getPlayer().getControlledObject().doAction(Ship2.RIGHT_SIDE);
+		
+			if(Keyboard.isKeyDown(Keyboard.KEY_J))
+				level.getPlayer().getControlledObject().doAction(Ship2.FIRE);
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_K))
+				level.getPlayer().getControlledObject().doAction(5);
+			else if(Keyboard.isKeyDown(Keyboard.KEY_L))
+				level.getPlayer().getControlledObject().doAction(6);
+		
+		
+		
 		}
-		
-		
-		
-		
-		
-		
-		
 		
 	}
 

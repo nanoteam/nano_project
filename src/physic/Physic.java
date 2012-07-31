@@ -25,7 +25,7 @@ public class Physic implements Engine {
 
 		List<GameObject> game_objects = level.getGameObjects();
 		for (GameObject game_object : game_objects) {
-			game_object.move();
+			game_object.update();
 		}
 	}
 
