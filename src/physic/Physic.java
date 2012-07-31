@@ -10,9 +10,16 @@ import logic.Level;
 import logic.entity.GameObject;
 import main.Engine;
 
+//TODO add support jbullet, add loading physic world constanst from Resourses manager
 public class Physic implements Engine {
 	private Level level;
 
+	public Level getLevel(){
+		return level;
+	}
+	public void setLevel(Level level){
+		this.level = level; 
+	}
 	@Override
 	public void tick() {
 
@@ -22,8 +29,7 @@ public class Physic implements Engine {
 		}
 	}
 
-	public Physic(Level level) {
-		this.level = level;
+	public Physic() {
 	}
 
 	@Override

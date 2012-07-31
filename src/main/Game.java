@@ -7,21 +7,29 @@
  */
 package main;
 
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2i;
 import logic.Level;
 import sound.Sound;
 import render.Render;
 import physic.Physic;
 import logic.Logic;
+import logic.entity.Player;
+
+import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
-
-
+import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
 
-	/** Desired frame time */
-	private static final int FRAMERATE = 60;
-
+	private Client client;
 	/** Exit the game */
 	private static boolean finished;
 
@@ -34,25 +42,37 @@ public class Game {
 	private Physic physic;
 
 	private Logic logic;
-
-	public Game() {
-		level = new Level();
-		logic = new Logic(level);
-		physic = new Physic(level);
-		render = new Render(level);
-		sound = new Sound(level);
+	//TODO add more good code to change work Game with Player
+	private Player player;
+	
+	public static boolean isFinished() {
+		return finished;
 	}
 
-	public static void main(String[] args) {
-		Game game = new Game();
-		try {
-			game.start();
-		} catch (Exception e) {
-			e.printStackTrace(System.err);
-			Sys.alert("lol", "An error occured and the game will exit.");
-		} finally {
-			game.cleanup();
-		}
+	public static void setFinished(boolean finished) {
+		Game.finished = finished;
+	}
+
+	// TODO add mechanizm creating level with parametrs from Client
+	public Game(Client client) {
+		
+		
+		this.player = new Player();
+		level = new Level(player);
+		level.testInitLevel();
+		this.client = client;
+		
+		// this code is WTF, but I think, thats it is not important. code work)
+		this.sound = client.getSound();
+		this.render = client.getRender();
+		this.physic = client.getPhysic();
+		this.logic = client.getLogic();
+
+		// TODO repair this hint with object level and engines to normal code
+		this.logic.setLevel(level);
+		this.physic.setLevel(level);
+		this.sound.setLevel(level);
+		this.render.setLevel(level);
 	}
 
 	/**
@@ -73,7 +93,7 @@ public class Game {
 				sound.tick();
 				render.tick();
 
-				render.syncFps(FRAMERATE);
+				render.syncFps(Client.FRAMERATE);
 			} else {
 				// The window is not in the foreground, so we can allow other
 				// stuff to run and
@@ -90,20 +110,17 @@ public class Game {
 					render.tick();
 					// TODO in titurial version this method dosnt call,
 					// but i think, that call method maut be
-					render.syncFps(FRAMERATE);
+					render.syncFps(Client.FRAMERATE);
 				}
 			}
 		}
 	}
 
-	/**
-	 * Do any game-specific cleanup
-	 */
-	private void cleanup() {
-		// TODO: save anything you want to disk here
-		physic.cleanUp();
-		sound.cleanUp();
-		render.cleanUp();
-		logic.cleanUp();
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

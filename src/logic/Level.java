@@ -6,7 +6,7 @@
 package logic;
 
 //class have list of constans for game, have game engines,
-
+import logic.entity.Player;
 import logic.entity.Ship;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +18,20 @@ public class Level {
 	private static int defaultHeight = 600;
 	private int widthLevel;
 	private int heightLevel;
+	private Player player;
+	
+	//physic constans 
+	//TODO add support resourses manager
+	public static double gravity = 10;
+
+	
 	// list of all object
 	private List<GameObject> gameObjects = new ArrayList<GameObject>();
-
-	public static final double GRAVITY = 0.10;
+	
 	private static Random random = new Random();
 
-	public Level() {
+	public Level(Player player) {
+		this.player = player;
 		this.widthLevel = Level.defaultWidth;
 		this.heightLevel = Level.defaultHeight;
 	}
@@ -32,9 +39,11 @@ public class Level {
 	public List<GameObject> getGameObjects() {
 		return gameObjects;
 	}
-
+	
+	//this is method for runninig game in test mode
 	public void testInitLevel() {
-		Ship game_object = new Ship(500f, 500f);
-		gameObjects.add(game_object);
+		Ship ship = new Ship(500f, 500f);
+		player.setControlledObject(ship);
+		gameObjects.add(ship);
 	}
 }

@@ -24,15 +24,21 @@ public class Sound implements Engine {
 		}
 	}
 
-	public Sound(Level level) {
-		this.level = level;
+	
+	public Sound() {
 		// Start up the sound system
 		try {
 			AL.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
-
+	}
+	
+	public Level getLevel(){
+		return level;
+	}
+	public void setLevel(Level level){
+		this.level = level; 
 	}
 
 	@Override
