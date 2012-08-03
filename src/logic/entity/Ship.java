@@ -25,29 +25,29 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 	float forceX;
 	float forceY;
 
-	float vx;
-	float vy;
+	boolean onShoot;
+	boolean onReload;
+	int reloadTime;
+
+	private boolean leftEngineActive = false;
+	private boolean rightEngineActive = false;
+	private boolean allEngineActive = false;
 	// temp variable
+	float ft = 0;
 	float ax = 0, ay = 0;
 	float fx = 0, fy = 0;
-	float M = 0f, e = 0f;
+	float M = 0f, e = 0f, m1=0, m2=0;
 	//
+	private float Ft = 1000000f;
 	int width, height;
-
-	public static final int UP_SIDE = 1;
-	public static final int DOWN_SIDE = 2;
-	public static final int LEFT_SIDE = 3;
-	public static final int RIGHT_SIDE = 4;
-	public static final int FIRE = 5;
-	public static final float SPEED_CONTROL = 1f;
 
 	// private ArrayList<ShipComponent> shipComponents;
 	// Player player;
 	// TODO add this class in game cycle
-	public Ship(float x, float y) {
+	public Ship(Level level, float x, float y) {
 		// if(!loadParametres(..))
 		// throw...;
-
+		this.level = level;
 		position = new Vector2f(x, y);
 		init();
 	}
@@ -57,63 +57,80 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 	public void init() {
 		// magic const, I can give you help with this example of pure
 		// code(Artyom)
-		forceX = 1000f;
-		forceY = 8000f;
+		forceX = 100000f;
+		forceY = 50000f;
 		mass = 1000f;
-		this.vx = 0f;
-		this.vy = 0f;
+		speed = new Vector2f(0, 0);
 		angle = 0f;
 		width = 60;
 		height = 30;
 		// formula for moment inercia : I = m * (lenght/12);
 		I = mass * 5;
+
+		onShoot = false;
+		onReload = false;
 	}
 
 	@Override
-	public void update() {/*
-						 * switch (1) { case 1: dy += SPEED_CONTROL; if (dy >
-						 * maxYSpeed) dy = maxYSpeed; break; case 2: dy -=
-						 * SPEED_CONTROL; if (dy < -maxYSpeed) dy = -maxYSpeed;
-						 * break; case 3: dx -= SPEED_CONTROL; if (dx <
-						 * -maxXSpeed) dx = -maxXSpeed; break; case 4: dx +=
-						 * SPEED_CONTROL; if (dx > maxXSpeed) dx = maxXSpeed;
-						 * break; }
-						 */
+	public void update() {
+		if (onShoot) {
+			System.out.println("fire!!!");
+			if (!onReload) {
+				onReload = true;
+				reloadTime = 1000;
+				Bullet bullet = new Bullet(position, angle);
+				level.getGameObjects().add(0, bullet);
+				onShoot = false;
+			} else
+				reloadTime--;
+		}
 	}
 
 	@Override
-	public void move(int side) {
+	public void move() {
 		// TODO add *dt
-//
-//		fx = 0;
-//		fy = 0;
-//		M = 0;
-//
-//		fy = (float) (-mass * Level.gravity);
-//		fx = 0f;
-//		M = 100000;
-//
-//		ax = fx / mass;
-//		ay = fy / mass;
-//		e = M / I;
-//
-//		vx = vx + (float) (ax * 0.0166666);
-//		vy = vy + (float) (ay * 0.0166666);
-//		w = w + (float) (e * 0.0166666);
-//
-//		position.x = position.x + (float) (vx * 0.0166666);
-//		position.y = position.y + (float) (vy * 0.0166666);
-//		angle = angle + (float) (w * 0.0166666);
+		ft = 0;
+		fx = 0;
+		fy = 0;
+		M = 0;
+		
+		if (allEngineActive) {
+			ft = Ft*2;
+			//M = 0;
+		}
+		if (rightEngineActive){
+			ft+= Ft;
+			M+=Ft*width/2;
+		}
+		if (leftEngineActive){
+			ft+= Ft;
+			M+=-Ft*width/2;
+		}
+		
+		fx = (float) (ft * Math.cos(angle));
+		
+		fy = (float) (ft * Math.sin(angle) - mass * Level.gravity);
+		
+		ax = fx / mass;
+		ay = fy / mass;
+		
+		//System.out.println("ax = " + ax + " ay = "+ ay);
+		e = M / I;
+
+		speed.x += (float) (ax * 0.0166666);
+		speed.y += (float) (ay * 0.0166666);
+		w += (float) (e * 0.0166666);
 		
 		
+		position.x += (float) (speed.x * 0.0166666);
+		position.y += (float) (speed.y * 0.0166666);
 		
+		angle = angle + (float) (w * 0.0166666);
+		//System.out.println();
 		
-		
-		
-		
-		
-		
-		
+		allEngineActive = false;
+		rightEngineActive = false;
+		leftEngineActive = false;
 		
 	}
 
@@ -133,7 +150,7 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 		glVertex2i(width / 2, -height / 2);
 		glVertex2i(width / 2, height / 2);
 		glVertex2i(-width / 2, height / 2);
-
+		
 		glEnd();
 		glPopMatrix();
 	}
@@ -144,13 +161,20 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 
 	@Override
 	public void doAction(int code) {
-		// TODO Auto-generated method stub
-		System.out.println(code);
-
+		System.out.println("Ship.doAction()" + code);
+		switch (code) {
+		case ControlledObject.LEFT_ENGINE_ACTIVE: {
+			leftEngineActive = true;
+			break;
+		}
+		case ControlledObject.RIGHT_ENGINE_ACTIVE: {
+			rightEngineActive = true;
+			break;
+		}
+		case ControlledObject.All_ENGINE_ACTIVE: {
+			allEngineActive = true;
+			break;
+		}
+		}
 	}
-
-	void fire() {
-
-	}
-
 }

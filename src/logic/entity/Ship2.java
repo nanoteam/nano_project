@@ -48,11 +48,11 @@ public class Ship2 extends GameObjectPhysicMoving implements ControlledObject {
 
 	@Override
 	public void doAction(int code) {
-		if (code < 10)
+		/*if (code < 10)
 			this.move(code);
 		else if (code == 10)
 			fire();
-
+		 */
 	}
 
 	@Override
@@ -92,8 +92,8 @@ public class Ship2 extends GameObjectPhysicMoving implements ControlledObject {
 	}
 
 	@Override
-	public void move(int side) {
-
+	public void move() {
+		int side = 0;
 		switch (side) {
 		case 1:
 			dy += SPEED_CONTROL;

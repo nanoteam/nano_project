@@ -1,33 +1,33 @@
-
 /**
-* @author Andreyuk Artyom happydroidx@gmail.com
-* @version 1.0
-*/
+ * @author Andreyuk Artyom happydroidx@gmail.com
+ * @version 1.0
+ */
 package logic;
 
 //class have list of constans for game, have game engines,
 import logic.entity.Player;
+import logic.entity.Ship;
 import logic.entity.Ship2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import logic.entity.GameObject;
+
 public class Level {
 	private static int defaultWidth = 800;
 	private static int defaultHeight = 600;
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;
-	
-	//physic constans 
-	//TODO add support resourses manager
+
+	// physic constans
+	// TODO add support resourses manager
 	public static double gravity = 10;
 
-	
 	// list of all object
 	private List<GameObject> gameObjects = new ArrayList<GameObject>();
-	
+
 	private static Random random = new Random();
 
 	public Level(Player player) {
@@ -39,18 +39,18 @@ public class Level {
 	public List<GameObject> getGameObjects() {
 		return gameObjects;
 	}
-	
-	//this is method for runninig game in test mode
+
+	// this is method for runninig game in test mode
 	public void testInitLevel() {
-		Ship2 ship = new Ship2(500f, 500f);
+		Ship ship = new Ship(this,500f, 500f);
 		player.setControlledObject(ship);
 		gameObjects.add(ship);
 	}
+
 	/**
-	 * added by Arthur for testing objects
-	 * 31.07.12
+	 * added by Arthur for testing objects 31.07.12
 	 */
-	public Player getPlayer(){
+	public Player getPlayer() {
 		return this.player;
 	}
 }

@@ -37,20 +37,16 @@ public class Bullet extends GameObjectSimpleMoving {
 	}
 
 	@Override
-	public void move(int side) {
+	public void move() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void draw() {
-
 		glPushMatrix();
-
 		glTranslatef(position.x, position.y, 0.0f);
 		// glRotatef(angle, 0, 0, 1.0f);
 		glBegin(GL_QUADS);
-
 		glVertex2i(-SIZE / 2, -SIZE / 2);
 		glVertex2i(SIZE / 2, -SIZE / 2);
 		glVertex2i(SIZE / 2, SIZE / 2);

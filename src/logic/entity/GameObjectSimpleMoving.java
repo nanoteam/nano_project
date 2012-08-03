@@ -23,7 +23,7 @@ abstract public class GameObjectSimpleMoving extends GameObject {
 	abstract public void update();
 
 	@Override
-	abstract public void move(int side);
+	abstract public void move();
 
 	@Override
 	abstract public void draw();

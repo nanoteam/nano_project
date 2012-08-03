@@ -25,7 +25,7 @@ public class Physic implements Engine {
 
 		List<GameObject> game_objects = level.getGameObjects();
 		for (GameObject game_object : game_objects) {
-			game_object.update();
+			game_object.move();
 		}
 	}
 
@@ -35,6 +35,5 @@ public class Physic implements Engine {
 	@Override
 	public void cleanUp() {
 		// TODO Auto-generated method stub
-
 	}
 }

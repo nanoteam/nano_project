@@ -9,6 +9,9 @@
 package logic.entity;
 
 import java.util.Random;
+
+import logic.Level;
+
 import org.lwjgl.util.vector.Vector2f;
 
 import render.RenderObject;
@@ -19,12 +22,13 @@ abstract public class GameObject {
 	Vector2f position;
 	boolean live = true;
 	RenderObject renderObject;
+	protected Level level;
 
 	abstract public void init();
 
 	abstract public void update();
 
-	abstract public void move(int side);
+	abstract public void move();
 
 	abstract public void draw();
 
