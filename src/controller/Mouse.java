@@ -7,8 +7,11 @@ package controller;
 
 import main.Engine;
 
-public class Mouse implements Engine{
+class Mouse implements Engine{
 
+	Mouse(){
+		
+	}
 	@Override
 	public void tick() {
 		// TODO Auto-generated method stub
