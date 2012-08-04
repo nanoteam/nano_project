@@ -8,6 +8,8 @@ package logic;
 import logic.entity.Player;
 import logic.entity.Ship;
 import logic.entity.Ship2;
+import logic.entity.Ship3;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -56,7 +58,7 @@ public class Level {
 
 	// this is method for runninig game in test mode
 	public void testInitLevel() {
-		Ship ship = new Ship(this, 500f, 500f);
+		Ship3 ship = new Ship3(this, 500f, 500f);
 		player.setControlledObject(ship);
 		gameObjects.add(ship);
 	}

@@ -159,7 +159,7 @@ public class Ship2 extends GameObjectPhysicMoving implements ControlledObject {
 		if (!onReload) {
 			onReload = true;
 			timeOfFire = System.nanoTime();
-			Bullet bullet = new Bullet(position, angle);
+			Bullet bullet = new Bullet(position, angle,1,1);
 			listOfPrivateObjects.add(bullet);
 		} else if (System.nanoTime() - timeOfFire > reloadTime)
 			onReload = false;

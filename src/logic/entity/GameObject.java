@@ -8,6 +8,8 @@
  */
 package logic.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import logic.Level;
@@ -18,11 +20,14 @@ import render.RenderObject;
 
 //TODO add modificator visiable to protected code to field and method
 abstract public class GameObject {
+	
 	static Random random = new Random();
 	Vector2f position;
 	boolean live = true;
 	RenderObject renderObject;
 	protected Level level;
+
+	List<ArsenalGameObject> arsenalList = new ArrayList<ArsenalGameObject>();
 
 	abstract public void init();
 
