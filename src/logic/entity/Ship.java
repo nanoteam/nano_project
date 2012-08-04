@@ -36,9 +36,9 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 	float ft = 0;
 	float ax = 0, ay = 0;
 	float fx = 0, fy = 0;
-	float M = 0f, e = 0f, m1=0, m2=0;
+	float M = 0f, e = 0f, m1 = 0, m2 = 0;
 	//
-	private float Ft = 1000000f;
+	private float Ft = 300000f;
 	int width, height;
 
 	// private ArrayList<ShipComponent> shipComponents;
@@ -62,7 +62,7 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 		mass = 1000f;
 		speed = new Vector2f(0, 0);
 		angle = 0f;
-		width = 60;
+		width = 120;
 		height = 30;
 		// formula for moment inercia : I = m * (lenght/12);
 		I = mass * 5;
@@ -73,72 +73,76 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 
 	@Override
 	public void update() {
-		if (onShoot) {
-			System.out.println("fire!!!");
-			if (!onReload) {
-				onReload = true;
-				reloadTime = 1000;
-				Bullet bullet = new Bullet(position, angle);
-				level.getGameObjects().add(0, bullet);
-				onShoot = false;
-			} else
-				reloadTime--;
+		if (onReload) {
+			if (reloadTime == 0)
+				onReload = false;
+			reloadTime--;
+			System.out.println(reloadTime);
+		} else if (onShoot) {
+			onReload = true;
+			reloadTime = 10;
+			//TODO fire from border
+			Bullet bullet = new Bullet(position, angle);
+			// level.getGameObjects().add(0, bullet);
+			level.getNotAddedGameObjects().add(bullet);
+			onShoot = false;
 		}
+		System.out.println(angle);
 	}
 
 	@Override
 	public void move() {
+
 		// TODO add *dt
 		ft = 0;
 		fx = 0;
 		fy = 0;
 		M = 0;
-		
+
 		if (allEngineActive) {
-			ft = Ft*2;
-			//M = 0;
+			ft = Ft * 2;
+			// M = 0;
+			w/=8;
+			
 		}
-		if (rightEngineActive){
-			ft+= Ft;
-			M+=Ft*width/2;
+		if (rightEngineActive) {
+			ft += Ft;
+			M += Ft * width / 20;
 		}
-		if (leftEngineActive){
-			ft+= Ft;
-			M+=-Ft*width/2;
+		if (leftEngineActive) {
+			ft += Ft;
+			M += -Ft * width / 20;
 		}
-		
-		fx = (float) (ft * Math.cos(angle));
-		
-		fy = (float) (ft * Math.sin(angle) - mass * Level.gravity);
-		
+
+		fx = (float) (-ft * Math.sin(angle/60));
+
+		fy = (float) (ft * Math.cos(angle/60) - mass * Level.gravity);
+
 		ax = fx / mass;
 		ay = fy / mass;
-		
-		//System.out.println("ax = " + ax + " ay = "+ ay);
+
+		// System.out.println("ax = " + ax + " ay = "+ ay);
 		e = M / I;
 
 		speed.x += (float) (ax * 0.0166666);
 		speed.y += (float) (ay * 0.0166666);
 		w += (float) (e * 0.0166666);
-		
-		
+
 		position.x += (float) (speed.x * 0.0166666);
 		position.y += (float) (speed.y * 0.0166666);
-		
+
 		angle = angle + (float) (w * 0.0166666);
-		//System.out.println();
-		
+		// System.out.println();
+
 		allEngineActive = false;
 		rightEngineActive = false;
 		leftEngineActive = false;
-		
+
 	}
 
 	@Override
 	public void draw() {
 		glPushMatrix();
-		// glTranslatef(Display.getDisplayMode().getWidth() / 2, Display
-		// .getDisplayMode().getHeight() / 2, 0.0f);
 
 		glTranslatef(position.x, position.y, 0.0f);
 
@@ -150,7 +154,7 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 		glVertex2i(width / 2, -height / 2);
 		glVertex2i(width / 2, height / 2);
 		glVertex2i(-width / 2, height / 2);
-		
+
 		glEnd();
 		glPopMatrix();
 	}
@@ -173,6 +177,10 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 		}
 		case ControlledObject.All_ENGINE_ACTIVE: {
 			allEngineActive = true;
+			break;
+		}
+		case ControlledObject.FIRE_SIMPLE_BULLET: {
+			onShoot = true;
 			break;
 		}
 		}

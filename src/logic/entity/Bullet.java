@@ -9,18 +9,25 @@ import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2i;
 
+import java.util.Random;
+
 import org.lwjgl.util.vector.Vector2f;
 
 public class Bullet extends GameObjectSimpleMoving {
 
 	// temp
-	static final int SIZE = 7;
+	static final int SIZE = 2;
 	static final float SPEED = 7;
 
 	public Bullet(Vector2f pos, float angle) {
 		position = new Vector2f(pos);
-		speed = new Vector2f((float) (SPEED * Math.cos(angle/60)),
-				(float) (SPEED * Math.sin(angle/60)));
+		speed = new Vector2f((float) (SPEED * Math.cos(angle / 60)),
+				(float) (SPEED * Math.sin(angle / 60)));
+		
+		//randomize traektori desu
+		speed.x += 2f*Math.random()-1f;
+		speed.y += 2f*Math.random()-1f;
+
 	}
 
 	@Override
@@ -32,13 +39,13 @@ public class Bullet extends GameObjectSimpleMoving {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		position.x += speed.x;
-		position.y += speed.y;
+
 	}
 
 	@Override
 	public void move() {
-		// TODO Auto-generated method stub
+		position.x += speed.x;
+		position.y += speed.y;
 	}
 
 	@Override

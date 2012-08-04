@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import logic.entity.GameObject;
 
 public class Level {
-	private static int defaultWidth = 800;
-	private static int defaultHeight = 600;
+	private static int defaultWidth = 1600;
+	private static int defaultHeight = 1200;
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;
@@ -27,6 +29,10 @@ public class Level {
 
 	// list of all object
 	private List<GameObject> gameObjects = new ArrayList<GameObject>();
+	// list of objects which will be added to main list
+	private List<GameObject> gameObjectsToAdd = new ArrayList<GameObject>();
+	// list of objects which will be deleted from main list
+	private List<GameObject> gameObjectsToDelete = new ArrayList<GameObject>();
 
 	private static Random random = new Random();
 
@@ -40,9 +46,17 @@ public class Level {
 		return gameObjects;
 	}
 
+	public List<GameObject> getNotAddedGameObjects() {
+		return gameObjectsToAdd;
+	}
+
+	public List<GameObject> getNotDeletedGameObjects() {
+		return gameObjectsToDelete;
+	}
+
 	// this is method for runninig game in test mode
 	public void testInitLevel() {
-		Ship ship = new Ship(this,500f, 500f);
+		Ship ship = new Ship(this, 500f, 500f);
 		player.setControlledObject(ship);
 		gameObjects.add(ship);
 	}
@@ -53,4 +67,27 @@ public class Level {
 	public Player getPlayer() {
 		return this.player;
 	}
+
+	// method for adding not added objects after last 'foreach'
+	public void addNotAddedObjects() {
+		if (gameObjectsToAdd.size() != 0)
+			gameObjects.addAll(gameObjectsToAdd);
+		gameObjectsToAdd.clear();
+	}
+
+	// -----//--------- (delete)
+	public void deleteNotDeletedObjects() {
+		if (gameObjectsToDelete.size() != 0)
+			gameObjects.removeAll(gameObjectsToDelete);
+		gameObjectsToDelete.clear();
+	}
+
+	public boolean isInBorders(Vector2f position) {
+		if (position.x < 0 || position.x > widthLevel || position.y < 0
+				|| position.y > heightLevel)
+			return false;
+		else
+			return true;
+	}
+
 }

@@ -15,22 +15,33 @@ import main.Engine;
 public class Logic implements Engine {
 	private Level level;
 	private Client client;
+
 	public Logic(Client client) {
 		this.client = client;
 	}
-	public Level getLevel(){
+
+	public Level getLevel() {
 		return level;
 	}
-	public void setLevel(Level level){
-		this.level = level; 
+
+	public void setLevel(Level level) {
+		this.level = level;
 	}
+
 	@Override
 	public void tick() {
 		List<GameObject> game_objects = level.getGameObjects();
 
 		for (GameObject game_object : game_objects) {
 			game_object.update();
+			if (!game_object.isLive())
+				level.getNotDeletedGameObjects().add(game_object);
+
 		}
+
+		// add some objects which created while foreach is going
+		level.addNotAddedObjects();
+		level.deleteNotDeletedObjects();
 	}
 
 	@Override

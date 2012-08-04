@@ -39,6 +39,8 @@ abstract public class GameObject {
 	}
 
 	public boolean isLive() {
+		System.out.println(this.getClass().toString());
+
 		return live;
 	}
 

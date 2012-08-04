@@ -176,6 +176,11 @@ public class Game {
 						.doAction(ControlledObject.RIGHT_ENGINE_ACTIVE);
 				break;
 			}
+			case org.lwjgl.input.Keyboard.KEY_K: {
+				level.getPlayer().getControlledObject()
+						.doAction(ControlledObject.FIRE_SIMPLE_BULLET);
+				break;
+			}
 			case org.lwjgl.input.Keyboard.KEY_ESCAPE: {
 				client.exit();
 				break;
