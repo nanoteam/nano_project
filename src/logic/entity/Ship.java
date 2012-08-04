@@ -82,7 +82,7 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 			onReload = true;
 			reloadTime = 10;
 			//TODO fire from border
-			Bullet bullet = new Bullet(position, angle);
+			Bullet bullet = new Bullet(position, angle,1,1);
 			// level.getGameObjects().add(0, bullet);
 			level.getNotAddedGameObjects().add(bullet);
 			onShoot = false;
@@ -179,7 +179,7 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 			allEngineActive = true;
 			break;
 		}
-		case ControlledObject.FIRE_SIMPLE_BULLET: {
+		case ControlledObject.FIRE_FIRST_WEAPON: {
 			onShoot = true;
 			break;
 		}

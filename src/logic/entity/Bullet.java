@@ -16,17 +16,17 @@ import org.lwjgl.util.vector.Vector2f;
 public class Bullet extends GameObjectSimpleMoving {
 
 	// temp
-	static final int SIZE = 2;
-	static final float SPEED = 7;
+	private int size;
+	private float SPEED = 7;
 
-	public Bullet(Vector2f pos, float angle) {
+	public Bullet(Vector2f pos, float angle, int size, int randTrajectory) {
 		position = new Vector2f(pos);
 		speed = new Vector2f((float) (SPEED * Math.cos(angle / 60)),
 				(float) (SPEED * Math.sin(angle / 60)));
-		
-		//randomize traektori desu
-		speed.x += 2f*Math.random()-1f;
-		speed.y += 2f*Math.random()-1f;
+		this.size = size;
+		// randomize traektori desu
+		speed.x += randTrajectory * Math.random() - randTrajectory/2f;
+		speed.y += randTrajectory * Math.random() - randTrajectory/2f;
 
 	}
 
@@ -54,10 +54,10 @@ public class Bullet extends GameObjectSimpleMoving {
 		glTranslatef(position.x, position.y, 0.0f);
 		// glRotatef(angle, 0, 0, 1.0f);
 		glBegin(GL_QUADS);
-		glVertex2i(-SIZE / 2, -SIZE / 2);
-		glVertex2i(SIZE / 2, -SIZE / 2);
-		glVertex2i(SIZE / 2, SIZE / 2);
-		glVertex2i(-SIZE / 2, SIZE / 2);
+		glVertex2i(-size / 2, -size / 2);
+		glVertex2i(size / 2, -size / 2);
+		glVertex2i(size / 2, size / 2);
+		glVertex2i(-size / 2, size / 2);
 
 		glEnd();
 		glPopMatrix();
