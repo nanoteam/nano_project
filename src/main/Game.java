@@ -23,6 +23,7 @@ import sound.Sound;
 import util.LightInteger;
 import controller.Controller;
 import controller.ControlledObject;
+
 public class Game {
 
 	private Client client;
@@ -130,40 +131,29 @@ public class Game {
 		for (LightInteger key : list_key) {
 			switch (key.data) {
 			/*
-			case org.lwjgl.input.Keyboard.KEY_W: {
-				level.getPlayer().getControlledObject().doAction(Ship.UP_SIDE);
-				break;
-			}
-			case org.lwjgl.input.Keyboard.KEY_S: {
-				level.getPlayer().getControlledObject()
-						.doAction(Ship.DOWN_SIDE);
-				break;
-			}
+			 * case org.lwjgl.input.Keyboard.KEY_W: {
+			 * level.getPlayer().getControlledObject().doAction(Ship.UP_SIDE);
+			 * break; } case org.lwjgl.input.Keyboard.KEY_S: {
+			 * level.getPlayer().getControlledObject()
+			 * .doAction(Ship.DOWN_SIDE); break; } case
+			 * org.lwjgl.input.Keyboard.KEY_A: {
+			 * level.getPlayer().getControlledObject()
+			 * .doAction(Ship.LEFT_SIDE); break; } case
+			 * org.lwjgl.input.Keyboard.KEY_D: {
+			 * level.getPlayer().getControlledObject()
+			 * .doAction(Ship.RIGHT_SIDE); break; } case
+			 * org.lwjgl.input.Keyboard.KEY_Q: {
+			 * level.getPlayer().getControlledObject().doAction(5); break; }
+			 * case org.lwjgl.input.Keyboard.KEY_E: {
+			 * level.getPlayer().getControlledObject().doAction(6); break; }
+			 * case org.lwjgl.input.Keyboard.KEY_G: {
+			 * level.getPlayer().getControlledObject().doAction(Ship.FIRE);
+			 * break; }
+			 */
+
 			case org.lwjgl.input.Keyboard.KEY_A: {
 				level.getPlayer().getControlledObject()
-						.doAction(Ship.LEFT_SIDE);
-				break;
-			}
-			case org.lwjgl.input.Keyboard.KEY_D: {
-				level.getPlayer().getControlledObject()
-						.doAction(Ship.RIGHT_SIDE);
-				break;
-			}
-			case org.lwjgl.input.Keyboard.KEY_Q: {
-				level.getPlayer().getControlledObject().doAction(5);
-				break;
-			}
-			case org.lwjgl.input.Keyboard.KEY_E: {
-				level.getPlayer().getControlledObject().doAction(6);
-				break;
-			}
-			case org.lwjgl.input.Keyboard.KEY_G: {
-				level.getPlayer().getControlledObject().doAction(Ship.FIRE);
-				break;
-			}*/
-			
-			case org.lwjgl.input.Keyboard.KEY_A: {
-				level.getPlayer().getControlledObject().doAction(ControlledObject.LEFT_ENGINE_ACTIVE);
+						.doAction(ControlledObject.LEFT_ENGINE_ACTIVE);
 				break;
 			}
 			case org.lwjgl.input.Keyboard.KEY_S: {
@@ -174,6 +164,16 @@ public class Game {
 			case org.lwjgl.input.Keyboard.KEY_D: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.RIGHT_ENGINE_ACTIVE);
+				break;
+			}
+			case org.lwjgl.input.Keyboard.KEY_J: {
+				level.getPlayer().getControlledObject()
+						.doAction(ControlledObject.FIRE_FIRST_WEAPON);
+				break;
+			}
+			case org.lwjgl.input.Keyboard.KEY_K: {
+				level.getPlayer().getControlledObject()
+						.doAction(ControlledObject.FIRE_SECOND_WEAPON);
 				break;
 			}
 			case org.lwjgl.input.Keyboard.KEY_ESCAPE: {
