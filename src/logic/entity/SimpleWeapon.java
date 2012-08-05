@@ -22,8 +22,11 @@ public class SimpleWeapon extends ArsenalGameObject {
 		// this way or draw throw draw-method of ship
 		this.position = gameObject.getPosition();
 		this.fatherObj = gameObject;
+<<<<<<< HEAD
 		relativePosition = new Vector2f(30f,35f);
 
+=======
+>>>>>>> 669492cf06c928d5da40c86143b6b710fcb5b6be
 	}
 
 	@Override
@@ -34,7 +37,11 @@ public class SimpleWeapon extends ArsenalGameObject {
 		randomizeFire = 2;
 		position.x += 10;
 		position.y += 10;
+<<<<<<< HEAD
 		System.out.println(relativePosition.toString());
+=======
+
+>>>>>>> 669492cf06c928d5da40c86143b6b710fcb5b6be
 	}
 
 	@Override
@@ -59,11 +66,16 @@ public class SimpleWeapon extends ArsenalGameObject {
 	public void move() {
 		// angle = fatherObj.getAngle();
 		Vector2f t = fatherObj.getPosition();
+<<<<<<< HEAD
 		angle = fatherObj.getAngle();
 
 		position = new Vector2f((float) (t.x - relativePosition.x
 				* Math.sin(angle / 60)),
 				(float) (t.y + relativePosition.y * Math.cos(angle / 60)));
+=======
+		position = new Vector2f(t.x + 30, t.y + 35);
+		angle = fatherObj.getAngle();
+>>>>>>> 669492cf06c928d5da40c86143b6b710fcb5b6be
 	}
 
 	@Override

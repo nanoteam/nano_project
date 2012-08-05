@@ -20,7 +20,7 @@ import render.RenderObject;
 
 //TODO add modificator visiable to protected code to field and method
 abstract public class GameObject {
-	
+
 	static Random random = new Random();
 	Vector2f position;
 	boolean live = true;
@@ -44,8 +44,6 @@ abstract public class GameObject {
 	}
 
 	public boolean isLive() {
-		System.out.println(this.getClass().toString());
-
 		return live;
 	}
 

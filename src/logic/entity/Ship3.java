@@ -153,7 +153,7 @@ public class Ship3 extends GameObjectPhysicMoving implements ControlledObject {
 
 	@Override
 	public void doAction(int code) {
-		System.out.println("Ship.doAction()" + code);
+//		System.out.println("Ship.doAction()" + code);
 		switch (code) {
 		case ControlledObject.LEFT_ENGINE_ACTIVE: {
 			leftEngineActive = true;

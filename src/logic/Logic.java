@@ -31,7 +31,7 @@ public class Logic implements Engine {
 	@Override
 	public void tick() {
 		List<GameObject> game_objects = level.getGameObjects();
-
+		System.out.println(game_objects.size());
 		for (GameObject game_object : game_objects) {
 			game_object.update();
 			if (!game_object.isLive())
