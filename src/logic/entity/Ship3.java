@@ -15,11 +15,13 @@ import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2i;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
+
+import render.RenderUtil;
 import controller.ControlledObject;
 import logic.Level;
 import main.Game;
@@ -126,7 +128,7 @@ public class Ship3 extends GameObjectPhysicMoving implements ControlledObject {
 	}
 
 	@Override
-	public void draw() {
+	public void draw() {/*
 		glPushMatrix();
 
 		glTranslatef(position.x, position.y, 0.0f);
@@ -141,7 +143,18 @@ public class Ship3 extends GameObjectPhysicMoving implements ControlledObject {
 		glVertex2i(-width / 2, height / 2);
 
 		glEnd();
-		glPopMatrix();
+		glPopMatrix();*/
+		ArrayList<Vector2f> vector = new ArrayList<Vector2f>();
+		for (int i = 0;i<random.nextInt(10)+5;i++){
+			vector.add(new Vector2f(random.nextInt(1000),random.nextInt(700)));
+		}
+			//RenderUtil.drawLine(new Vector2f(100,100), 
+				//	new Vector2f(300,300), (float) (5f), (Color) Color.BLUE);
+		
+		RenderUtil.drawPolyLineSmooth(vector, 5, (Color)Color.ORANGE);
+			
+		
+				
 	}
 
 	@Override
