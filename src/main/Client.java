@@ -14,7 +14,7 @@ import util.LightInteger;
 public class Client {
 
 	/** Desired frame time */
-	public static final int FRAMERATE = 1;
+	public static final int FRAMERATE = 60;
 
 	private Game game;
 
