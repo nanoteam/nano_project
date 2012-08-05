@@ -13,10 +13,7 @@ import logic.Level;
 import logic.Logic;
 import logic.entity.Player;
 import logic.entity.Ship;
-import logic.entity.Ship2;
-
 import org.lwjgl.opengl.Display;
-
 import physic.Physic;
 import render.Render;
 import sound.Sound;

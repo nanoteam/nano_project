@@ -7,8 +7,11 @@ package logic;
 //class have list of constans for game, have game engines,
 import logic.entity.Player;
 import logic.entity.Ship;
+<<<<<<< HEAD
 import logic.entity.Ship2;
 import logic.entity.Ship3;
+=======
+>>>>>>> master
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,18 +61,24 @@ public class Level {
 
 	// this is method for runninig game in test mode
 	public void testInitLevel() {
+<<<<<<< HEAD
 		Ship3 ship = new Ship3(this, 500f, 500f);
+=======
+		Ship ship = new Ship(this, 500f, 500f);
+>>>>>>> master
 		player.setControlledObject(ship);
 		gameObjects.add(ship);
 	}
 
-	/**
-	 * added by Arthur for testing objects 31.07.12
-	 */
+	
 	public Player getPlayer() {
 		return this.player;
 	}
-
+	
+	/**
+	 * added by Arthur for testing objects 31.07.12
+	 */
+	//change name method please. for example add
 	// method for adding not added objects after last 'foreach'
 	public void addNotAddedObjects() {
 		if (gameObjectsToAdd.size() != 0)
@@ -92,4 +101,29 @@ public class Level {
 			return true;
 	}
 
+<<<<<<< HEAD
+	// method for adding not added objects after last 'foreach'
+	public void addNotAddedObjects() {
+		if (gameObjectsToAdd.size() != 0)
+			gameObjects.addAll(gameObjectsToAdd);
+		gameObjectsToAdd.clear();
+	}
+
+	// -----//--------- (delete)
+	public void deleteNotDeletedObjects() {
+		if (gameObjectsToDelete.size() != 0)
+			gameObjects.removeAll(gameObjectsToDelete);
+		gameObjectsToDelete.clear();
+	}
+
+	public boolean isInBorders(Vector2f position) {
+		if (position.x < 0 || position.x > widthLevel || position.y < 0
+				|| position.y > heightLevel)
+			return false;
+		else
+			return true;
+	}
+
+=======
+>>>>>>> master
 }
