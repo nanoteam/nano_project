@@ -8,7 +8,6 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import logic.entity.GameObject;
 import logic.entity.Ship;
-import logic.entity.Ship2;
 import main.Client;
 import main.Engine;
 

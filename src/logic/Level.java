@@ -7,8 +7,6 @@ package logic;
 //class have list of constans for game, have game engines,
 import logic.entity.Player;
 import logic.entity.Ship;
-import logic.entity.Ship2;
-import logic.entity.Ship3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +56,7 @@ public class Level {
 
 	// this is method for runninig game in test mode
 	public void testInitLevel() {
-		Ship3 ship = new Ship3(this, 500f, 500f);
+		Ship ship = new Ship(this, 500f, 500f);
 		player.setControlledObject(ship);
 		gameObjects.add(ship);
 	}
