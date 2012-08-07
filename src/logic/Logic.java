@@ -30,17 +30,16 @@ public class Logic implements Engine {
 	@Override
 	public void tick() {
 		List<GameObject> game_objects = level.getGameObjects();
-
 		for (GameObject game_object : game_objects) {
 			game_object.update();
 			if (!game_object.isLive())
 				level.getNotDeletedGameObjects().add(game_object);
-
 		}
-
+		
 		// add some objects which created while foreach is going
-		level.addNotAddedObjects();
 		level.deleteNotDeletedObjects();
+		level.addNotAddedObjects();
+		
 	}
 
 	@Override

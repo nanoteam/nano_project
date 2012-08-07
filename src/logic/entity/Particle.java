@@ -8,10 +8,11 @@ public class Particle extends GameObjectSimpleMoving {
 	private Color color;
 	private int lifeTime;
 	private float size;
-	public Particle(Vector2f position,Vector2f speed, float size, Color color){
+	public Particle(Vector2f position,Vector2f speed, float size, int lifeTime, Color color){
 		this.position = position;
 		this.speed = speed;
 		this.size = size;
+		this.lifeTime = lifeTime;
 		this.color = color;
 	}
 	@Override
@@ -31,6 +32,7 @@ public class Particle extends GameObjectSimpleMoving {
 	public void move() {
 		position.x +=speed.x;
 		position.y +=speed.y;
+		System.out.println("Particle.move()");
 	}
 
 	@Override

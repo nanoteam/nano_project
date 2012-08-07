@@ -2,6 +2,7 @@ package controller;
 
 public interface ControlledObject {
 	public void doAction(int code);
+	public void clearFlags();
 	
 	public static final int LEFT_ENGINE_ACTIVE = 1;
 	public static final int RIGHT_ENGINE_ACTIVE = 2;
