@@ -7,25 +7,19 @@
  */
 package main;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex2i;
+import java.util.ArrayList;
+
 import logic.Level;
-import sound.Sound;
-import render.Render;
-import physic.Physic;
 import logic.Logic;
 import logic.entity.Player;
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
+import logic.entity.Ship;
 import org.lwjgl.opengl.Display;
-import static org.lwjgl.opengl.GL11.*;
+import physic.Physic;
+import render.Render;
+import sound.Sound;
+import util.LightInteger;
+import controller.Controller;
+import controller.ControlledObject;
 
 public class Game {
 
@@ -42,9 +36,11 @@ public class Game {
 	private Physic physic;
 
 	private Logic logic;
-	//TODO add more good code to change work Game with Player
+
+	private Controller controller;
+	// TODO add more good code to change work Game with Player
 	private Player player;
-	
+
 	public static boolean isFinished() {
 		return finished;
 	}
@@ -55,24 +51,25 @@ public class Game {
 
 	// TODO add mechanizm creating level with parametrs from Client
 	public Game(Client client) {
-		
-		
+
 		this.player = new Player();
 		level = new Level(player);
 		level.testInitLevel();
 		this.client = client;
-		
+
 		// this code is WTF, but I think, thats it is not important. code work)
 		this.sound = client.getSound();
 		this.render = client.getRender();
 		this.physic = client.getPhysic();
 		this.logic = client.getLogic();
-
+		this.controller = client.getController();
 		// TODO repair this hint with object level and engines to normal code
 		this.logic.setLevel(level);
 		this.physic.setLevel(level);
 		this.sound.setLevel(level);
 		this.render.setLevel(level);
+		// controller dont need to set level!
+
 	}
 
 	/**
@@ -88,6 +85,7 @@ public class Game {
 				finished = true;
 			} else if (Display.isActive()) {
 				// The window is in the foreground, so we should play the game
+				controller.tick();
 				physic.tick();
 				logic.tick();
 				sound.tick();
@@ -122,5 +120,68 @@ public class Game {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	// TODO add table of key
+	public void keyAction(ArrayList<LightInteger> list_key) {
+		// interpretation key code
+		for (LightInteger key : list_key) {
+			switch (key.data) {
+			/*
+			 * case org.lwjgl.input.Keyboard.KEY_W: {
+			 * level.getPlayer().getControlledObject().doAction(Ship.UP_SIDE);
+			 * break; } case org.lwjgl.input.Keyboard.KEY_S: {
+			 * level.getPlayer().getControlledObject()
+			 * .doAction(Ship.DOWN_SIDE); break; } case
+			 * org.lwjgl.input.Keyboard.KEY_A: {
+			 * level.getPlayer().getControlledObject()
+			 * .doAction(Ship.LEFT_SIDE); break; } case
+			 * org.lwjgl.input.Keyboard.KEY_D: {
+			 * level.getPlayer().getControlledObject()
+			 * .doAction(Ship.RIGHT_SIDE); break; } case
+			 * org.lwjgl.input.Keyboard.KEY_Q: {
+			 * level.getPlayer().getControlledObject().doAction(5); break; }
+			 * case org.lwjgl.input.Keyboard.KEY_E: {
+			 * level.getPlayer().getControlledObject().doAction(6); break; }
+			 * case org.lwjgl.input.Keyboard.KEY_G: {
+			 * level.getPlayer().getControlledObject().doAction(Ship.FIRE);
+			 * break; }
+			 */
+
+			case org.lwjgl.input.Keyboard.KEY_A: {
+				level.getPlayer().getControlledObject()
+						.doAction(ControlledObject.LEFT_ENGINE_ACTIVE);
+				break;
+			}
+			case org.lwjgl.input.Keyboard.KEY_S: {
+				level.getPlayer().getControlledObject()
+						.doAction(ControlledObject.All_ENGINE_ACTIVE);
+				break;
+			}
+			case org.lwjgl.input.Keyboard.KEY_D: {
+				level.getPlayer().getControlledObject()
+						.doAction(ControlledObject.RIGHT_ENGINE_ACTIVE);
+				break;
+			}
+			case org.lwjgl.input.Keyboard.KEY_J: {
+				level.getPlayer().getControlledObject()
+						.doAction(ControlledObject.FIRE_FIRST_WEAPON);
+				break;
+			}
+			case org.lwjgl.input.Keyboard.KEY_K: {
+				level.getPlayer().getControlledObject()
+						.doAction(ControlledObject.FIRE_SECOND_WEAPON);
+				break;
+			}
+			case org.lwjgl.input.Keyboard.KEY_ESCAPE: {
+				client.exit();
+				break;
+			}
+
+			}
+		}
+
+		// call method Player -> Entity
+
 	}
 }

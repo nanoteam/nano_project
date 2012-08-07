@@ -17,17 +17,16 @@ class Keyboard implements Engine{
 	
 	Keyboard(){
 		buffer = new ArrayDeque<Integer>();
+		org.lwjgl.input.Keyboard.enableRepeatEvents(true);
 	}
 	
 	//TODO check this method	
 	@Override
 	public void tick() {
 		//if window was lost fokus, need update keyboard
-		if (!org.lwjgl.input.Keyboard.isCreated()){
+		/*if (!org.lwjgl.input.Keyboard.isCreated()){
 			createKeyboard();
-		}
-		
-		
+		}*/
 	}
 
 	@Override
@@ -41,8 +40,6 @@ class Keyboard implements Engine{
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	
+	}	
 
 }

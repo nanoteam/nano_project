@@ -1,11 +1,13 @@
-
 /**
-* @author Andreyuk Artyom happydroidx@gmail.com
-* @version 1.0
-*/
+ * @author Andreyuk Artyom happydroidx@gmail.com
+ * @version 1.0
+ */
 package physic;
 
 import java.util.List;
+
+import org.lwjgl.util.vector.Vector2f;
+
 import logic.Level;
 import logic.entity.GameObject;
 import main.Engine;
@@ -14,19 +16,27 @@ import main.Engine;
 public class Physic implements Engine {
 	private Level level;
 
-	public Level getLevel(){
+	public Level getLevel() {
 		return level;
 	}
-	public void setLevel(Level level){
-		this.level = level; 
+
+	public void setLevel(Level level) {
+		this.level = level;
 	}
+
 	@Override
 	public void tick() {
 
 		List<GameObject> game_objects = level.getGameObjects();
 		for (GameObject game_object : game_objects) {
 			game_object.move();
+			// check for borders
+
+			if (!level.isInBorders(game_object.getPosition()))
+				game_object.setLive(false);
+
 		}
+
 	}
 
 	public Physic() {
@@ -35,6 +45,6 @@ public class Physic implements Engine {
 	@Override
 	public void cleanUp() {
 		// TODO Auto-generated method stub
-
 	}
+
 }
