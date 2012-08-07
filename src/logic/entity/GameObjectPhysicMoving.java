@@ -71,8 +71,4 @@ abstract public class GameObjectPhysicMoving extends GameObjectSimpleMoving {
 		I = i;
 	}
 
-	public float getAngle() {
-		return angle;
-	}
-
 }
