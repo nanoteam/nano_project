@@ -1,26 +1,35 @@
-
 /**
-* @author Andreyuk Artyom happydroidx@gmail.com
-* @version 1.0
-*/
+ * @author Andreyuk Artyom happydroidx@gmail.com
+ * @version 1.0
+ */
 package controller;
+
+import org.lwjgl.util.vector.Vector2f;
 
 import main.Engine;
 
-class Mouse implements Engine{
+class Mouse implements Engine {
 
-	Mouse(){
-		
+	private Cursor cursor;
+
+	Mouse() {
+		cursor = new Cursor();
 	}
+
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
-		
+		cursor.setPosition(new Vector2f(org.lwjgl.input.Mouse.getX(),
+				org.lwjgl.input.Mouse.getY()));
 	}
 
 	@Override
 	public void cleanUp() {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	public Cursor getCursor() {
+		return cursor;
+	}
+
 }

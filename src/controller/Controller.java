@@ -8,6 +8,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import util.LightInteger;
 
@@ -31,6 +32,7 @@ public class Controller implements Engine {
 		}
 		if (active_mouse) {
 			mouse = new Mouse();
+
 		}
 		this.client = client;
 
@@ -51,19 +53,31 @@ public class Controller implements Engine {
 	@Override
 	public void tick() {
 		keyboard.tick();
-		
 		if (null != keyboard) {
 			ArrayList<LightInteger> list_key = new ArrayList<LightInteger>();
-			
+
 			while (org.lwjgl.input.Keyboard.next()) {
-				list_key.add(new LightInteger(org.lwjgl.input.Keyboard.getEventKey()));
+				list_key.add(new LightInteger(org.lwjgl.input.Keyboard
+						.getEventKey()));
 			}
 			client.keyAction(list_key);
 
 		}
 		if (null != mouse) {
 			mouse.tick();
-			client.mouseAction();
+			client.updateCursor(mouse.getCursor());
+			ArrayList<LightInteger> list_key = new ArrayList<LightInteger>();
+
+			while (org.lwjgl.input.Mouse.next()) {
+				list_key.add(new LightInteger(org.lwjgl.input.Mouse
+						.getEventButton()));
+			}
+			if (list_key.size() > 0) {
+				client.mouseAction(list_key);
+				for(LightInteger a :list_key)
+				System.out.println(a.data);
+			}
+
 		}
 
 	}

@@ -14,6 +14,8 @@ import java.util.Random;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import controller.Cursor;
+
 import logic.entity.GameObject;
 
 public class Level {
@@ -22,6 +24,7 @@ public class Level {
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;
+	private Cursor cursor;
 
 	// physic constans
 	// TODO add support resourses manager
@@ -61,15 +64,14 @@ public class Level {
 		gameObjects.add(ship);
 	}
 
-	
 	public Player getPlayer() {
 		return this.player;
 	}
-	
+
 	/**
 	 * added by Arthur for testing objects 31.07.12
 	 */
-	//change name method please. for example add
+	// change name method please. for example add
 	// method for adding not added objects after last 'foreach'
 	public void addNotAddedObjects() {
 		if (gameObjectsToAdd.size() != 0)
@@ -90,6 +92,15 @@ public class Level {
 			return false;
 		else
 			return true;
+	}
+
+	public void updateCursor(Cursor cursor) {
+		this.cursor = cursor;
+
+	}
+
+	public Cursor getCursor() {
+		return cursor;
 	}
 
 }

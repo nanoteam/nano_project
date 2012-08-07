@@ -1,10 +1,12 @@
 package logic.entity;
 
 import controller.ControlledObject;
+import controller.Cursor;
 
 public class Player {
 	private ControlledObject controlledObject;
-	
+
+
 	public ControlledObject getControlledObject() {
 		return controlledObject;
 	}
@@ -13,9 +15,10 @@ public class Player {
 		this.controlledObject = controlledObject;
 	}
 
-	public Player(){
-		
+	public Player() {
+
 	}
-	
+
+
 
 }

@@ -12,19 +12,20 @@ import static org.lwjgl.opengl.GL11.glVertex2i;
 import org.lwjgl.util.vector.Vector2f;
 
 public class SimpleWeapon extends ArsenalGameObject {
-	//temp
+	// temp
 	private int width;
 	private int height;
 	private int time = 0;
-	
+
 	private int sizeBullet;
 	private int reloadTime;
-	
-	public SimpleWeapon(GameObjectPhysicMoving gameObject, 
-	int width, int height, int randomizeFire, int sizeBullet, int reloadTime) {
+
+	public SimpleWeapon(GameObjectPhysicMoving gameObject, int width,
+			int height, int randomizeFire, int sizeBullet, int reloadTime) {
 		// this way or draw throw draw-method of ship
 		this.position = gameObject.getPosition();
 		this.fatherObj = gameObject;
+		this.level = gameObject.level;
 		this.width = width;
 		this.height = height;
 		this.randomizeFire = randomizeFire;
@@ -46,14 +47,15 @@ public class SimpleWeapon extends ArsenalGameObject {
 			if (time == 0)
 				onReload = false;
 			time--;
-			//System.out.println(time);
+			// System.out.println(time);
 		} else if (onShoot) {
 			onReload = true;
 			time = reloadTime;
 			// TODO fire from border
-			Bullet bullet = new Bullet(position, angle, sizeBullet, (int) randomizeFire);
+			Bullet bullet = new Bullet(position, angle, sizeBullet,
+					(int) randomizeFire);
 			// level.getGameObjects().add(0, bullet);
-			//WTF??????????????? getNotAddedGameObjects().add(bullet) ???
+			// WTF??????????????? getNotAddedGameObjects().add(bullet) ???
 			fatherObj.level.getNotAddedGameObjects().add(bullet);
 			onShoot = false;
 		}
@@ -61,10 +63,12 @@ public class SimpleWeapon extends ArsenalGameObject {
 
 	@Override
 	public void move() {
-		// angle = fatherObj.getAngle();
-		Vector2f t = fatherObj.getPosition();
-		position = new Vector2f(t.x + 30, t.y + 35);
-		angle = fatherObj.getAngle();
+		Vector2f fPos = fatherObj.getPosition();
+		position = new Vector2f(fPos.x + 30, fPos.y + 35);
+
+		Vector2f vector = fatherObj.level.getCursor().getPosition();
+		angle = (float) Math.atan2(vector.y - this.position.y, vector.x
+				- this.position.y) * 60;
 	}
 
 	@Override

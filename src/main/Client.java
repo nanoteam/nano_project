@@ -1,8 +1,10 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import controller.Controller;
+import controller.Cursor;
 import logic.Level;
 import logic.Logic;
 import logic.entity.Player;
@@ -52,7 +54,7 @@ public class Client {
 		resourcesManager = new ResourcesManager();
 		// do not delete! In progress
 		state = MAIN_MENU;
-		controller = Controller.createController(true, false, this);
+		controller = Controller.createController(true, true, this);
 
 		// menu = new Menu();
 		logic = new Logic(this);
@@ -124,7 +126,17 @@ public class Client {
 	}
 
 	// TODO add support mouse in client
-	public void mouseAction() {
+	public void mouseAction(ArrayList<LightInteger> list_key) {
+
+		if (state == Client.MAIN_MENU) {
+
+			return;
+		}
+
+		if (state == Client.GAME) {
+			game.keyAction(list_key);
+			return;
+		}
 
 	}
 
@@ -138,5 +150,9 @@ public class Client {
 			game.keyAction(list_key);
 			return;
 		}
+	}
+
+	public void updateCursor(Cursor cursor) {
+		game.updateCursor(cursor);
 	}
 }

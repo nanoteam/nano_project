@@ -20,6 +20,7 @@ import sound.Sound;
 import util.LightInteger;
 import controller.Controller;
 import controller.ControlledObject;
+import controller.Cursor;
 
 public class Game {
 
@@ -127,26 +128,6 @@ public class Game {
 		// interpretation key code
 		for (LightInteger key : list_key) {
 			switch (key.data) {
-			/*
-			 * case org.lwjgl.input.Keyboard.KEY_W: {
-			 * level.getPlayer().getControlledObject().doAction(Ship.UP_SIDE);
-			 * break; } case org.lwjgl.input.Keyboard.KEY_S: {
-			 * level.getPlayer().getControlledObject()
-			 * .doAction(Ship.DOWN_SIDE); break; } case
-			 * org.lwjgl.input.Keyboard.KEY_A: {
-			 * level.getPlayer().getControlledObject()
-			 * .doAction(Ship.LEFT_SIDE); break; } case
-			 * org.lwjgl.input.Keyboard.KEY_D: {
-			 * level.getPlayer().getControlledObject()
-			 * .doAction(Ship.RIGHT_SIDE); break; } case
-			 * org.lwjgl.input.Keyboard.KEY_Q: {
-			 * level.getPlayer().getControlledObject().doAction(5); break; }
-			 * case org.lwjgl.input.Keyboard.KEY_E: {
-			 * level.getPlayer().getControlledObject().doAction(6); break; }
-			 * case org.lwjgl.input.Keyboard.KEY_G: {
-			 * level.getPlayer().getControlledObject().doAction(Ship.FIRE);
-			 * break; }
-			 */
 
 			case org.lwjgl.input.Keyboard.KEY_A: {
 				level.getPlayer().getControlledObject()
@@ -163,11 +144,13 @@ public class Game {
 						.doAction(ControlledObject.RIGHT_ENGINE_ACTIVE);
 				break;
 			}
+			case 0:
 			case org.lwjgl.input.Keyboard.KEY_J: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.FIRE_FIRST_WEAPON);
 				break;
 			}
+			//number of second button of mouse is maybe esc_key
 			case org.lwjgl.input.Keyboard.KEY_K: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.FIRE_SECOND_WEAPON);
@@ -177,11 +160,19 @@ public class Game {
 				client.exit();
 				break;
 			}
-
+//			case 0: {
+//				level.getPlayer().getControlledObject()
+//						.doAction(ControlledObject.FIRE_FIRST_WEAPON);
+//				break;
+//			}
 			}
 		}
 
 		// call method Player -> Entity
 
+	}
+
+	public void updateCursor(Cursor cursor) {
+		level.updateCursor(cursor);
 	}
 }
