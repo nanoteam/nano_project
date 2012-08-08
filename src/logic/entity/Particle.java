@@ -32,7 +32,7 @@ public class Particle extends GameObjectSimpleMoving {
 	public void move() {
 		position.x +=speed.x;
 		position.y +=speed.y;
-		System.out.println("Particle.move()");
+//		System.out.println("Particle.move()");
 	}
 
 	@Override

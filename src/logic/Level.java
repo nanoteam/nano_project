@@ -5,6 +5,7 @@
 package logic;
 
 //class have list of constans for game, have game engines,
+import logic.entity.Bot;
 import logic.entity.Player;
 import logic.entity.Ship;
 
@@ -62,6 +63,10 @@ public class Level {
 		Ship ship = new Ship(this, 500f, 500f);
 		player.setControlledObject(ship);
 		gameObjects.add(ship);
+		Ship botShip = new Ship(this, 800f, 500f);
+		Bot botForShip = new Bot(botShip);
+		gameObjects.add(botShip);
+		gameObjects.add(botForShip);
 	}
 
 	public Player getPlayer() {

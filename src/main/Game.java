@@ -150,7 +150,7 @@ public class Game {
 						.doAction(ControlledObject.FIRE_FIRST_WEAPON);
 				break;
 			}
-			//number of second button of mouse is maybe esc_key
+			// number of second button of mouse is maybe esc_key
 			case org.lwjgl.input.Keyboard.KEY_K: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.FIRE_SECOND_WEAPON);
@@ -160,11 +160,11 @@ public class Game {
 				client.exit();
 				break;
 			}
-//			case 0: {
-//				level.getPlayer().getControlledObject()
-//						.doAction(ControlledObject.FIRE_FIRST_WEAPON);
-//				break;
-//			}
+			// case 0: {
+			// level.getPlayer().getControlledObject()
+			// .doAction(ControlledObject.FIRE_FIRST_WEAPON);
+			// break;
+			// }
 			}
 		}
 
