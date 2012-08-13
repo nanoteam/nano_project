@@ -31,10 +31,11 @@ public class Physic implements Engine {
 		for (GameObject game_object : game_objects) {
 			game_object.move();
 			// check for borders
-
+			/*
 			if (!level.isInBorders(game_object.getPosition()))
 				game_object.setLive(false);
-
+			 */
+			
 		}
 
 	}

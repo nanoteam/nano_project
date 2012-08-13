@@ -4,12 +4,11 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 import org.lwjgl.util.Color;
-import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.vector.Vector2f;
 
 public class RenderUtil {
 	public static void drawPlot(Vector2f position, float size, Color color) {
-		GL11.glPointSize(size*2);
+		GL11.glPointSize(size);
 		GL11.glBegin(GL11.GL_POINTS);
 		GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
 				color.getBlueByte());

@@ -42,6 +42,7 @@ public class Game {
 	// TODO add more good code to change work Game with Player
 	private Player player;
 
+	private Cursor cursor;
 	public static boolean isFinished() {
 		return finished;
 	}
@@ -54,7 +55,8 @@ public class Game {
 	public Game(Client client) {
 
 		this.player = new Player();
-		level = new Level(player);
+		level = new Level(player, client.getController().getCursor());
+		
 		level.testInitLevel();
 		this.client = client;
 
@@ -173,6 +175,6 @@ public class Game {
 	}
 
 	public void updateCursor(Cursor cursor) {
-		level.updateCursor(cursor);
+		this.cursor = cursor;
 	}
 }

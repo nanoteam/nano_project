@@ -31,10 +31,12 @@ public class Render implements Engine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
+		glPushMatrix();
 		List<GameObject> game_objects = level.getGameObjects();
 		for (GameObject game_object : game_objects) {
 			game_object.draw();
 		}
+		glPopMatrix();
 	}
 	//TODO add avto detecting optimal working set display, 1600x900x32 or 640x480x16 or ...
 	public Render() {		

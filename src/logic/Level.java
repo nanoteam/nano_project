@@ -1,11 +1,15 @@
-/**
- * @author Andreyuk Artyom happydroidx@gmail.com
- * @version 1.0
- */
 package logic;
 
-//class have list of constans for game, have game engines,
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2i;
 import logic.entity.Bot;
+import logic.entity.Particle;
 import logic.entity.Player;
 import logic.entity.Ship;
 
@@ -13,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
 import controller.Cursor;
@@ -21,12 +27,11 @@ import logic.entity.GameObject;
 
 public class Level {
 	private static int defaultWidth = 1600;
-	private static int defaultHeight = 1200;
+	private static int defaultHeight = 900;
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;
 	private Cursor cursor;
-
 	// physic constans
 	// TODO add support resourses manager
 	public static double gravity = 10;
@@ -40,10 +45,11 @@ public class Level {
 
 	private static Random random = new Random();
 
-	public Level(Player player) {
+	public Level(Player player, Cursor cursor) {
 		this.player = player;
 		this.widthLevel = Level.defaultWidth;
 		this.heightLevel = Level.defaultHeight;
+		this.cursor = cursor;
 	}
 
 	public List<GameObject> getGameObjects() {
@@ -68,7 +74,6 @@ public class Level {
 		gameObjects.add(botShip);
 		gameObjects.add(botForShip);
 	}
-
 	public Player getPlayer() {
 		return this.player;
 	}
@@ -76,7 +81,6 @@ public class Level {
 	/**
 	 * added by Arthur for testing objects 31.07.12
 	 */
-	// change name method please. for example add
 	// method for adding not added objects after last 'foreach'
 	public void addNotAddedObjects() {
 		if (gameObjectsToAdd.size() != 0)
@@ -84,7 +88,6 @@ public class Level {
 		gameObjectsToAdd.clear();
 	}
 
-	// -----//--------- (delete)
 	public void deleteNotDeletedObjects() {
 		if (gameObjectsToDelete.size() != 0)
 			gameObjects.removeAll(gameObjectsToDelete);
@@ -99,13 +102,7 @@ public class Level {
 			return true;
 	}
 
-	public void updateCursor(Cursor cursor) {
-		this.cursor = cursor;
-
+	public Vector2f getPositionMouse() {
+		return cursor.getPosition();
 	}
-
-	public Cursor getCursor() {
-		return cursor;
-	}
-
 }

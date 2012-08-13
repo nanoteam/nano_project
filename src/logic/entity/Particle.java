@@ -30,18 +30,37 @@ public class Particle extends GameObjectSimpleMoving {
 
 	@Override
 	public void move() {
-		position.x +=speed.x;
-		position.y +=speed.y;
+		position.x +=speed.x*0.016666;
+		position.y +=speed.y*0.016666;
 //		System.out.println("Particle.move()");
 	}
 
 	@Override
 	public void draw() {
 		RenderUtil.drawPlot(position, size, color);
+	
 	}
 
 	@Override
 	public void playSound() {
 	}
-
+	public Color getColor() {
+		return color;
+	}
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	public int getLifeTime() {
+		return lifeTime;
+	}
+	public void setLifeTime(int lifeTime) {
+		this.lifeTime = lifeTime;
+	}
+	public float getSize() {
+		return size;
+	}
+	public void setSize(float size) {
+		this.size = size;
+	}
+	
 }

@@ -11,6 +11,7 @@ import org.lwjgl.util.vector.Vector2f;
 public abstract class ArsenalGameObject extends GameObjectPhysicMoving{
 
 	GameObjectPhysicMoving fatherObj;
+	
 	boolean onShoot;
 	boolean onReload;
 	float randomizeFire;
