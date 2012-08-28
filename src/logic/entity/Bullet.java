@@ -1,32 +1,29 @@
 package logic.entity;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex2i;
-
+import org.lwjgl.util.Color;
 import java.util.Random;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import render.RenderUtil;
+
 public class Bullet extends GameObjectSimpleMoving {
 
+	
 	// temp
-	private int size;
-	private float SPEED = 7;
+	private float size;
+	//constant
+	private final static float maxSpeed = 300;
 
-	public Bullet(Vector2f pos, float angle, int size, int randTrajectory) {
+	public Bullet(Vector2f pos, float angle, float size, float randTrajectory) {
 		position = new Vector2f(pos);
-		speed = new Vector2f((float) (SPEED * Math.cos(angle / 60)),
-				(float) (SPEED * Math.sin(angle / 60)));
+		speed = new Vector2f((float) (maxSpeed * Math.cos(angle / 60)),
+				(float) (maxSpeed * Math.sin(angle / 60)));
 		this.size = size;
 		// randomize traektori desu
 		speed.x += randTrajectory * Math.random() - randTrajectory/2f;
 		speed.y += randTrajectory * Math.random() - randTrajectory/2f;
+		
 
 	}
 
@@ -44,12 +41,19 @@ public class Bullet extends GameObjectSimpleMoving {
 
 	@Override
 	public void move() {
-		position.x += speed.x;
-		position.y += speed.y;
+		speed.y+=-level.gravity*(0.016666);
+		position.x += speed.x*(0.016666);
+		position.y += speed.y*(0.016666);
+		
 	}
 
 	@Override
 	public void draw() {
+		
+		RenderUtil.drawPlot(new Vector2f(position), size, (Color) Color.CYAN);
+		
+		
+		/*
 		glPushMatrix();
 		glTranslatef(position.x, position.y, 0.0f);
 		// glRotatef(angle, 0, 0, 1.0f);
@@ -61,6 +65,8 @@ public class Bullet extends GameObjectSimpleMoving {
 
 		glEnd();
 		glPopMatrix();
+		*/
+		
 	}
 
 	@Override

@@ -9,7 +9,11 @@ import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2i;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
+
+import util.MathUtil;
 
 public class SimpleWeapon extends ArsenalGameObject {
 	// temp
@@ -17,6 +21,7 @@ public class SimpleWeapon extends ArsenalGameObject {
 	private int height;
 	private int time = 0;
 
+	// delete. sizeBullet != Bullet.size
 	private int sizeBullet;
 	private int reloadTime;
 
@@ -35,7 +40,6 @@ public class SimpleWeapon extends ArsenalGameObject {
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 		onShoot = false;
 		onReload = false;
 
@@ -52,11 +56,12 @@ public class SimpleWeapon extends ArsenalGameObject {
 			onReload = true;
 			time = reloadTime;
 			// TODO fire from border
-			Bullet bullet = new Bullet(position, angle, sizeBullet,
-					(int) randomizeFire);
-			// level.getGameObjects().add(0, bullet);
-			// WTF??????????????? getNotAddedGameObjects().add(bullet) ???
-			fatherObj.level.getNotAddedGameObjects().add(bullet);
+			PlazmaBall plazmaBall = new PlazmaBall(position, angle, 0, level);
+			fatherObj.level.getNotAddedGameObjects().add(plazmaBall);
+			// Bullet bullet = new Bullet(position, angle, sizeBullet,
+			// randomizeFire);
+			// fatherObj.level.getNotAddedGameObjects().add(bullet);
+
 			onShoot = false;
 		}
 	}
@@ -64,19 +69,27 @@ public class SimpleWeapon extends ArsenalGameObject {
 	@Override
 	public void move() {
 		Vector2f fPos = fatherObj.getPosition();
-		position = new Vector2f(fPos.x + 30, fPos.y + 35);
 
-		Vector2f vector = fatherObj.level.getCursor().getPosition();
+		position = new Vector2f(fPos.x
+				+ MathUtil.newXTurn(30, 17, fatherObj.getAlfa()), fPos.y
+				+ MathUtil.newYTurn(30, 17, fatherObj.getAlfa()));
+
+		Vector2f vector = level.getPositionMouse();
 		angle = (float) Math.atan2(vector.y - this.position.y, vector.x
 				- this.position.y) * 60;
 	}
 
 	@Override
 	public void draw() {
+
 		glPushMatrix();
 		glTranslatef(position.x, position.y, 0.0f);
 		// 0.01f - angle
+
 		glRotatef(angle, 0, 0, 1.0f);
+		GL11.glColor3ub(Color.GREEN.getRedByte(), Color.GREEN.getGreenByte(),
+				Color.GREEN.getBlueByte());
+
 		glBegin(GL_QUADS);
 		glVertex2i(-width / 2, -height / 2);
 		glVertex2i(width / 2, -height / 2);
@@ -84,12 +97,14 @@ public class SimpleWeapon extends ArsenalGameObject {
 		glVertex2i(-width / 2, height / 2);
 		glEnd();
 		glPopMatrix();
+
 	}
 
 	@Override
 	public void playSound() {
 	}
 
+	// ? funny method
 	@Override
 	public boolean setShootOn() {
 		onShoot = true;

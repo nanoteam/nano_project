@@ -126,10 +126,10 @@ public class Client {
 	}
 
 	// TODO add support mouse in client
+	// TODO add support mouse in game 
 	public void mouseAction(ArrayList<LightInteger> list_key) {
 
 		if (state == Client.MAIN_MENU) {
-
 			return;
 		}
 
@@ -153,6 +153,14 @@ public class Client {
 	}
 
 	public void updateCursor(Cursor cursor) {
-		game.updateCursor(cursor);
+		if (state == Client.MAIN_MENU) {
+			return;
+		}
+
+		if (state == Client.GAME) {
+			game.updateCursor(cursor);
+			return;
+		}
+		
 	}
 }

@@ -49,33 +49,41 @@ public class Controller implements Engine {
 	public static Controller getController() {
 		return controller;
 	}
+	public Cursor getCursor(){
+		return mouse.getCursor();
+	}
 
 	@Override
 	public void tick() {
-		keyboard.tick();
 		if (null != keyboard) {
+			keyboard.tick();
 			ArrayList<LightInteger> list_key = new ArrayList<LightInteger>();
-
 			while (org.lwjgl.input.Keyboard.next()) {
 				list_key.add(new LightInteger(org.lwjgl.input.Keyboard
 						.getEventKey()));
 			}
-			client.keyAction(list_key);
+			if (list_key.size() > 0) {
+				client.keyAction(list_key);
+			}
 
 		}
+
 		if (null != mouse) {
 			mouse.tick();
+			
 			client.updateCursor(mouse.getCursor());
 			ArrayList<LightInteger> list_key = new ArrayList<LightInteger>();
-
+			// what a format of Mouse.event key?
+			// there are no capability with method client.keyAction()
 			while (org.lwjgl.input.Mouse.next()) {
 				list_key.add(new LightInteger(org.lwjgl.input.Mouse
 						.getEventButton()));
 			}
 			if (list_key.size() > 0) {
 				client.mouseAction(list_key);
-				for(LightInteger a :list_key)
-				System.out.println(a.data);
+				for (LightInteger a : list_key) {
+					System.out.println(a.data);
+				}
 			}
 
 		}
@@ -87,6 +95,7 @@ public class Controller implements Engine {
 		keyboard.cleanUp();
 		mouse.cleanUp();
 	}
+
 	/*
 	 * public get
 	 * 

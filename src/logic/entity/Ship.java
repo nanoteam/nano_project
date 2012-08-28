@@ -18,26 +18,36 @@ import static org.lwjgl.opengl.GL11.glVertex2i;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
 import render.RenderUtil;
+import util.MathUtil;
 import controller.ControlledObject;
 import logic.Level;
 import main.Game;
 
-public class Ship extends GameObjectPhysicMoving implements ControlledObject {
+final public class Ship extends GameObjectPhysicMoving implements
+		ControlledObject {
 	private float Ft = 300000f;
 	private boolean leftEngineActive = false;
 	private boolean rightEngineActive = false;
 	private boolean allEngineActive = false;
 	private boolean weapon1Shot = false;
 	private boolean weapon2Shot = false;
-	private int width, height;
+	private float width, height;
 	private List<ArsenalGameObject> arsenalList = new ArrayList<ArsenalGameObject>();
 
-	private final static float SPEED_PARTICLE_FROM_ENGINE = 2f;
+	private final static float SPEED_PARTICLE_FROM_ENGINE = 200f;
+	private final static float SPEED_PARTICLE_KOOF_RANDOM = 20f;
+	private final static float ENGINE_FORCE = 500;
 
 	// private ArrayList<ShipComponent> shipComponents;
 	public Ship(Level level, float x, float y) {
@@ -48,18 +58,22 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 		init();
 	}
 
-	// TODO
 	@Override
 	public void init() {
-		// magic const, I can give you help with this example of pure
-		// code(Artyom)
-		mass = 1000f;
-		speed = new Vector2f(0, 0);
-		angle = 0f;
-		width = 120;
-		height = 30;
-		// formula for moment inercia : I = m * (lenght/12);
-		I = mass * 5;
+		width = 100f;
+		height = 40f;
+
+		BodyDef shipDef = new BodyDef();
+		shipDef.position.set(new Vec2(position.x / 30, position.y / 30));
+		shipDef.type = BodyType.DYNAMIC;
+		PolygonShape shipShape = new PolygonShape();
+		shipShape.setAsBox(width / 30 / 2, height / 30 / 2);
+		this.body = level.getWorld().createBody(shipDef);
+		FixtureDef shipFixture = new FixtureDef();
+		shipFixture.density = 5f;
+		shipFixture.restitution = 0;
+		shipFixture.shape = shipShape;
+		body.createFixture(shipFixture);
 
 		SimpleWeapon weap1 = new SimpleWeapon(this, 20, 3, 1, 3, 20);
 		SimpleWeapon weap2 = new SimpleWeapon(this, 10, 5, 2, 15, 70);
@@ -69,215 +83,177 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 		level.getGameObjects().add(weap2);
 	}
 
+	private void createParticleFromEngine(float x, float y, Color color) {
+		speed = new Vector2f(body.getLinearVelocity().x,
+				body.getLinearVelocity().y);
+		level.getNotAddedGameObjects()
+				.add(new Particle(
+						new Vector2f((float) (position.x + MathUtil.newXTurn(x,
+								y, angle)), (float) (position.y + MathUtil
+								.newYTurn(x, y, angle))),
+						new Vector2f(
+								(float) (speed.x + Math.sin(angle / 60)
+										* SPEED_PARTICLE_FROM_ENGINE + SPEED_PARTICLE_KOOF_RANDOM
+										* (random.nextFloat() - 0.5)),
+								(float) (speed.y + -Math.cos(angle / 60)
+										* SPEED_PARTICLE_FROM_ENGINE + SPEED_PARTICLE_KOOF_RANDOM
+										* (random.nextFloat() - 0.5))), 2,
+						100 + random.nextInt(20), color));
+	}
+
 	@Override
 	public void update() {
 		// OMG OMG OMG, in future i refactoring this code
 		if (leftEngineActive) {
-			level.getNotAddedGameObjects().add(
-
-					new Particle(new Vector2f(
-							(float) (position.x + (-width / 2)
-									* Math.cos(angle / 60) - (-height / 2)
-									* Math.sin(angle / 60)),
-							(float) (position.y + (-width / 2)
-									* Math.sin(angle / 60) + (-height / 2)
-									* Math.cos(angle / 60))), new Vector2f(
-							(float) (Math.sin(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25),
-							(float) (-Math.cos(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25)), 1,
-							100, (Color) Color.ORANGE));
-			level.getNotAddedGameObjects().add(
-
-					new Particle(new Vector2f(
-							(float) (position.x + (-width / 2)
-									* Math.cos(angle / 60) - (-height / 2)
-									* Math.sin(angle / 60)),
-							(float) (position.y + (-width / 2)
-									* Math.sin(angle / 60) + (-height / 2)
-									* Math.cos(angle / 60))), new Vector2f(
-							(float) (Math.sin(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25),
-							(float) (-Math.cos(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25)), 1,
-							100, (Color) Color.RED));
-
+			createParticleFromEngine(-width / 2f, -height / 2f,
+					(Color) Color.ORANGE);
+			createParticleFromEngine(-width / 2f, -height / 2f,
+					(Color) Color.ORANGE);
+			createParticleFromEngine(-width / 2f, -height / 2f,
+					(Color) Color.RED);
+			createParticleFromEngine(-width / 2f, -height / 2f,
+					(Color) Color.RED);
 		}
+
 		if (rightEngineActive) {
-			level.getNotAddedGameObjects().add(
-
-					new Particle(new Vector2f((float) (position.x + (width / 2)
-							* Math.cos(angle / 60) - (-height / 2)
-							* Math.sin(angle / 60)),
-							(float) (position.y + (width / 2)
-									* Math.sin(angle / 60) + (-height / 2)
-									* Math.cos(angle / 60))), new Vector2f(
-							(float) (Math.sin(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25),
-							(float) (-Math.cos(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25)), 1,
-							100, (Color) Color.ORANGE));
-			level.getNotAddedGameObjects().add(
-
-					new Particle(new Vector2f((float) (position.x + (width / 2)
-							* Math.cos(angle / 60) - (-height / 2)
-							* Math.sin(angle / 60)),
-							(float) (position.y + (width / 2)
-									* Math.sin(angle / 60) + (-height / 2)
-									* Math.cos(angle / 60))), new Vector2f(
-							(float) (Math.sin(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25),
-							(float) (-Math.cos(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25)), 1,
-							100, (Color) Color.RED));
-
-			
+			createParticleFromEngine(width / 2f, -height / 2f,
+					(Color) Color.ORANGE);
+			createParticleFromEngine(width / 2f, -height / 2f,
+					(Color) Color.ORANGE);
+			createParticleFromEngine(width / 2f, -height / 2f,
+					(Color) Color.RED);
+			createParticleFromEngine(width / 2f, -height / 2f,
+					(Color) Color.RED);
 		}
 
 		if (allEngineActive) {
-			level.getNotAddedGameObjects().add(
+			createParticleFromEngine(-width / 2f, -height / 2f,
+					(Color) Color.ORANGE);
+			createParticleFromEngine(-width / 2f, -height / 2f,
+					(Color) Color.ORANGE);
+			createParticleFromEngine(-width / 2f, -height / 2f,
+					(Color) Color.RED);
+			createParticleFromEngine(-width / 2f, -height / 2f,
+					(Color) Color.RED);
+			createParticleFromEngine(-width / 2f, -height / 2f,
+					(Color) Color.RED);
 
-					new Particle(new Vector2f(
-							(float) (position.x + (-width / 2)
-									* Math.cos(angle / 60) - (-height / 2)
-									* Math.sin(angle / 60)),
-							(float) (position.y + (-width / 2)
-									* Math.sin(angle / 60) + (-height / 2)
-									* Math.cos(angle / 60))), new Vector2f(
-							(float) (Math.sin(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25),
-							(float) (-Math.cos(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25)), 1,
-							100, (Color) Color.ORANGE));
-			level.getNotAddedGameObjects().add(
-
-					new Particle(new Vector2f((float) (position.x + (width / 2)
-							* Math.cos(angle / 60) - (-height / 2)
-							* Math.sin(angle / 60)),
-							(float) (position.y + (width / 2)
-									* Math.sin(angle / 60) + (-height / 2)
-									* Math.cos(angle / 60))), new Vector2f(
-							(float) (Math.sin(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25),
-							(float) (-Math.cos(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25)), 1,
-							100, (Color) Color.ORANGE));
-			level.getNotAddedGameObjects().add(
-
-					new Particle(new Vector2f(
-							(float) (position.x + (-width / 2)
-									* Math.cos(angle / 60) - (-height / 2)
-									* Math.sin(angle / 60)),
-							(float) (position.y + (-width / 2)
-									* Math.sin(angle / 60) + (-height / 2)
-									* Math.cos(angle / 60))), new Vector2f(
-							(float) (Math.sin(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25),
-							(float) (-Math.cos(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25)), 1,
-							100, (Color) Color.RED));
-			level.getNotAddedGameObjects().add(
-
-					new Particle(new Vector2f((float) (position.x + (width / 2)
-							* Math.cos(angle / 60) - (-height / 2)
-							* Math.sin(angle / 60)),
-							(float) (position.y + (width / 2)
-									* Math.sin(angle / 60) + (-height / 2)
-									* Math.cos(angle / 60))), new Vector2f(
-							(float) (Math.sin(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25),
-							(float) (-Math.cos(angle / 60)
-									* SPEED_PARTICLE_FROM_ENGINE
-									+ random.nextFloat() * 0.5 - 0.25)), 1,
-							100, (Color) Color.RED));
-
+			createParticleFromEngine(width / 2f, -height / 2f,
+					(Color) Color.ORANGE);
+			createParticleFromEngine(width / 2f, -height / 2f,
+					(Color) Color.ORANGE);
+			createParticleFromEngine(width / 2f, -height / 2f,
+					(Color) Color.RED);
+			createParticleFromEngine(width / 2f, -height / 2f,
+					(Color) Color.RED);
+			createParticleFromEngine(width / 2f, -height / 2f,
+					(Color) Color.RED);
 		}
+
 		if (weapon1Shot && !arsenalList.isEmpty()) {
 			arsenalList.get(0).setShootOn();
 		}
 		if (weapon2Shot && !arsenalList.isEmpty()) {
 			arsenalList.get(1).setShootOn();
 		}
+
+		// create mirage
+
 		clearFlags();
+		position = new Vector2f(body.getPosition().x * 30,
+				body.getPosition().y * 30);
+		angle = body.getAngle();
 	}
 
 	// TODO add *dt
 	@Override
 	public void move() {
 
-		float ft = 0;
-		float ax = 0, ay = 0;
-		float fx = 0, fy = 0;
-		float M = 0f, e = 0f;
+		Vec2 force = new Vec2((float) (-ENGINE_FORCE * Math.sin(angle / 60f)),
+				(float) (ENGINE_FORCE * Math.cos(angle / 60f)));
 
 		if (allEngineActive) {
-			ft = Ft * 2;
-			w /= 8;
+			body.applyForce(force.mul(2f), body.getPosition());
+		} else if (rightEngineActive) {
 
+			Vec2 pointOfForce = body.getPosition().add(
+					new Vec2((float) (width / 30 * Math.cos(angle / 60f)),
+							(float) (width / 30 * Math.sin(angle / 60f))));
+			body.applyForce(force, pointOfForce);
+
+		} else if (leftEngineActive) {
+			Vec2 pointOfForce = body.getPosition().add(
+					new Vec2((float) -(width / 30 * Math.cos(angle / 60f)),
+							(float) -(width / 30 * Math.sin(angle / 60f))));
+			body.applyForce(force, pointOfForce);
 		}
-		if (rightEngineActive) {
-			ft += Ft;
-			M += Ft * width / 20;
-		}
-		if (leftEngineActive) {
-			ft += Ft;
-			M += -Ft * width / 20;
-		}
 
-		fx = (float) (-ft * Math.sin(angle / 60));
-
-		fy = (float) (ft * Math.cos(angle / 60) - mass * Level.gravity);
-
-		ax = fx / mass;
-		ay = fy / mass;
-
-		// System.out.println("ax = " + ax + " ay = "+ ay);
-		e = M / I;
-
-		speed.x += (float) (ax * 0.0166666);
-		speed.y += (float) (ay * 0.0166666);
-		w += (float) (e * 0.0166666);
-
-		position.x += (float) (speed.x * 0.0166666);
-		position.y += (float) (speed.y * 0.0166666);
-
-		angle = angle + (float) (w * 0.0166666);
 	}
 
 	@Override
 	public void draw() {
 		glPushMatrix();
 
-		glTranslatef(position.x, position.y, 0.0f);
+		// glTranslatef(position.x, position.y, 0.0f);
 		GL11.glColor3ub(Color.WHITE.getRedByte(), Color.WHITE.getGreenByte(),
 				Color.WHITE.getBlueByte());
 
+		RenderUtil.drawLine(
+				new Vector2f(position.x
+						+ MathUtil.newXTurn(-width / 2, -height / 2, angle),
+						position.y
+								+ MathUtil.newYTurn(-width / 2, -height / 2,
+										angle)),
+				new Vector2f(position.x
+						+ MathUtil.newXTurn(width / 2, -height / 2, angle),
+						position.y
+								+ MathUtil.newYTurn(width / 2, -height / 2,
+										angle)), 3f, (Color) Color.GREY);
+
+		RenderUtil.drawLine(
+				new Vector2f(position.x
+						+ MathUtil.newXTurn(-width / 2, height / 2, angle),
+						position.y
+								+ MathUtil.newYTurn(-width / 2, height / 2,
+										angle)),
+				new Vector2f(position.x
+						+ MathUtil.newXTurn(width / 2, height / 2, angle),
+						position.y
+								+ MathUtil.newYTurn(width / 2, height / 2,
+										angle)), 3f, (Color) Color.GREY);
+
+		RenderUtil.drawLine(
+				new Vector2f(position.x
+						+ MathUtil.newXTurn(-width / 2, -height / 2, angle),
+						position.y
+								+ MathUtil.newYTurn(-width / 2, -height / 2,
+										angle)),
+				new Vector2f(position.x
+						+ MathUtil.newXTurn(-width / 2, height / 2, angle),
+						position.y
+								+ MathUtil.newYTurn(-width / 2, height / 2,
+										angle)), 3f, (Color) Color.GREY);
+
+		RenderUtil.drawLine(
+				new Vector2f(position.x
+						+ MathUtil.newXTurn(width / 2, -height / 2, angle),
+						position.y
+								+ MathUtil.newYTurn(width / 2, -height / 2,
+										angle)),
+				new Vector2f(position.x
+						+ MathUtil.newXTurn(width / 2, height / 2, angle),
+						position.y
+								+ MathUtil.newYTurn(width / 2, height / 2,
+										angle)), 3f, (Color) Color.GREY);
 		// 0.01f - angle
-		glRotatef(angle, 0, 0, 1.0f);
-		glBegin(GL_QUADS);
-
-		glVertex2i(-width / 2, -height / 2);
-		glVertex2i(width / 2, -height / 2);
-		glVertex2i(width / 2, height / 2);
-		glVertex2i(-width / 2, height / 2);
-
-		glEnd();
-		glPopMatrix();
+		// glRotatef(angle, 0.0f, 0.0f, 1.0f);
+		/*
+		 * glBegin(GL_QUADS); glVertex2i(-width / 2, -height / 2);
+		 * glVertex2i(width / 2, -height / 2); glVertex2i(width / 2, height /
+		 * 2); glVertex2i(-width / 2, height / 2);
+		 * 
+		 * glEnd(); glPopMatrix();
+		 */
 		/*
 		 * ArrayList<Vector2f> vector = new ArrayList<Vector2f>(); for (int i =
 		 * 0;i<random.nextInt(10)+5;i++){ vector.add(new
@@ -296,7 +272,7 @@ public class Ship extends GameObjectPhysicMoving implements ControlledObject {
 
 	@Override
 	public void doAction(int code) {
-		// System.out.println("Ship.doAction()" + code);
+		System.out.println("Ship.doAction()" + code);
 		switch (code) {
 		case ControlledObject.LEFT_ENGINE_ACTIVE: {
 			leftEngineActive = true;
