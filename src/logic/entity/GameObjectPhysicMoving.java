@@ -21,6 +21,8 @@ abstract public class GameObjectPhysicMoving extends GameObjectSimpleMoving {
 	float angle;
 	// inertia, this is importent, but need manual setting
 	float I;
+	
+	
 
 	PhysicObject physicObject;
 
@@ -74,5 +76,6 @@ abstract public class GameObjectPhysicMoving extends GameObjectSimpleMoving {
 	public float getAngle() {
 		return angle;
 	}
+	
 
 }

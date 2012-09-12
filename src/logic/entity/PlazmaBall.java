@@ -50,7 +50,6 @@ public class PlazmaBall extends GameObjectPhysicMoving {
 		lifeTime--;
 		if (lifeTime < 0) {
 			live = false;
-
 			/*
 			 * level.getNotAddedGameObjects().add( new PlazmaBall(new
 			 * Vector2f(position), (float) (random .nextInt(360)), 0, level));
@@ -58,15 +57,20 @@ public class PlazmaBall extends GameObjectPhysicMoving {
 			 * level.getNotAddedGameObjects().add( new PlazmaBall(new
 			 * Vector2f(position), (float) (random .nextInt(360)), 0, level));
 			 */
+            float angleParticle = 0;
+            float speedParticle = 0;
 			for (int i = 0; i < 100; i++) {
+                angleParticle = (float) (random.nextFloat()*2*Math.PI);
+                speedParticle = (float) (random.nextFloat()*maxSpeed/2);
 				level.getNotAddedGameObjects().add(
 						new Particle(new Vector2f(position), new Vector2f(
-								(random.nextFloat() - 0.5f) * 100f + speed.x, (random
-										.nextFloat() - 0.5f) * 100f + speed.y), 2,
+                                (float) (Math.cos(angleParticle)*speedParticle + speed.x),
+                                (float) (Math.sin(angleParticle)*speedParticle + speed.y)), 2,
 								30 + random.nextInt(20) , (Color) Color.RED));
 			}
 		}
 	}
+
 
 	@Override
 	public void move() {
