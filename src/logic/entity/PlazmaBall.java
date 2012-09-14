@@ -89,4 +89,10 @@ public class PlazmaBall extends GameObjectPhysicMoving {
 
 	}
 
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -97,4 +97,10 @@ public class SimpleWeapon2 extends ArsenalGameObject {
 		return false;
 	}
 
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

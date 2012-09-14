@@ -72,4 +72,10 @@ public class Particle extends GameObjectSimpleMoving {
 		this.size = size;
 	}
 
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

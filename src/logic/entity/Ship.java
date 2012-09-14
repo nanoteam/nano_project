@@ -4,7 +4,6 @@
  */
 package logic.entity;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +32,7 @@ final public class Ship extends GameObjectPhysicMoving implements
 	private boolean weapon1Shot = false;
 	private boolean weapon2Shot = false;
 	private float width, height;
+	private float protection = 0.1f;
 	private List<ArsenalGameObject> arsenalList = new ArrayList<ArsenalGameObject>();
 
 	private final static float SPEED_PARTICLE_FROM_ENGINE = 200f;
@@ -52,6 +52,7 @@ final public class Ship extends GameObjectPhysicMoving implements
 	public void init() {
 		width = 100f;
 		height = 40f;
+		liveHealth = 100;
 
 		BodyDef shipDef = new BodyDef();
 		shipDef.position.set(new Vec2(position.x / 30, position.y / 30));
@@ -59,12 +60,13 @@ final public class Ship extends GameObjectPhysicMoving implements
 		PolygonShape shipShape = new PolygonShape();
 		shipShape.setAsBox(width / 30 / 2, height / 30 / 2);
 		this.body = level.getWorld().createBody(shipDef);
+		this.body.m_userData = this;
 		FixtureDef shipFixture = new FixtureDef();
 		shipFixture.friction = 0.5f; // trenie
 		shipFixture.density = 0.5f; // plotnost'
 		shipFixture.restitution = 0.15f;
 		shipFixture.shape = shipShape;
-		// ships do not interact with each other
+		// ships do not interact ships with each other
 		// shipFixture.filter.groupIndex = -1;
 		body.createFixture(shipFixture);
 		body.setAngularDamping(3);
@@ -155,6 +157,8 @@ final public class Ship extends GameObjectPhysicMoving implements
 		// create mirage
 
 		clearFlags();
+		if (liveHealth < 0)
+			live = false;
 
 	}
 
@@ -327,6 +331,24 @@ final public class Ship extends GameObjectPhysicMoving implements
 		weapon1Shot = false;
 		weapon2Shot = false;
 	}
-	
-	
+
+	@Override
+	public void destroy() {
+		for (int i = 0; i < 5; i++) {
+			System.out.println("Position of fire is " + position);
+
+			level.getNotAddedGameObjects().add(
+					new Particle(position, new Vector2f(
+							(float) Math.random() * 3,
+							(float) Math.random() * 3), 3, (int) (120 * Math
+							.random()), (Color) Color.PURPLE));
+		}
+	}
+
+	public void damage(float... impulses) {
+		float result = 0;
+		for (float f : impulses)
+			result += f;
+		liveHealth -= result * (1 - protection);
+	}
 }
