@@ -55,12 +55,27 @@ public class SimpleWeapon extends ArsenalGameObject {
 		} else if (onShoot) {
 			onReload = true;
 			time = reloadTime;
-			// TODO fire from border
-			PlazmaBall plazmaBall = new PlazmaBall(position, angle, 0, level);
-			fatherObj.level.getNotAddedGameObjects().add(plazmaBall);
+			// plazma ball
+			 //PlazmaBall plazmaBall = new PlazmaBall(position, angle, 0,
+			 //level);
+			 //fatherObj.level.getNotAddedGameObjects().add(plazmaBall);
+
+			// bullet
 			// Bullet bullet = new Bullet(position, angle, sizeBullet,
 			// randomizeFire);
 			// fatherObj.level.getNotAddedGameObjects().add(bullet);
+
+			// rubber ball
+			if (random.nextFloat()>0.9) {
+			
+				 PlazmaBall plazmaBall = new PlazmaBall(position, angle, 0,
+				 level);
+				 fatherObj.level.getNotAddedGameObjects().add(plazmaBall);
+
+			}
+			RubberBall rubberBall = new RubberBall(position, angle, 0, level);
+			
+			fatherObj.level.getNotAddedGameObjects().add(rubberBall);
 
 			onShoot = false;
 		}
@@ -76,7 +91,7 @@ public class SimpleWeapon extends ArsenalGameObject {
 
 		Vector2f vector = level.getPositionMouse();
 		angle = (float) Math.atan2(vector.y - this.position.y, vector.x
-				- this.position.y) * 60;
+				- this.position.y);
 	}
 
 	@Override
@@ -86,7 +101,7 @@ public class SimpleWeapon extends ArsenalGameObject {
 		glTranslatef(position.x, position.y, 0.0f);
 		// 0.01f - angle
 
-		glRotatef(angle, 0, 0, 1.0f);
+		glRotatef(angle * 60, 0, 0, 1.0f);
 		GL11.glColor3ub(Color.GREEN.getRedByte(), Color.GREEN.getGreenByte(),
 				Color.GREEN.getBlueByte());
 
@@ -109,6 +124,12 @@ public class SimpleWeapon extends ArsenalGameObject {
 	public boolean setShootOn() {
 		onShoot = true;
 		return false;
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,24 +1,20 @@
 package logic;
-
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex2i;
 import logic.entity.Bot;
-import logic.entity.Particle;
+import logic.entity.JumpWall;
+import logic.entity.Bot;
 import logic.entity.Player;
 import logic.entity.Ship;
+import logic.entity.Wall;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
+import org.jbox2d.callbacks.QueryCallback;
+import org.jbox2d.collision.AABB;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.World;
 import org.lwjgl.util.vector.Vector2f;
 
 import controller.Cursor;
@@ -26,15 +22,17 @@ import controller.Cursor;
 import logic.entity.GameObject;
 
 public class Level {
-	private static int defaultWidth = 1600;
-	private static int defaultHeight = 900;
+	private static int defaultWidth = 1280;
+	private static int defaultHeight = 800;
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;
 	private Cursor cursor;
+	private World world = null;
+	private AABB aabb = null;
 	// physic constans
 	// TODO add support resourses manager
-	public static double gravity = 10;
+	public static float gravity = -9.8f;
 
 	// list of all object
 	private List<GameObject> gameObjects = new ArrayList<GameObject>();
@@ -50,6 +48,19 @@ public class Level {
 		this.widthLevel = Level.defaultWidth;
 		this.heightLevel = Level.defaultHeight;
 		this.cursor = cursor;
+		this.aabb = new AABB(new Vec2(), new Vec2(this.widthLevel / 30,
+				600 / 30));
+		this.world = new World(new Vec2(0, gravity), false);
+		world.queryAABB(new QueryCallback() {
+
+			@Override
+			public boolean reportFixture(Fixture fixture) {
+				// TODO Auto-generated method stub
+				return true;
+			}
+		}, aabb);
+
+		world.setContactListener(new CollisionListener(this));
 	}
 
 	public List<GameObject> getGameObjects() {
@@ -64,16 +75,38 @@ public class Level {
 		return gameObjectsToDelete;
 	}
 
-	// this is method for runninig game in test mode
+	// this is method for running game in test mode
 	public void testInitLevel() {
-		Ship ship = new Ship(this, 500f, 500f);
+		Ship ship = new Ship(this, 100f, 500f);
 		player.setControlledObject(ship);
 		gameObjects.add(ship);
-		Ship botShip = new Ship(this, 800f, 500f);
-		Bot botForShip = new Bot(botShip);
-		gameObjects.add(botShip);
-		gameObjects.add(botForShip);
+
+		Ship ship2 = new Ship(this, 500f, 500f);
+		Bot bot = new Bot(ship2);
+
+		// RevoluteJointDef join = new RevoluteJointDef();
+		// join.initialize(ship.getBody(), ship2.getBody(), ship.getBody()
+		// .getWorldCenter());
+		// world.createJoint(join);
+
+		gameObjects.add(ship2);
+		gameObjects.add(bot);
+
+		gameObjects
+				.add(new Wall(this, 5, defaultHeight / 2, 10, defaultHeight));
+		gameObjects.add(new Wall(this, defaultWidth / 2, defaultHeight - 5,
+				defaultWidth, 10));
+		gameObjects.add(new Wall(this, defaultWidth - 5, defaultHeight / 2, 10,
+				defaultHeight));
+		gameObjects.add(new Wall(this, defaultWidth / 2, 5, defaultWidth, 10));
+
+		
+		gameObjects.add(new Wall(this, 700, 100, 20, 200));
+		gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
+
+		gameObjects.add(new Wall(this, 700, 50, 30, 350));
 	}
+
 	public Player getPlayer() {
 		return this.player;
 	}
@@ -104,5 +137,9 @@ public class Level {
 
 	public Vector2f getPositionMouse() {
 		return cursor.getPosition();
+	}
+
+	public World getWorld() {
+		return world;
 	}
 }

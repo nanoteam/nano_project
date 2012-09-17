@@ -37,7 +37,7 @@ public class Physic implements Engine {
 			 */
 			
 		}
-
+		level.getWorld().step(1/60f, 7, 3);
 	}
 
 	public Physic() {
