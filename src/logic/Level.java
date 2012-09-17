@@ -1,8 +1,7 @@
 package logic;
-
 import logic.entity.Bot;
-
 import logic.entity.JumpWall;
+import logic.entity.Bot;
 import logic.entity.Player;
 import logic.entity.Ship;
 import logic.entity.Wall;
@@ -101,9 +100,11 @@ public class Level {
 				defaultHeight));
 		gameObjects.add(new Wall(this, defaultWidth / 2, 5, defaultWidth, 10));
 
+		
 		gameObjects.add(new Wall(this, 700, 100, 20, 200));
 		gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
 
+		gameObjects.add(new Wall(this, 700, 50, 30, 350));
 	}
 
 	public Player getPlayer() {

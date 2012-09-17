@@ -48,29 +48,33 @@ public class Render implements Engine {
 			float top = Height/2;
 			
 			//glOrtho(left, right, bottom, top, -1, 1);
-			glViewport(0, 0, (int) Width, (int) Height); // ������� ������
+
+			glViewport(0, 0, (int) Width, (int) Height);
 			
-			glMatrixMode(GL_PROJECTION); // �������� ������� - ��������
-			glLoadIdentity();                    // ������ �������� ������� ���������
-			glOrtho(0, 1600,0, 900,-1,1);        // ���������! �������� ������� (*)
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			glOrtho(0, 1600,0, 900,-1,1);
 			
-			glMatrixMode(GL_MODELVIEW); // �������� ������� - ���������
-			glLoadIdentity();                    // ������ �������� ������� ���������
-			glScalef( zoom, zoom, zoom );  // ���������! �������� ������� �� �������
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glScalef( zoom, zoom, zoom );
+
 			glTranslatef((int) (-p.x+Width/2/zoom), (int) (-p.y+Height/2/zoom),0);
 		}
 		else{
 			zoom = 1;
 			
 			//glViewport(0, 1600, 0, 900);
-			glMatrixMode(GL_PROJECTION); // �������� ������� - ��������
-			glLoadIdentity();                    // ������ �������� ������� ���������
+
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
 			
-			glOrtho(0, 1600,0, 900,-1,1);        // ���������! �������� ������� (*)
+			glOrtho(0, 1600,0, 900,-1,1);
 			
-			glMatrixMode(GL_MODELVIEW); // �������� ������� - ���������
-			glLoadIdentity();                    // ������ �������� ������� ���������
-			glScalef( 1, 1, 1);  // ���������! �������� ������� �� �������
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glScalef( 1, 1, 1);
+
 			glTranslatef(0,0,0);
 			
 			

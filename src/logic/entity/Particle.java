@@ -47,6 +47,12 @@ public class Particle extends GameObjectSimpleMoving {
 	@Override
 	public void playSound() {
 	}
+	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+
+	}
 
 	public Color getColor() {
 		return color;
@@ -71,11 +77,4 @@ public class Particle extends GameObjectSimpleMoving {
 	public void setSize(float size) {
 		this.size = size;
 	}
-
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-
-	}
-
 }

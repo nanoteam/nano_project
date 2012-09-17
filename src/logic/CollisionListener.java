@@ -5,12 +5,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import java.util.List;
+
 import java.util.Vector;
 
 import logic.entity.Particle;
 import logic.entity.RubberBall;
 import logic.entity.Ship;
-
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -27,6 +29,7 @@ import render.RenderUtil;
 
 public class CollisionListener implements ContactListener {
 
+
 	private static final int SHIP_WITH_SHIP = 1;
 	private static final int SHIP_WITH_WALL = 2;
 	private boolean isCollision = false;
@@ -35,11 +38,25 @@ public class CollisionListener implements ContactListener {
 
 	public CollisionListener(logic.Level level) {
 		this.level = level;
+
+		Manifold manifold = new Manifold();
+
 	}
 
 	@Override
 	public void beginContact(Contact contact) {
+
 		isCollision = true;
+
+		WorldManifold worldManifold = new WorldManifold();
+		contact.getWorldManifold(worldManifold);
+		Vec2[] points = worldManifold.points;
+
+		// TODO check bodyes
+
+		addParticles(points, 0);
+
+
 	}
 
 	@Override
@@ -57,6 +74,7 @@ public class CollisionListener implements ContactListener {
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
 		// TODO Auto-generated method stub
+
 		if (!isCollision)
 			return;
 		WorldManifold worldManifold = new WorldManifold();
@@ -138,6 +156,28 @@ public class CollisionListener implements ContactListener {
 
 			}
 			j++;
+		}
+
+
+	}
+
+	private void addParticles(Vec2[] points, int type) {
+		Vector2f speed;
+		if (points.length == 0)
+			return;
+		for (Vec2 v : points) {
+			speed = new Vector2f(20f - (float) Math.random() * 40f,
+					20f - (float) Math.random() * 40f);
+
+			level.getNotAddedGameObjects().add(
+					new Particle(new Vector2f(v.x * 30, v.y * 30), speed, 2,
+							120, (Color) Color.WHITE));
+			speed = new Vector2f(20f - (float) Math.random() * 40f,
+					20f - (float) Math.random() * 40f);
+			level.getNotAddedGameObjects().add(
+					new Particle(new Vector2f(v.x * 30, v.y * 30), speed, 2,
+							120, (Color) Color.RED));
+
 
 		}
 	}

@@ -16,6 +16,7 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.Image;
 
 import render.RenderUtil;
 import util.MathUtil;
@@ -34,7 +35,7 @@ final public class Ship extends GameObjectPhysicMoving implements
 	private float width, height;
 	private float protection = 0.1f;
 	private List<ArsenalGameObject> arsenalList = new ArrayList<ArsenalGameObject>();
-
+	private Image image;
 	private final static float SPEED_PARTICLE_FROM_ENGINE = 200f;
 	private final static float SPEED_PARTICLE_KOOF_RANDOM = 20f;
 	private final static float ENGINE_FORCE = 90;
@@ -53,7 +54,6 @@ final public class Ship extends GameObjectPhysicMoving implements
 		width = 100f;
 		height = 40f;
 		liveHealth = 100;
-
 		BodyDef shipDef = new BodyDef();
 		shipDef.position.set(new Vec2(position.x / 30, position.y / 30));
 		shipDef.type = BodyType.DYNAMIC;
@@ -61,6 +61,7 @@ final public class Ship extends GameObjectPhysicMoving implements
 		shipShape.setAsBox(width / 30 / 2, height / 30 / 2);
 		this.body = level.getWorld().createBody(shipDef);
 		this.body.m_userData = this;
+
 		FixtureDef shipFixture = new FixtureDef();
 		shipFixture.friction = 0.5f; // trenie
 		shipFixture.density = 0.5f; // plotnost'
@@ -160,12 +161,15 @@ final public class Ship extends GameObjectPhysicMoving implements
 		if (liveHealth < 0)
 			live = false;
 
+
 	}
 
 	// TODO add *dt
 	@Override
 	public void move() {
-
+        position = new Vector2f(body.getPosition().x * 30,
+                body.getPosition().y * 30);
+        angle = body.getAngle();
 		Vec2 force = new Vec2((float) (-ENGINE_FORCE * Math.sin(angle)),
 				(float) (ENGINE_FORCE * Math.cos(angle)));
 
@@ -192,31 +196,6 @@ final public class Ship extends GameObjectPhysicMoving implements
 
 	@Override
 	public void draw() {
-		position = new Vector2f(body.getPosition().x * 30,
-				body.getPosition().y * 30);
-		angle = body.getAngle();
-		// System.out.println("angle is" + angle * 60);
-		// glPushMatrix();
-		//
-		// glTranslatef(position.x, position.y, 0.0f);
-		// GL11.glColor3ub(Color.WHITE.getRedByte(), Color.WHITE.getGreenByte(),
-		// Color.WHITE.getBlueByte());
-		//
-		// // 0.01f - angle
-		// glRotatef(angle * 60, 0, 0, 1.0f);
-		// glBegin(GL_QUADS);
-		//
-		// glVertex2i((int) -width / 2, (int) -height / 2);
-		// glVertex2i((int) width / 2, (int) -height / 2);
-		// glVertex2i((int) width / 2, (int) height / 2);
-		// glVertex2i((int) -width / 2, (int) height / 2);
-		//
-		// glEnd();
-		// glPopMatrix();
-
-		// glPushMatrix();
-		//
-		// glTranslatef(position.x, position.y, 0.0f);
 		GL11.glColor3ub(Color.WHITE.getRedByte(), Color.WHITE.getGreenByte(),
 				Color.WHITE.getBlueByte());
 
@@ -267,27 +246,6 @@ final public class Ship extends GameObjectPhysicMoving implements
 						position.y
 								+ MathUtil.newYTurn(width / 2, height / 2,
 										angle)), 3f, (Color) Color.GREY);
-
-		// 0.01f - angle
-		// glRotatef(angle, 0.0f, 0.0f, 1.0f);
-		//
-		// glBegin(GL_QUADS);
-		// glVertex2i(-width / 2, -height / 2);
-		// glVertex2i(width / 2, -height / 2);
-		// glVertex2i(width / 2, height / 2);
-		// glVertex2i(-width / 2, height / 2);
-		//
-		// glEnd();
-		// glPopMatrix();
-		//
-		// ArrayList<Vector2f> vector = new ArrayList<Vector2f>();
-		// for (int i = 0; i < random.nextInt(10) + 5; i++) {
-		// vector.add(new Vector2f(random.nextInt(1000), random.nextInt(700)));
-		// }
-		// RenderUtil.drawLine(new Vector2f(100, 100), // new
-		// Vector2f(300, 300), (float) (5f), (Color) Color.BLUE);
-		// RenderUtil.drawPolyLineSmooth(vector, 5, (Color) Color.ORANGE);
-
 	}
 
 	@Override
