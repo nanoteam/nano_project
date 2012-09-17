@@ -8,13 +8,16 @@ public class Particle extends GameObjectSimpleMoving {
 	private Color color;
 	private int lifeTime;
 	private float size;
-	public Particle(Vector2f position,Vector2f speed, float size, int lifeTime, Color color){
+
+	public Particle(Vector2f position, Vector2f speed, float size,
+			int lifeTime, Color color) {
 		this.position = position;
 		this.speed = speed;
 		this.size = size;
 		this.lifeTime = lifeTime;
 		this.color = color;
 	}
+
 	@Override
 	public void init() {
 
@@ -23,44 +26,50 @@ public class Particle extends GameObjectSimpleMoving {
 	@Override
 	public void update() {
 		lifeTime--;
-		if (lifeTime<0) {
+		if (lifeTime < 0) {
 			live = false;
 		}
 	}
 
 	@Override
 	public void move() {
-		position.x +=speed.x*0.016666;
-		position.y +=speed.y*0.016666;
-//		System.out.println("Particle.move()");
+		position.x += speed.x * 0.016666;
+		position.y += speed.y * 0.016666;
+		// System.out.println("Particle.move()");
 	}
 
 	@Override
 	public void draw() {
 		RenderUtil.drawPlot(position, size, color);
-	
+
 	}
 
 	@Override
 	public void playSound() {
 	}
+
 	public Color getColor() {
 		return color;
 	}
+
 	public void setColor(Color color) {
 		this.color = color;
 	}
+
 	public int getLifeTime() {
 		return lifeTime;
 	}
+
 	public void setLifeTime(int lifeTime) {
 		this.lifeTime = lifeTime;
 	}
+
 	public float getSize() {
 		return size;
 	}
+
 	public void setSize(float size) {
 		this.size = size;
 	}
-	
+
 }

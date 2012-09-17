@@ -39,7 +39,7 @@ public class Bot extends GameObject {
 	public void update() {
 		if (!inProcess) {
 			if (calibrated) {
-				if (gameObject.getPosition().y < minY) {
+				if (gameObject.getBody().getPosition().y*30 < minY) {
 					moveUp();
 					inProcess = true;
 				}
@@ -65,7 +65,7 @@ public class Bot extends GameObject {
 		// actionTimes is time for engines action, processTime is time to get up
 		// speed
 		actionTimes[0] = (float) ((float) Math.sqrt(distance * level.gravity
-				/ (ay * (ay + level.gravity))) * 60 + Math.abs(curSpeedY
+				/ (ay * (ay + level.gravity))) + Math.abs(curSpeedY
 				/ level.gravity));
 		processTime = (float) (actionTimes[0] + curSpeedY / level.gravity) + 10f;
 		System.out.println("Command to move up details\n" + "dsitanse = "
@@ -112,7 +112,7 @@ public class Bot extends GameObject {
 
 	@Override
 	public void move() {
-		System.out.println("proctime " + processTime);
+	//	System.out.println("proctime " + processTime);
 	}
 
 	@Override

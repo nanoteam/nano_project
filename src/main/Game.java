@@ -130,7 +130,6 @@ public class Game {
 		// interpretation key code
 		for (LightInteger key : list_key) {
 			switch (key.data) {
-
 			case org.lwjgl.input.Keyboard.KEY_A: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.LEFT_ENGINE_ACTIVE);
@@ -158,6 +157,28 @@ public class Game {
 						.doAction(ControlledObject.FIRE_SECOND_WEAPON);
 				break;
 			}
+			
+			case org.lwjgl.input.Keyboard.KEY_Z: {
+				render.setZoom((float) (render.getZoom()+0.05));
+				break;
+			}
+			case org.lwjgl.input.Keyboard.KEY_X: {
+				render.setZoom((float) (render.getZoom()-0.05));
+				break;
+			}
+			case org.lwjgl.input.Keyboard.KEY_C: {
+				if (render.getStateViewPort()==Render.VIEWPORT_ON_PLAYER){
+					render.setStateViewPort(Render.VIEWPORT_GLOBAL_WORLD);
+					break;
+				}
+				if (render.getStateViewPort()==Render.VIEWPORT_GLOBAL_WORLD){
+					render.setStateViewPort(Render.VIEWPORT_ON_PLAYER);
+					break;
+				}
+				
+			}
+			
+			
 			case org.lwjgl.input.Keyboard.KEY_ESCAPE: {
 				client.exit();
 				break;

@@ -14,18 +14,23 @@ import java.util.Random;
 
 import logic.Level;
 
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.lwjgl.util.vector.Vector2f;
 
 import render.RenderObject;
 
 //TODO add modificator visiable to protected code to field and method
 abstract public class GameObject {
-	
+
 	static Random random = new Random();
 	Vector2f position;
+	
 	boolean live = true;
 	RenderObject renderObject;
 	protected Level level;
+	Body body = null;
+
 	abstract public void init();
 
 	abstract public void update();
@@ -41,7 +46,6 @@ abstract public class GameObject {
 	}
 
 	public boolean isLive() {
-		//System.out.println(this.getClass().toString());
 		return live;
 	}
 
@@ -52,4 +56,8 @@ abstract public class GameObject {
 	public void setPosition(Vector2f position) {
 		this.position = position;
 	}
+	public Body getBody() {
+		return body;
+	}
+	
 }

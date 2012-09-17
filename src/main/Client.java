@@ -52,7 +52,10 @@ public class Client {
 	public Client() {
 		state = LOAD_RESOURCES;
 		resourcesManager = new ResourcesManager();
+		
 		// do not delete! In progress
+		
+		
 		state = MAIN_MENU;
 		controller = Controller.createController(true, true, this);
 

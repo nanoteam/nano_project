@@ -70,7 +70,6 @@ public class Controller implements Engine {
 
 		if (null != mouse) {
 			mouse.tick();
-			
 			client.updateCursor(mouse.getCursor());
 			ArrayList<LightInteger> list_key = new ArrayList<LightInteger>();
 			// what a format of Mouse.event key?
@@ -81,9 +80,6 @@ public class Controller implements Engine {
 			}
 			if (list_key.size() > 0) {
 				client.mouseAction(list_key);
-				for (LightInteger a : list_key) {
-					System.out.println(a.data);
-				}
 			}
 
 		}
