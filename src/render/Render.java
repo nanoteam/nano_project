@@ -38,7 +38,7 @@ public class Render implements Engine {
 			
 			Vector2f p = level.getPlayer().getControlledObject().getPosition();
 			// size of resolution
-			float Width = 1600,Height = 900;
+			float Width = 1440,Height = 800;
 			
 			//zoom = 1f;
 			
@@ -48,6 +48,7 @@ public class Render implements Engine {
 			float top = Height/2;
 			
 			//glOrtho(left, right, bottom, top, -1, 1);
+
 			glViewport(0, 0, (int) Width, (int) Height);
 			
 			glMatrixMode(GL_PROJECTION);
@@ -57,12 +58,14 @@ public class Render implements Engine {
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			glScalef( zoom, zoom, zoom );
+
 			glTranslatef((int) (-p.x+Width/2/zoom), (int) (-p.y+Height/2/zoom),0);
 		}
 		else{
 			zoom = 1;
 			
 			//glViewport(0, 1600, 0, 900);
+
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
 			
@@ -71,6 +74,7 @@ public class Render implements Engine {
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			glScalef( 1, 1, 1);
+
 			glTranslatef(0,0,0);
 			
 			

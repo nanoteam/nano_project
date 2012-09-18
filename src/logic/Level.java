@@ -1,8 +1,7 @@
 package logic;
-
-
 import logic.entity.Bot;
-
+import logic.entity.JumpWall;
+import logic.entity.Bot;
 import logic.entity.Player;
 import logic.entity.Ship;
 import logic.entity.Wall;
@@ -10,7 +9,6 @@ import logic.entity.Wall;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 
 import org.jbox2d.callbacks.QueryCallback;
 import org.jbox2d.collision.AABB;
@@ -34,7 +32,7 @@ public class Level {
 	private AABB aabb = null;
 	// physic constans
 	// TODO add support resourses manager
-	public static float gravity = -9.8f;
+	public static float gravity = -3.8f;
 
 	// list of all object
 	private List<GameObject> gameObjects = new ArrayList<GameObject>();
@@ -102,8 +100,11 @@ public class Level {
 				defaultHeight));
 		gameObjects.add(new Wall(this, defaultWidth / 2, 5, defaultWidth, 10));
 
-		gameObjects.add(new Wall(this, 700, 50, 30, 350));
+		
+		gameObjects.add(new Wall(this, 700, 100, 20, 200));
+		gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
 
+		gameObjects.add(new Wall(this, 700, 50, 30, 350));
 	}
 
 	public Player getPlayer() {

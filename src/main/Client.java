@@ -10,6 +10,7 @@ import logic.Logic;
 import logic.entity.Player;
 import physic.Physic;
 import render.Render;
+import resourses.ResourcesManager;
 import sound.Sound;
 import util.LightInteger;
 

@@ -39,7 +39,7 @@ public class Bot extends GameObject {
 	public void update() {
 		if (!inProcess) {
 			if (calibrated) {
-				if (gameObject.getBody().getPosition().y*30 < minY) {
+				if (gameObject.getBody().getPosition().y * 30 < minY) {
 					moveUp();
 					inProcess = true;
 				}
@@ -56,7 +56,7 @@ public class Bot extends GameObject {
 				inProcess = false;
 		}
 		this.prevPosition = new Vector2f(gameObject.getPosition());
-
+		
 	}
 
 	private void moveUp() {
@@ -112,7 +112,7 @@ public class Bot extends GameObject {
 
 	@Override
 	public void move() {
-	//	System.out.println("proctime " + processTime);
+		// System.out.println("proctime " + processTime);
 	}
 
 	@Override
@@ -123,6 +123,12 @@ public class Bot extends GameObject {
 
 	@Override
 	public void playSound() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void destroy() {
 		// TODO Auto-generated method stub
 
 	}

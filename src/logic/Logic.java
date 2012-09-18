@@ -35,8 +35,10 @@ public class Logic implements Engine {
 		List<GameObject> game_objects = level.getGameObjects();
 		for (GameObject game_object : game_objects) {
 			game_object.update();
-			if (!game_object.isLive())
+			if (!game_object.isLive()){
 				level.getNotDeletedGameObjects().add(game_object);
+				game_object.destroy();
+			}
 		}
 
 		// add some objects which created while foreach is going

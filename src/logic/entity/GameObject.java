@@ -25,10 +25,10 @@ abstract public class GameObject {
 
 	static Random random = new Random();
 	Vector2f position;
-	
 	boolean live = true;
 	RenderObject renderObject;
 	protected Level level;
+	float liveHealth;
 	Body body = null;
 
 	abstract public void init();
@@ -40,6 +40,9 @@ abstract public class GameObject {
 	abstract public void draw();
 
 	abstract public void playSound();
+
+	// this method for graphical destroying
+	abstract public void destroy();
 
 	public void setLive(boolean live) {
 		this.live = live;
@@ -56,8 +59,9 @@ abstract public class GameObject {
 	public void setPosition(Vector2f position) {
 		this.position = position;
 	}
+
 	public Body getBody() {
 		return body;
 	}
-	
+
 }

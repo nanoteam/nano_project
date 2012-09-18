@@ -41,8 +41,10 @@ public class Wall extends GameObject {
 		wallDef.position.set(new Vec2(position.x / 30, position.y / 30));
 		wallDef.type = BodyType.STATIC;
 		PolygonShape downWallShape = new PolygonShape();
-		downWallShape.setAsBox(width / 30/2, height / 30/2);
+		downWallShape.setAsBox(width / 30 / 2, height / 30 / 2);
 		this.body = level.getWorld().createBody(wallDef);
+		this.body.m_userData = this;
+
 		FixtureDef wallFixture = new FixtureDef();
 		wallFixture.density = 1f;
 		wallFixture.friction = 1f;
@@ -85,6 +87,13 @@ public class Wall extends GameObject {
 
 	@Override
 	public void playSound() {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void destroy() {
 		// TODO Auto-generated method stub
 
 	}

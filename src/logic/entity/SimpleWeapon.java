@@ -61,9 +61,9 @@ public class SimpleWeapon extends ArsenalGameObject {
 			 //fatherObj.level.getNotAddedGameObjects().add(plazmaBall);
 
 			// bullet
-			 //Bullet bullet = new Bullet(position, angle, sizeBullet,
-			 //randomizeFire);
-			//fatherObj.level.getNotAddedGameObjects().add(bullet);
+			// Bullet bullet = new Bullet(position, angle, sizeBullet,
+			// randomizeFire);
+			// fatherObj.level.getNotAddedGameObjects().add(bullet);
 
 			// rubber ball
 			if (random.nextFloat()>0.9) {
@@ -124,6 +124,12 @@ public class SimpleWeapon extends ArsenalGameObject {
 	public boolean setShootOn() {
 		onShoot = true;
 		return false;
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

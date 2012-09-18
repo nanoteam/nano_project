@@ -1,13 +1,11 @@
 package render;
 
-import org.jbox2d.common.Vec2;
 import org.lwjgl.opengl.GL11;
-
-import java.awt.Rectangle;
 import java.util.List;
 
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.Image;
 
 import util.MathUtil;
 
@@ -36,13 +34,6 @@ public class RenderUtil {
 		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 		GL11.glColor3d(1, 1, 1);
 	}
-
-	public static void drawLine(Vec2 positionBegin, Vec2 positionEnd,
-			float width, Color color) {
-		drawLine(new Vector2f(positionBegin.x, positionBegin.y), new Vector2f(
-				positionEnd.x, positionEnd.y), width, color);
-	}
-
 	public static void drawPolyLineSmooth(List<Vector2f> positions,
 			float width, Color color) {
 		if (positions.size() < 1) {
@@ -75,8 +66,8 @@ public class RenderUtil {
 				y + MathUtil.newYTurn(-width / 2, -height / 2, angle));
 
 		GL11.glEnd();
-	}
 
+	}
 	public static void drawImage(float x, float y, float width, float height, float angle, float zoom, Image image) {
 
 		float actual_width , actual_height;
@@ -109,5 +100,6 @@ public class RenderUtil {
 		GL11.glEnd();
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 	}
+
 
 }

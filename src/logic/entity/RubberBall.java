@@ -10,10 +10,12 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-import org.lwjgl.opengl.GL11;
+
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
-import render.Image;
+
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import render.RenderUtil;
 
 public class RubberBall extends GameObjectPhysicMoving {
@@ -23,7 +25,8 @@ public class RubberBall extends GameObjectPhysicMoving {
 	private Color color;
 	private float width;
 	private float height;
-	private static Image image;
+    private static Image image;
+
 
 	public RubberBall(Vector2f pos, float angle, float randTrajectory,
 			Level level) {
@@ -53,6 +56,7 @@ public class RubberBall extends GameObjectPhysicMoving {
 		shipShape.setAsBox(width / 30 / 2, height / 30 / 2);
 		// shipShape.m_radius = size/30;
 		this.body = level.getWorld().createBody(shipDef);
+		this.body.m_userData = this;
 		FixtureDef shipFixture = new FixtureDef();
 		shipFixture.friction = 10f;
 		shipFixture.density = 0.2f;
@@ -63,16 +67,13 @@ public class RubberBall extends GameObjectPhysicMoving {
 
 		body.setLinearVelocity(new Vec2(speed.x, speed.y));
 		body.setAngularVelocity((float) (random.nextFloat() * 0.5 - 1) * 10);
-		if (image == null){
-			try {
-				image = new Image();
-				image.Load("res/rubberbomb.png");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}	
-		}
-		
-	}
+
+        try {
+            image = new Image("res/rubberbomb.png");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
 
 	@Override
 	public void init() {
@@ -112,23 +113,27 @@ public class RubberBall extends GameObjectPhysicMoving {
 
 	@Override
 	public void move() {
-		position = new Vector2f(body.getPosition().x * 30,
+	position = new Vector2f(body.getPosition().x * 30,
 				body.getPosition().y * 30);
 		angle = body.getAngle();
 	}
 
 	@Override
 	public void draw() {
-		
-		RenderUtil.drawImage(position.x, position.y,width, height,angle,0.5f, image);
+
+		RenderUtil.drawImage(position.x, position.y,width, height,angle,0.5f,image );
 		
 		 //RenderUtil.drawQaud(position.x, position.y, width, height, angle,
 		 //color);
-	}
+		 }
 
 	@Override
 	public void playSound() {
 		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
 	}
 }
