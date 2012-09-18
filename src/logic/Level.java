@@ -1,6 +1,8 @@
 package logic;
 
 import logic.entity.Bot;
+import logic.entity.JumpWall;
+import logic.entity.Bot;
 
 import logic.entity.JumpWall;
 import logic.entity.Player;
@@ -23,8 +25,9 @@ import controller.Cursor;
 import logic.entity.GameObject;
 
 public class Level {
-	private static int defaultWidth = 1440	;
-	private static int defaultHeight = 900;
+
+	private static int defaultWidth = 1280;
+	private static int defaultHeight = 800;
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;
@@ -33,7 +36,8 @@ public class Level {
 	private AABB aabb = null;
 	// physic constans
 	// TODO add support resourses manager
-	public static float gravity = -9.8f;
+
+	public static float gravity = -3.8f;
 
 	// list of all object
 	private List<GameObject> gameObjects = new ArrayList<GameObject>();
@@ -104,6 +108,7 @@ public class Level {
 		gameObjects.add(new Wall(this, 700, 100, 20, 200));
 		gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
 
+		gameObjects.add(new Wall(this, 700, 50, 30, 350));
 	}
 
 	public Player getPlayer() {

@@ -181,13 +181,6 @@ public class Game {
 
 			}
 
-			case org.lwjgl.input.Keyboard.KEY_H: {
-				for (int i = 0; i < 5; i++)
-					level.getNotAddedGameObjects().add(
-							new Partic(level, level.getPositionMouse()));
-				break;
-			}
-
 			case org.lwjgl.input.Keyboard.KEY_ESCAPE: {
 				client.exit();
 				break;

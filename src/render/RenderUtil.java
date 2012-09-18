@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.Image;
+
+import util.MathUtil;
 
 import util.MathUtil;
 
@@ -33,12 +36,6 @@ public class RenderUtil {
 		GL11.glEnd();
 		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 		GL11.glColor3d(1, 1, 1);
-	}
-
-	public static void drawLine(Vec2 positionBegin, Vec2 positionEnd,
-			float width, Color color) {
-		drawLine(new Vector2f(positionBegin.x, positionBegin.y), new Vector2f(
-				positionEnd.x, positionEnd.y), width, color);
 	}
 
 	public static void drawPolyLineSmooth(List<Vector2f> positions,
@@ -73,14 +70,45 @@ public class RenderUtil {
 				y + MathUtil.newYTurn(-width / 2, -height / 2, angle));
 
 		GL11.glEnd();
+
 	}
 
-	/*
-	 * public static void drawCircle(Vector2f position, float width, int radius,
-	 * Color color) { glEnable(GL_LINE_SMOOTH); glLineWidth(width);
-	 * glBegin(GL_LINES); glColor3ub(color.getRedByte(), color.getGreenByte(),
-	 * color.getBlueByte()); glVertex2f((int) positionBegin.x, (int)
-	 * positionBegin.y); glEnd(); glDisable(GL_LINE_SMOOTH); glColor3d(1, 1, 1);
-	 * }
-	 */
+	public static void drawImage(float x, float y, float width, float height,
+			float angle, float zoom, Image image) {
+
+		float actual_width, actual_height;
+		actual_width = image.getTexture().getWidth();
+		actual_height = image.getTexture().getHeight();
+
+		// width = (int) (image.getTexture().getImageWidth() * zoom);
+		// height = (int) (image.getTexture().getImageHeight() * zoom);
+
+		GL11.glPushMatrix();
+
+		image.getTexture().bind();
+		// Color.white.bind();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glBegin(GL11.GL_QUADS);
+		// 1
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(x + MathUtil.newXTurn(-width / 2, -height / 2, angle),
+				y + MathUtil.newYTurn(-width / 2, -height / 2, angle));
+		// 2
+		GL11.glTexCoord2f(actual_width, 0);
+		GL11.glVertex2f(x + MathUtil.newXTurn(width / 2, -height / 2, angle), y
+				+ MathUtil.newYTurn(width / 2, -height / 2, angle));
+		// 3
+		GL11.glTexCoord2f(actual_width, actual_height);
+		GL11.glVertex2f(x + MathUtil.newXTurn(width / 2, height / 2, angle), y
+				+ MathUtil.newYTurn(width / 2, height / 2, angle));
+		// 4
+		GL11.glTexCoord2f(0, actual_height);
+		GL11.glVertex2f(x + MathUtil.newXTurn(-width / 2, height / 2, angle), y
+				+ MathUtil.newYTurn(-width / 2, height / 2, angle));
+
+		GL11.glPopMatrix();
+		GL11.glEnd();
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+	}
+
 }

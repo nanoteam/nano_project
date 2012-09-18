@@ -56,7 +56,7 @@ public class Bot extends GameObject {
 				inProcess = false;
 		}
 		this.prevPosition = new Vector2f(gameObject.getPosition());
-
+		
 	}
 
 	private void moveUp() {

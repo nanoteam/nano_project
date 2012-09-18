@@ -29,6 +29,7 @@ abstract public class GameObject {
 	boolean live = true;
 	RenderObject renderObject;
 	protected Level level;
+
 	float liveHealth;
 	Body body = null;
 

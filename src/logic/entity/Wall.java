@@ -44,6 +44,7 @@ public class Wall extends GameObject {
 		downWallShape.setAsBox(width / 30 / 2, height / 30 / 2);
 		this.body = level.getWorld().createBody(wallDef);
 		this.body.m_userData = this;
+
 		FixtureDef wallFixture = new FixtureDef();
 		wallFixture.density = 1f;
 		wallFixture.friction = 1f;
@@ -89,6 +90,7 @@ public class Wall extends GameObject {
 		// TODO Auto-generated method stub
 
 	}
+
 
 	@Override
 	public void destroy() {
