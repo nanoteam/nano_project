@@ -23,8 +23,8 @@ import controller.Cursor;
 import logic.entity.GameObject;
 
 public class Level {
-	private static int defaultWidth = 1280;
-	private static int defaultHeight = 800;
+	private static int defaultWidth = 1440	;
+	private static int defaultHeight = 900;
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;

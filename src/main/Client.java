@@ -154,7 +154,7 @@ public class Client {
 
 	public void updateCursor(Cursor cursor) {
 		if (state == Client.MAIN_MENU) {
-			return;
+			
 		}
 
 		if (state == Client.GAME) {

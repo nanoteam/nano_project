@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import logic.Level;
 import logic.Logic;
+import logic.entity.Partic;
+import logic.entity.Particle;
 import logic.entity.Player;
 import logic.entity.Ship;
 import org.lwjgl.opengl.Display;
@@ -43,6 +45,7 @@ public class Game {
 	private Player player;
 
 	private Cursor cursor;
+
 	public static boolean isFinished() {
 		return finished;
 	}
@@ -56,7 +59,7 @@ public class Game {
 
 		this.player = new Player();
 		level = new Level(player, client.getController().getCursor());
-		
+
 		level.testInitLevel();
 		this.client = client;
 
@@ -157,28 +160,34 @@ public class Game {
 						.doAction(ControlledObject.FIRE_SECOND_WEAPON);
 				break;
 			}
-			
+
 			case org.lwjgl.input.Keyboard.KEY_Z: {
-				render.setZoom((float) (render.getZoom()+0.05));
+				render.setZoom((float) (render.getZoom() + 0.05));
 				break;
 			}
 			case org.lwjgl.input.Keyboard.KEY_X: {
-				render.setZoom((float) (render.getZoom()-0.05));
+				render.setZoom((float) (render.getZoom() - 0.05));
 				break;
 			}
 			case org.lwjgl.input.Keyboard.KEY_C: {
-				if (render.getStateViewPort()==Render.VIEWPORT_ON_PLAYER){
+				if (render.getStateViewPort() == Render.VIEWPORT_ON_PLAYER) {
 					render.setStateViewPort(Render.VIEWPORT_GLOBAL_WORLD);
 					break;
 				}
-				if (render.getStateViewPort()==Render.VIEWPORT_GLOBAL_WORLD){
+				if (render.getStateViewPort() == Render.VIEWPORT_GLOBAL_WORLD) {
 					render.setStateViewPort(Render.VIEWPORT_ON_PLAYER);
 					break;
 				}
-				
+
 			}
-			
-			
+
+			case org.lwjgl.input.Keyboard.KEY_H: {
+				for (int i = 0; i < 5; i++)
+					level.getNotAddedGameObjects().add(
+							new Partic(level, level.getPositionMouse()));
+				break;
+			}
+
 			case org.lwjgl.input.Keyboard.KEY_ESCAPE: {
 				client.exit();
 				break;

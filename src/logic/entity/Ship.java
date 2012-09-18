@@ -338,10 +338,10 @@ final public class Ship extends GameObjectPhysicMoving implements
 			System.out.println("Position of fire is " + position);
 
 			level.getNotAddedGameObjects().add(
-					new Particle(position, new Vector2f(
-							(float) Math.random() * 3,
-							(float) Math.random() * 3), 3, (int) (120 * Math
-							.random()), (Color) Color.PURPLE));
+					new Particle(position, new Vector2f(random.nextFloat() * 3,
+							random.nextFloat() * 3), 3, (int) (120 * random
+							.nextFloat()), (Color) Color.PURPLE));
+			level.getNotAddedGameObjects().add(new Partic(level, position));
 		}
 	}
 
@@ -351,4 +351,5 @@ final public class Ship extends GameObjectPhysicMoving implements
 			result += f;
 		liveHealth -= result * (1 - protection);
 	}
+
 }
