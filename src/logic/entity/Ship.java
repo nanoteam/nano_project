@@ -35,7 +35,6 @@ final public class Ship extends GameObjectPhysicMoving implements
 	private float width, height;
 	private float protection = 0.1f;
 	private List<ArsenalGameObject> arsenalList = new ArrayList<ArsenalGameObject>();
-
 	private Image image;
 	private final static float SPEED_PARTICLE_FROM_ENGINE = 200f;
 	private final static float SPEED_PARTICLE_KOOF_RANDOM = 20f;
@@ -55,7 +54,6 @@ final public class Ship extends GameObjectPhysicMoving implements
 		width = 100f;
 		height = 40f;
 		liveHealth = 100;
-
 		BodyDef shipDef = new BodyDef();
 		shipDef.position.set(new Vec2(position.x / 30, position.y / 30));
 		shipDef.type = BodyType.DYNAMIC;
@@ -83,71 +81,40 @@ final public class Ship extends GameObjectPhysicMoving implements
 
 	}
 
-	private void createParticleFromEngine(float x, float y, Color color) {
-		speed = new Vector2f(body.getLinearVelocity().x,
-				body.getLinearVelocity().y);
-		level.getNotAddedGameObjects()
-				.add(new Particle(
-						new Vector2f((float) (position.x + MathUtil.newXTurn(x,
-								y, angle)), (float) (position.y + MathUtil
-								.newYTurn(x, y, angle))),
-						new Vector2f(
-								(float) (speed.x + Math.sin(angle)
-										* SPEED_PARTICLE_FROM_ENGINE + SPEED_PARTICLE_KOOF_RANDOM
-										* (random.nextFloat() - 0.5)),
-								(float) (speed.y + -Math.cos(angle)
-										* SPEED_PARTICLE_FROM_ENGINE + SPEED_PARTICLE_KOOF_RANDOM
-										* (random.nextFloat() - 0.5))), 2,
-						20 + random.nextInt(10), color));
-	}
-
 	@Override
 	public void update() {
-		// OMG OMG OMG, in future i refactoring this code
+		speed = new Vector2f(body.getLinearVelocity().x,
+				body.getLinearVelocity().y);
 		if (leftEngineActive) {
-			createParticleFromEngine(-width / 2f, -height / 2f,
-					(Color) Color.ORANGE);
-			createParticleFromEngine(-width / 2f, -height / 2f,
-					(Color) Color.ORANGE);
-			createParticleFromEngine(-width / 2f, -height / 2f,
-					(Color) Color.RED);
-			createParticleFromEngine(-width / 2f, -height / 2f,
-					(Color) Color.RED);
+
+			EmmiterEffects.drawParticlesFromEngine(
+					new Vector2f((float) (position.x + MathUtil.newXTurn(
+							-width / 2f, -height / 2f, angle)),
+							(float) (position.y + MathUtil.newYTurn(
+									-width / 2f, -height / 2f, angle))), angle);
 		}
 
 		if (rightEngineActive) {
-			createParticleFromEngine(width / 2f, -height / 2f,
-					(Color) Color.ORANGE);
-			createParticleFromEngine(width / 2f, -height / 2f,
-					(Color) Color.ORANGE);
-			createParticleFromEngine(width / 2f, -height / 2f,
-					(Color) Color.RED);
-			createParticleFromEngine(width / 2f, -height / 2f,
-					(Color) Color.RED);
+
+			EmmiterEffects.drawParticlesFromEngine(
+					new Vector2f((float) (position.x + MathUtil.newXTurn(
+							width / 2f, -height / 2f, angle)),
+							(float) (position.y + MathUtil.newYTurn(width / 2f,
+									-height / 2f, angle))), angle);
 		}
 
 		if (allEngineActive) {
-			createParticleFromEngine(-width / 2f, -height / 2f,
-					(Color) Color.ORANGE);
-			createParticleFromEngine(-width / 2f, -height / 2f,
-					(Color) Color.ORANGE);
-			createParticleFromEngine(-width / 2f, -height / 2f,
-					(Color) Color.RED);
-			createParticleFromEngine(-width / 2f, -height / 2f,
-					(Color) Color.RED);
-			createParticleFromEngine(-width / 2f, -height / 2f,
-					(Color) Color.RED);
 
-			createParticleFromEngine(width / 2f, -height / 2f,
-					(Color) Color.ORANGE);
-			createParticleFromEngine(width / 2f, -height / 2f,
-					(Color) Color.ORANGE);
-			createParticleFromEngine(width / 2f, -height / 2f,
-					(Color) Color.RED);
-			createParticleFromEngine(width / 2f, -height / 2f,
-					(Color) Color.RED);
-			createParticleFromEngine(width / 2f, -height / 2f,
-					(Color) Color.RED);
+			EmmiterEffects.drawParticlesFromEngine(
+					new Vector2f((float) (position.x + MathUtil.newXTurn(
+							-width / 2f, -height / 2f, angle)),
+							(float) (position.y + MathUtil.newYTurn(
+									-width / 2f, -height / 2f, angle))), angle);
+			EmmiterEffects.drawParticlesFromEngine(
+					new Vector2f((float) (position.x + MathUtil.newXTurn(
+							width / 2f, -height / 2f, angle)),
+							(float) (position.y + MathUtil.newYTurn(width / 2f,
+									-height / 2f, angle))), angle);
 		}
 
 		if (weapon1Shot && !arsenalList.isEmpty()) {
@@ -168,7 +135,6 @@ final public class Ship extends GameObjectPhysicMoving implements
 	// TODO add *dt
 	@Override
 	public void move() {
-
 		position = new Vector2f(body.getPosition().x * 30,
 				body.getPosition().y * 30);
 		angle = body.getAngle();
@@ -198,7 +164,6 @@ final public class Ship extends GameObjectPhysicMoving implements
 
 	@Override
 	public void draw() {
-
 		GL11.glColor3ub(Color.WHITE.getRedByte(), Color.WHITE.getGreenByte(),
 				Color.WHITE.getBlueByte());
 
@@ -249,7 +214,6 @@ final public class Ship extends GameObjectPhysicMoving implements
 						position.y
 								+ MathUtil.newYTurn(width / 2, height / 2,
 										angle)), 3f, (Color) Color.GREY);
-
 	}
 
 	@Override
@@ -296,47 +260,8 @@ final public class Ship extends GameObjectPhysicMoving implements
 
 	@Override
 	public void destroy() {
-
-		float maxSpeed = 150;
-		float angleParticle, speedParticle;
-
-		for (int i = 0; i < 100; i++) {
-			maxSpeed = 150;
-			angleParticle = (float) (random.nextFloat() * 2 * Math.PI);
-			speedParticle = (float) (random.nextFloat() * maxSpeed / 2);
-
-			level.getNotAddedGameObjects().add(
-					new Particle(new Vector2f(position),
-							new Vector2f((float) (Math.cos(angleParticle)
-									* speedParticle + speed.x),
-									(float) (Math.sin(angleParticle)
-											* speedParticle + speed.y)), 2,
-							30 + random.nextInt(20), (Color) Color.RED));
-
-			level.getNotAddedGameObjects().add(
-					new Particle(new Vector2f(position),
-							new Vector2f((float) (Math.cos(angleParticle)
-									* speedParticle + speed.x),
-									(float) (Math.sin(angleParticle)
-											* speedParticle + speed.y)), 2,
-							30 + random.nextInt(20), (Color) Color.RED));
-		}
-
-		for (int i = 0; i < 10; i++) {
-			maxSpeed = 450;
-			angleParticle = (float) (random.nextFloat() * 2 * Math.PI);
-			speedParticle = (float) (random.nextFloat() * maxSpeed / 2);
-
-			level.getNotAddedGameObjects().add(
-					new Particle(new Vector2f(position),
-							new Vector2f((float) (Math.cos(angleParticle)
-									* speedParticle + speed.x),
-									(float) (Math.sin(angleParticle)
-											* speedParticle + speed.y)), 5,
-							30 + random.nextInt(20), (Color) Color.GREY));
-		}
-		live = false;
-
+		EmmiterEffects.drawBoom(position);
+		level.getWorld().destroyBody(body);
 	}
 
 	public void damage(float... impulses) {
@@ -345,5 +270,4 @@ final public class Ship extends GameObjectPhysicMoving implements
 			result += f;
 		liveHealth -= result * (1 - protection);
 	}
-
 }

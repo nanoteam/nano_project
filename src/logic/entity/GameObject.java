@@ -25,11 +25,9 @@ abstract public class GameObject {
 
 	static Random random = new Random();
 	Vector2f position;
-
 	boolean live = true;
 	RenderObject renderObject;
 	protected Level level;
-
 	float liveHealth;
 	Body body = null;
 

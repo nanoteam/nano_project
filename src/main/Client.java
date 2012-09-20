@@ -53,9 +53,10 @@ public class Client {
 	public Client() {
 		state = LOAD_RESOURCES;
 		resourcesManager = new ResourcesManager();
-
+		
 		// do not delete! In progress
-
+		
+		
 		state = MAIN_MENU;
 		controller = Controller.createController(true, true, this);
 
@@ -129,7 +130,7 @@ public class Client {
 	}
 
 	// TODO add support mouse in client
-	// TODO add support mouse in game
+	// TODO add support mouse in game 
 	public void mouseAction(ArrayList<LightInteger> list_key) {
 
 		if (state == Client.MAIN_MENU) {
@@ -157,7 +158,6 @@ public class Client {
 
 	public void updateCursor(Cursor cursor) {
 		if (state == Client.MAIN_MENU) {
-
 			return;
 		}
 
@@ -165,6 +165,6 @@ public class Client {
 			game.updateCursor(cursor);
 			return;
 		}
-
+		
 	}
 }

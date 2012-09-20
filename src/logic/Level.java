@@ -1,10 +1,10 @@
 package logic;
 
 import logic.entity.Bot;
+import logic.entity.Chain;
+import logic.entity.EmmiterEffects;
 import logic.entity.JumpWall;
 import logic.entity.Bot;
-
-import logic.entity.JumpWall;
 import logic.entity.Player;
 import logic.entity.Ship;
 import logic.entity.Wall;
@@ -25,7 +25,6 @@ import controller.Cursor;
 import logic.entity.GameObject;
 
 public class Level {
-
 	private static int defaultWidth = 1280;
 	private static int defaultHeight = 800;
 	private int widthLevel;
@@ -36,7 +35,6 @@ public class Level {
 	private AABB aabb = null;
 	// physic constans
 	// TODO add support resourses manager
-
 	public static float gravity = -3.8f;
 
 	// list of all object
@@ -49,6 +47,7 @@ public class Level {
 	private static Random random = new Random();
 
 	public Level(Player player, Cursor cursor) {
+		EmmiterEffects.init(this);
 		this.player = player;
 		this.widthLevel = Level.defaultWidth;
 		this.heightLevel = Level.defaultHeight;
@@ -89,26 +88,34 @@ public class Level {
 		Ship ship2 = new Ship(this, 500f, 500f);
 		Bot bot = new Bot(ship2);
 
-		// RevoluteJointDef join = new RevoluteJointDef();
-		// join.initialize(ship.getBody(), ship2.getBody(), ship.getBody()
-		// .getWorldCenter());
-		// world.createJoint(join);
-
 		gameObjects.add(ship2);
 		gameObjects.add(bot);
-
-		gameObjects
-				.add(new Wall(this, 5, defaultHeight / 2, 10, defaultHeight));
-		gameObjects.add(new Wall(this, defaultWidth / 2, defaultHeight - 5,
-				defaultWidth, 10));
-		gameObjects.add(new Wall(this, defaultWidth - 5, defaultHeight / 2, 10,
-				defaultHeight));
-		gameObjects.add(new Wall(this, defaultWidth / 2, 5, defaultWidth, 10));
+		Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight);
+		gameObjects.add(leftWall);
+		Wall upWall = new Wall(this, defaultWidth / 2, defaultHeight - 5,
+				defaultWidth, 10);
+		gameObjects.add(upWall);
+		Wall righWall = new Wall(this, defaultWidth - 5, defaultHeight / 2, 10,
+				defaultHeight);
+		gameObjects.add(righWall);
+		Wall downWall = new Wall(this, defaultWidth / 2, 5, defaultWidth, 10);
+		gameObjects.add(downWall);
 
 		gameObjects.add(new Wall(this, 700, 100, 20, 200));
 		gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
 
 		gameObjects.add(new Wall(this, 700, 50, 30, 350));
+
+		// add to world a chain
+		gameObjects.add(new Chain(this, upWall.getBody(), new Vector2f(
+				defaultWidth / 2f, defaultHeight - 5), ship2.getBody(),
+				new Vector2f(500 + 50, 500 + 20)));
+		gameObjects.add(new Chain(this, upWall.getBody(), new Vector2f(
+				defaultWidth / 4f, defaultHeight - 5), ship2.getBody(),
+				new Vector2f(500 - 50, 500 + 20)));
+		gameObjects.add(new Chain(this, downWall.getBody(),
+				new Vector2f(100, 5), ship.getBody(), new Vector2f(100,
+						500 - 20)));
 	}
 
 	public Player getPlayer() {

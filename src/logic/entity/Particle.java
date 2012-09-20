@@ -74,7 +74,6 @@ public class Particle extends GameObjectSimpleMoving {
 		return size;
 	}
 
-
 	public void setSize(float size) {
 		this.size = size;
 	}

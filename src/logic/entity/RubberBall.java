@@ -10,6 +10,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
+
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -24,7 +25,8 @@ public class RubberBall extends GameObjectPhysicMoving {
 	private Color color;
 	private float width;
 	private float height;
-	private static Image image;
+    private static Image image;
+
 
 	public RubberBall(Vector2f pos, float angle, float randTrajectory,
 			Level level) {
@@ -66,12 +68,12 @@ public class RubberBall extends GameObjectPhysicMoving {
 		body.setLinearVelocity(new Vec2(speed.x, speed.y));
 		body.setAngularVelocity((float) (random.nextFloat() * 0.5 - 1) * 10);
 
-		try {
-			image = new Image("res/rubberbomb.png");
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
-	}
+        try {
+            image = new Image("res/rubberbomb.png");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
 
 	@Override
 	public void init() {
@@ -111,7 +113,7 @@ public class RubberBall extends GameObjectPhysicMoving {
 
 	@Override
 	public void move() {
-		position = new Vector2f(body.getPosition().x * 30,
+	position = new Vector2f(body.getPosition().x * 30,
 				body.getPosition().y * 30);
 		angle = body.getAngle();
 	}
@@ -119,12 +121,11 @@ public class RubberBall extends GameObjectPhysicMoving {
 	@Override
 	public void draw() {
 
-		RenderUtil.drawImage(position.x, position.y, width, height, angle,
-				0.5f, image);
-
-		// RenderUtil.drawQaud(position.x, position.y, width, height, angle,
-		// color);
-	}
+		RenderUtil.drawImage(position.x, position.y,width, height,angle,0.5f,image );
+		
+		 //RenderUtil.drawQaud(position.x, position.y, width, height, angle,
+		 //color);
+		 }
 
 	@Override
 	public void playSound() {
