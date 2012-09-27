@@ -1,15 +1,18 @@
 package main;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import controller.Controller;
 import controller.Cursor;
+import controller.InputToAction;
 import logic.Level;
 import logic.Logic;
 import logic.entity.Player;
 import physic.Physic;
 import render.Render;
+import resourses.ParserText;
 import resourses.ResourcesManager;
 import sound.Sound;
 import util.LightInteger;
@@ -35,6 +38,10 @@ public class Client {
 
 	private Controller controller;
 
+    private InputToAction inputToAction;
+
+    private ParserText parserText;
+
 	private int state;
 
 	// States
@@ -52,8 +59,15 @@ public class Client {
 	// TODO add full support menu
 	public Client() {
 		state = LOAD_RESOURCES;
+        parserText = new ParserText("D:/settings.ini");
+        try {
+            parserText.startParser();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        inputToAction = new InputToAction();
+        inputToAction.init(parserText.getPairString());
 		resourcesManager = new ResourcesManager();
-		
 		// do not delete! In progress
 		
 		
@@ -167,4 +181,7 @@ public class Client {
 		}
 		
 	}
+    public InputToAction getInputToAction(){
+        return inputToAction;
+    }
 }

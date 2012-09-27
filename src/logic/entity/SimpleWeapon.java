@@ -90,6 +90,7 @@ public class SimpleWeapon extends ArsenalGameObject {
 				+ MathUtil.newYTurn(30, 17, fatherObj.getAlfa()));
 
 		Vector2f vector = level.getPositionMouse();
+
 		angle = (float) Math.atan2(vector.y - this.position.y, vector.x
 				- this.position.y);
 	}
