@@ -49,7 +49,7 @@ public class Chain extends GameObject {
 		length = (float) Math.sqrt(length);
 
 		// calculate number of links
-		numOfLinks = (int) length / 10;
+		numOfLinks = (int) length / 30;
 		float ox = end.x - begin.x;
 		float oy = end.y - begin.y;
 		System.out.println("atan of " + ox + " and " + oy + " = "
@@ -76,7 +76,7 @@ public class Chain extends GameObject {
 		ChainLink firstLink = new ChainLink(linkBegin, linkLenght, angle);
 		chainLinks.add(firstLink);
 		RevoluteJointDef join1 = new RevoluteJointDef();
-
+		
 		join1.initialize(b, firstLink.getBody(), joinPoint.mul(1 / 30f));
 		level.getWorld().createJoint(join1);
 		Vector2f prevLink = firstLink.getPosition();
@@ -92,6 +92,7 @@ public class Chain extends GameObject {
 					joinPoint.mul(1 / 30f));
 			level.getWorld().createJoint(join);
 			firstLink = chainLink;
+			join.collideConnected = false;
 		}
 		joinPoint = new Vec2(end.x, end.y);
 
