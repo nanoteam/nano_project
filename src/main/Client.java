@@ -1,20 +1,19 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import controller.Controller;
 import controller.Cursor;
-import logic.Level;
+import controller.InputToAction;
 import logic.Logic;
-import logic.entity.Player;
 import physic.Physic;
 import render.Render;
+import resourses.configuration.ConfigsLibrary;
 import resourses.ResourcesManager;
 import sound.Sound;
 import util.LightInteger;
 
-public class Client {
+public final class Client {
 
 	/** Desired frame time */
 	public static final int FRAMERATE = 60;
@@ -35,6 +34,10 @@ public class Client {
 
 	private Controller controller;
 
+    private InputToAction inputToAction;
+
+    private ConfigsLibrary configsLibrary;
+
 	private int state;
 
 	// States
@@ -49,15 +52,20 @@ public class Client {
 
 	public static int EXIT = 13;
 
+    private final ArrayList<String> pathToMainConfigs = new ArrayList<String>();
+
 	// TODO add full support menu
 	public Client() {
 		state = LOAD_RESOURCES;
-		resourcesManager = new ResourcesManager();
-		
-		// do not delete! In progress
-		
-		
-		state = MAIN_MENU;
+		configsLibrary =ConfigsLibrary.getConfigsLibrary();
+        
+		inputToAction = new InputToAction();
+        
+        inputToAction.init(configsLibrary.getConfig(ConfigsLibrary.pathToSetting));
+        
+        resourcesManager = new ResourcesManager();
+
+        state = MAIN_MENU;
 		controller = Controller.createController(true, true, this);
 
 		// menu = new Menu();
@@ -68,13 +76,11 @@ public class Client {
 
 		state = GAME;
 
-		// TODO change this line by call construktor with good parametrs - type
-		// of level
+		// TODO change this line by call construktor with good parametrs - type of level
 		// , physic const, logic const
 		game = new Game(this);
 
 	}
-
 	/**
 	 * Do any game-specific cleanup
 	 */
@@ -145,7 +151,6 @@ public class Client {
 	}
 
 	public void keyAction(ArrayList<LightInteger> list_key) {
-		// TODO add support MainMenu
 		if (state == Client.MAIN_MENU) {
 			return;
 		}
@@ -167,4 +172,7 @@ public class Client {
 		}
 		
 	}
+    public InputToAction getInputToAction(){
+        return inputToAction;
+    }
 }
