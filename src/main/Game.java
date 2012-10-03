@@ -187,8 +187,6 @@ public class Game {
 				}
 				
 			}
-			
-			
 			case InputToAction.menu: {
 				client.exit();
 				break;
