@@ -35,12 +35,12 @@ public class RenderUtil {
 		GL11.glColor3d(1, 1, 1);
 	}
 	public static void drawPolyLineSmooth(List<Vector2f> positions,
-			float width, Color color) {
+			float widthLine, float angle, Color color) {
 		if (positions.size() < 1) {
 			return;
 		}
 		GL11.glEnable(GL11.GL_LINE_SMOOTH);
-		GL11.glLineWidth(width);
+		GL11.glLineWidth(widthLine);
 		GL11.glBegin(GL11.GL_LINE_STRIP);
 		GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
 				color.getBlueByte());
@@ -68,6 +68,26 @@ public class RenderUtil {
 		GL11.glEnd();
 
 	}
+	
+	public static void drawCircle(float x, float y,float radius, float witdthLine,Color color){
+		int numberPointsInCircle = 100;
+		Vector2f[] box = new Vector2f[numberPointsInCircle];
+		float angle;
+		for (int i = 0; i < 100; i++) {
+			   angle = (float) (2*Math.PI*i/numberPointsInCircle);
+			   box[i] = new Vector2f((float) (Math.cos(angle)*radius+x), (float) (Math.sin(angle)*radius+y));
+			}
+		
+		GL11.glBegin(GL11.GL_LINE_LOOP);
+		GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
+				color.getBlueByte());
+		for(int i = 0;i<numberPointsInCircle;i++){
+			GL11.glVertex2f(box[i].x,box[i].y);
+		}
+		GL11.glEnd();
+		
+	}
+
 	public static void drawImage(float x, float y, float width, float height, float angle, float zoom, Image image) {
 
 		float actual_width , actual_height;

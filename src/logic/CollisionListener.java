@@ -14,6 +14,8 @@ import logic.entity.EmmiterEffects;
 import logic.entity.Particle;
 import logic.entity.RubberBall;
 import logic.entity.Ship;
+import logic.entity.TrapRotation;
+
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -120,7 +122,18 @@ public class CollisionListener implements ContactListener {
 
 				}
 			}
+			if (nameA.equals("TrapRotation") || nameB.equals("TrapRotation")) {
+				if (nameA.equals("TrapRotation")) {
+					TrapRotation tr = (TrapRotation) bodyA;
+					Ship s = (Ship) bodyB;
+					tr.activateTrap(s.getBody(), points[0]);
+				} else if (nameB.equals("TrapRotation")) {
+					TrapRotation tr = (TrapRotation) bodyB;
+					Ship s = (Ship) bodyA;
+					tr.activateTrap(s.getBody(), points[0]);
+					System.out.println("points is " + Arrays.toString(points));
+				}
+			}
 		}
 	}
-
 }

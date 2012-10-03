@@ -52,21 +52,7 @@ public class Bullet extends GameObjectSimpleMoving {
 		
 		RenderUtil.drawPlot(new Vector2f(position), size, (Color) Color.CYAN);
 		
-		
-		/*
-		glPushMatrix();
-		glTranslatef(position.x, position.y, 0.0f);
-		// glRotatef(angle, 0, 0, 1.0f);
-		glBegin(GL_QUADS);
-		glVertex2i(-size / 2, -size / 2);
-		glVertex2i(size / 2, -size / 2);
-		glVertex2i(size / 2, size / 2);
-		glVertex2i(-size / 2, size / 2);
-
-		glEnd();
-		glPopMatrix();
-		*/
-		
+	
 	}
 
 	@Override

@@ -7,6 +7,9 @@ import org.lwjgl.util.vector.Vector2f;
 public class Cursor {
 
 	private Vector2f position;
+	private boolean isLeftPressed = false;	
+	private boolean isRightPressed = false;
+
 	//corsor havent got speed(i think), but has list(deque) of prevois position
 	//but speed = (last position - new position) / time_one_step;
 	private Vector2f mouseSpeed;
@@ -25,5 +28,15 @@ public class Cursor {
 
 	public void setSpeed(Vector2f mSpeed) {
 		this.mouseSpeed = mSpeed;
+	}
+	public void setIsPressed(boolean left,boolean right){
+		this.isLeftPressed = left;
+		this.isRightPressed = right;
+	}
+	public boolean isLeftPressed(){
+		return isLeftPressed;
+	}
+	public boolean isRightPressed(){
+		return isRightPressed;
 	}
 }

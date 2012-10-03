@@ -16,17 +16,15 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Single;
-
 import render.RenderUtil;
-import sun.security.util.Length;
 import util.MathUtil;
 
 public class Chain extends GameObject {
+	private float CHAIN_LINK_LENGTH = 15;
 	int numOfLinks;
 	float length;
 	float angle;
@@ -49,16 +47,16 @@ public class Chain extends GameObject {
 		length = (float) Math.sqrt(length);
 
 		// calculate number of links
-		numOfLinks = (int) length / 10;
+		numOfLinks = (int) (length / CHAIN_LINK_LENGTH);
 		float ox = end.x - begin.x;
 		float oy = end.y - begin.y;
-		System.out.println("atan of " + ox + " and " + oy + " = "
-				+ Math.atan(oy / ox) * 60);
+//		System.out.println("atan of " + ox + " and " + oy + " = "
+//				+ Math.atan(oy / ox) * 60);
 		angle = (float) Math.atan(oy / ox);
 		if (end.x - begin.x < 0)
 			angle -= 3.14;
-		System.out.println("lenght = " + length + "\number = " + numOfLinks
-				+ "\nangle = " + angle * 60);
+//		System.out.println("lenght = " + length + "\number = " + numOfLinks
+//				+ "\nangle = " + angle * 60);
 		init();
 
 	}
@@ -83,7 +81,7 @@ public class Chain extends GameObject {
 
 		for (int i = 1; i < numOfLinks; i++) {
 			joinPoint = new Vec2(joinPoint.x + llox, joinPoint.y + lloy);
-			System.out.println("joinpoint = " + joinPoint);
+//			System.out.println("joinpoint = " + joinPoint);
 			prevLink = new Vector2f(prevLink.x + llox, prevLink.y + lloy);
 			ChainLink chainLink = new ChainLink(prevLink, linkLenght, angle);
 			chainLinks.add(chainLink);
@@ -92,6 +90,7 @@ public class Chain extends GameObject {
 					joinPoint.mul(1 / 30f));
 			level.getWorld().createJoint(join);
 			firstLink = chainLink;
+			join.collideConnected = false;
 		}
 		joinPoint = new Vec2(end.x, end.y);
 
@@ -158,7 +157,7 @@ public class Chain extends GameObject {
 			this.body.m_userData = this;
 			FixtureDef chainLinkFixture = new FixtureDef();
 			chainLinkFixture.friction = 0.1f; // trenie
-			chainLinkFixture.density = 0.1f; // plotnost'
+			chainLinkFixture.density = 0.5f; // plotnost'
 			chainLinkFixture.restitution = 0f;
 			chainLinkFixture.shape = chainLinkShape;
 			// chainLinks do not interact chainLinks with each other

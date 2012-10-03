@@ -94,8 +94,7 @@ public class Wall extends GameObject {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-
+level.getWorld().destroyBody(body);
 	}
 
 }

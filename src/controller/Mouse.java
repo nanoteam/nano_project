@@ -5,7 +5,6 @@
 package controller;
 
 import org.lwjgl.util.vector.Vector2f;
-
 import main.Engine;
 
 class Mouse implements Engine {
@@ -20,6 +19,7 @@ class Mouse implements Engine {
 	public void tick() {
 		cursor.setPosition(new Vector2f(org.lwjgl.input.Mouse.getX(),
 				org.lwjgl.input.Mouse.getY()));
+		cursor.setIsPressed(org.lwjgl.input.Mouse.isButtonDown(0), false);
 	}
 
 	@Override
