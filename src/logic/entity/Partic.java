@@ -20,7 +20,7 @@ public class Partic extends GameObjectPhysicMoving {
 		this.level = level;
 		this.position = pos;
 		this.speed = speed;
-		this.liveHealth = 100;
+		this.liveHealth = 1000;
 		init();
 	}
 
