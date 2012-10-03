@@ -76,11 +76,13 @@ public class Engine extends GameObjectPhysicMoving {
 	}
 
 	void enableForce() {
+		angle = body.getAngle();
 		Vec2 force = new Vec2((float) (-ENGINE_FORCE * Math.sin(angle)),
 				(float) (ENGINE_FORCE * Math.cos(angle)));
-		Vec2 pointOfForce = body.getPosition().add(
-				new Vec2((float) (width / 30 / 2 * Math.sin(angle)),
-						(float) (-height / 30 / 2 * Math.cos(angle))));
+//		Vec2 pointOfForce = body.getPosition().add(
+//				new Vec2((float) (width / 30 / 2 * Math.sin(angle)),
+//						(float) (-height / 30 / 2 * Math.cos(angle))));
+		Vec2 pointOfForce = new Vec2(position.x/30f,position.y/30f);
 		body.applyForce(force, pointOfForce);
 
 		EmmiterEffects.drawParticlesFromEngine(new Vector2f(

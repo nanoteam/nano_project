@@ -1,5 +1,6 @@
 package logic;
 
+import logic.entity.AeroDynTest;
 import logic.entity.Asteroid;
 import logic.entity.Bot;
 import logic.entity.Chain;
@@ -7,6 +8,7 @@ import logic.entity.EmmiterEffects;
 import logic.entity.Engine;
 import logic.entity.JumpWall;
 import logic.entity.Bot;
+import logic.entity.ManipulareTool;
 import logic.entity.Player;
 import logic.entity.Ship;
 import logic.entity.TrapRotation;
@@ -21,6 +23,7 @@ import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -34,7 +37,7 @@ public class Level {
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;
-	private Cursor cursor;
+	public Cursor cursor;
 	private World world = null;
 	private AABB aabb = null;
 	// physic constans
@@ -130,11 +133,13 @@ public class Level {
 
 		gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
 		gameObjects.add(new Asteroid(this, new Vector2f(500f, 300f)));
-		//gameObjects.add(new Engine(this,new Vector2f(200f,200f)));
+		// gameObjects.add(new Engine(this,new Vector2f(200f,200f)));
+		// gameObjects.add(new Chain(this, ship.getBody(), ship.getPosition(),
+		// ship.getBody(), new Vector2f(100, 200)));
 
+		gameObjects.add(new AeroDynTest(this));
 
-
-
+		gameObjects.add(new ManipulareTool(this, new Vector2f(700f, 200f)));
 	}
 
 	public Player getPlayer() {

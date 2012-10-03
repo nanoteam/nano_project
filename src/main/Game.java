@@ -146,7 +146,7 @@ public class Game {
 						.doAction(ControlledObject.RIGHT_ENGINE_ACTIVE);
 				break;
 			}
-			case 0:
+			//case 0:
 			case org.lwjgl.input.Keyboard.KEY_J: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.FIRE_FIRST_WEAPON);

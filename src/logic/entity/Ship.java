@@ -20,6 +20,8 @@ import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Image;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Accessor.SetterOnlyReflection;
+
 import render.RenderUtil;
 import util.MathUtil;
 import controller.ControlledObject;
@@ -42,10 +44,12 @@ final public class Ship extends GameObjectPhysicMoving implements
 	private Image image;
 	private final static float SPEED_PARTICLE_FROM_ENGINE = 200f;
 	private final static float SPEED_PARTICLE_KOOF_RANDOM = 20f;
-	private final static float ENGINE_TURN_VELOCITY = 30f;
-	private final static float ENGINE_FORCE = 90;
+	private final static float ENGINE_TURN_VELOCITY = 10f;
+	private final static float ENGINE_FORCE = 1;
 	private Vector2f ENGINE_POSITION = new Vector2f(50f, 0f);
 	private Engine leftEngine, rightEngine;
+	private float engineRelativeAngle = 0;
+	private static final float MAX_ENGINE_ANGLE = 45/60f;
 
 	// private ArrayList<ShipComponent> shipComponents;
 	public Ship(Level level, float x, float y) {
@@ -60,7 +64,7 @@ final public class Ship extends GameObjectPhysicMoving implements
 	public void init() {
 		width = 100f;
 		height = 40f;
-		liveHealth = 100;
+		liveHealth = 10000;
 		BodyDef shipDef = new BodyDef();
 		shipDef.position.set(new Vec2(position.x / 30, position.y / 30));
 		shipDef.type = BodyType.DYNAMIC;
@@ -106,10 +110,10 @@ final public class Ship extends GameObjectPhysicMoving implements
 				new Vec2(engine.getPosition().x / 30f,
 						engine.getPosition().y / 30f));
 		jointDef.collideConnected = false;
-		jointDef.enableLimit = true;
-		jointDef.lowerAngle = -75f / 60;
-		jointDef.upperAngle = 75f / 60;
-		jointDef.referenceAngle = 0;
+//		jointDef.enableLimit = true;
+//		jointDef.lowerAngle = -MAX_ENGINE_ANGLE;
+//		jointDef.upperAngle = MAX_ENGINE_ANGLE;
+//		jointDef.referenceAngle = 0;
 		Joint joint = level.getWorld().createJoint(jointDef);
 		engine.setEngineJoint(joint);
 
@@ -148,6 +152,7 @@ final public class Ship extends GameObjectPhysicMoving implements
 
 		if (rightEngineActive) {
 			rightEngine.enableForce();
+
 		}
 
 		if (leftEngineActive) {
@@ -155,15 +160,26 @@ final public class Ship extends GameObjectPhysicMoving implements
 		}
 
 		if (turnEnginesLeft) {
-			leftEngine.getBody().setAngularVelocity(ENGINE_TURN_VELOCITY);
-			rightEngine.getBody().setAngularVelocity(ENGINE_TURN_VELOCITY);
-
+			// leftEngine.getBody().setAngularVelocity(ENGINE_TURN_VELOCITY);
+			// rightEngine.getBody().setAngularVelocity(ENGINE_TURN_VELOCITY);
+			engineRelativeAngle += 0.1;
 		}
 		if (turnEnginesRight) {
-			leftEngine.getBody().setAngularVelocity(-ENGINE_TURN_VELOCITY);
-			rightEngine.getBody().setAngularVelocity(-ENGINE_TURN_VELOCITY);
+			// leftEngine.getBody().setAngularVelocity(-ENGINE_TURN_VELOCITY);
+			// rightEngine.getBody().setAngularVelocity(-ENGINE_TURN_VELOCITY);
+			engineRelativeAngle -= 0.1;
 
 		}
+
+		if (engineRelativeAngle > MAX_ENGINE_ANGLE)
+			engineRelativeAngle = MAX_ENGINE_ANGLE;
+		else if (engineRelativeAngle < -MAX_ENGINE_ANGLE)
+			engineRelativeAngle = -MAX_ENGINE_ANGLE;
+		System.out.println(engineRelativeAngle * 60);
+		leftEngine.getBody().setTransform(leftEngine.getBody().getPosition(),
+				body.getAngle() + engineRelativeAngle);
+		rightEngine.getBody().setTransform(rightEngine.getBody().getPosition(),
+				body.getAngle() + engineRelativeAngle);
 
 	}
 
