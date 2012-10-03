@@ -138,8 +138,10 @@ public class Level {
 		// ship.getBody(), new Vector2f(100, 200)));
 
 		gameObjects.add(new AeroDynTest(this));
-
-		gameObjects.add(new ManipulareTool(this, new Vector2f(700f, 200f)));
+		ManipulareTool mt = new ManipulareTool(this, new Vector2f(670f, 500f));
+		gameObjects.add(mt);
+		gameObjects.add(new Chain(this, upWall.getBody(),
+				new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));
 	}
 
 	public Player getPlayer() {
