@@ -9,6 +9,7 @@ package main;
 
 import java.util.ArrayList;
 
+import controller.InputToAction;
 import logic.Level;
 import logic.Logic;
 import logic.entity.Player;
@@ -44,6 +45,8 @@ public class Game {
 
 	private Cursor cursor;
 
+    private InputToAction inputToAction;
+
 	public static boolean isFinished() {
 		return finished;
 	}
@@ -72,6 +75,7 @@ public class Game {
 		this.physic.setLevel(level);
 		this.sound.setLevel(level);
 		this.render.setLevel(level);
+        this.inputToAction = client.getInputToAction();
 		// controller dont need to set level!
 
 	}
@@ -129,60 +133,48 @@ public class Game {
 	// TODO add table of key
 	public void keyAction(ArrayList<LightInteger> list_key) {
 		// interpretation key code
-		for (LightInteger key : list_key) {
-			switch (key.data) {
-			case org.lwjgl.input.Keyboard.KEY_A: {
+
+		for (LightInteger action : list_key) {
+			switch (inputToAction.getAction(action.data)) {
+			case InputToAction.left: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.LEFT_ENGINE_ACTIVE);
 				break;
 			}
-			case org.lwjgl.input.Keyboard.KEY_S: {
+            case InputToAction.right: {
+                    level.getPlayer().getControlledObject()
+                            .doAction(ControlledObject.RIGHT_ENGINE_ACTIVE);
+                    break;
+            }
+
+            case InputToAction.down: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.All_ENGINE_ACTIVE);
 				break;
 			}
-			case org.lwjgl.input.Keyboard.KEY_D: {
-				level.getPlayer().getControlledObject()
-						.doAction(ControlledObject.RIGHT_ENGINE_ACTIVE);
-				break;
-			}
-			//case 0:
-			case org.lwjgl.input.Keyboard.KEY_J: {
+
+            case InputToAction.up: {
+                level.getPlayer().getControlledObject()
+                        .doAction(ControlledObject.All_ENGINE_ACTIVE);
+                break;
+            }
+
+			case InputToAction.fire1: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.FIRE_FIRST_WEAPON);
 				break;
 			}
-			// number of second button of mouse is maybe esc_key
-			case org.lwjgl.input.Keyboard.KEY_K: {
-				level.getPlayer().getControlledObject()
-						.doAction(ControlledObject.FIRE_SECOND_WEAPON);
+			
+			case InputToAction.zoomIn: {
+				render.setZoom((float) (render.getZoom()+0.05));
 				break;
 			}
-
-			case org.lwjgl.input.Keyboard.KEY_Z: {
-				render.setZoom((float) (render.getZoom() + 0.05));
+			case InputToAction.zoomOut: {
+				render.setZoom((float) (render.getZoom()-0.05));
 				break;
 			}
-			case org.lwjgl.input.Keyboard.KEY_X: {
-				render.setZoom((float) (render.getZoom() - 0.05));
-				break;
-			}
-			case org.lwjgl.input.Keyboard.KEY_R: {
-				level.clearWorld();
-				level.testInitLevel();
-				break;
-			}
-			case org.lwjgl.input.Keyboard.KEY_Q: {
-				level.getPlayer().getControlledObject().doAction(10);
-				break;
-			}
-			case org.lwjgl.input.Keyboard.KEY_E: {
-				level.getPlayer().getControlledObject().doAction(11);
-
-				break;
-			}
-			case org.lwjgl.input.Keyboard.KEY_C: {
-				if (render.getStateViewPort() == Render.VIEWPORT_ON_PLAYER) {
+			case InputToAction.zoomCenter: {
+				if (render.getStateViewPort()==Render.VIEWPORT_ON_PLAYER){
 					render.setStateViewPort(Render.VIEWPORT_GLOBAL_WORLD);
 					break;
 				}
@@ -192,16 +184,10 @@ public class Game {
 				}
 
 			}
-
-			case org.lwjgl.input.Keyboard.KEY_ESCAPE: {
+			case InputToAction.menu: {
 				client.exit();
 				break;
 			}
-			// case 0: {
-			// level.getPlayer().getControlledObject()
-			// .doAction(ControlledObject.FIRE_FIRST_WEAPON);
-			// break;
-			// }
 			}
 		}
 
