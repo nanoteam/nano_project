@@ -20,11 +20,7 @@ import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Single;
-
 import render.RenderUtil;
-import sun.security.util.Length;
 import util.MathUtil;
 
 public class Chain extends GameObject {
