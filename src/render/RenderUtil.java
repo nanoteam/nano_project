@@ -35,7 +35,7 @@ public class RenderUtil {
 		GL11.glColor3d(1, 1, 1);
 	}
 	public static void drawPolyLineSmooth(List<Vector2f> positions,
-			float widthLine, float angle, Color color) {
+			float widthLine, Color color) {
 		if (positions.size() < 1) {
 			return;
 		}
