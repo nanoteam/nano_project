@@ -60,7 +60,7 @@ public class Game {
 
 		this.player = new Player();
 		level = new Level(player, client.getController().getCursor());
-		
+
 		level.testInitLevel();
 		this.client = client;
 
@@ -152,21 +152,18 @@ public class Game {
 						.doAction(ControlledObject.All_ENGINE_ACTIVE);
 				break;
 			}
+
             case InputToAction.up: {
                 level.getPlayer().getControlledObject()
                         .doAction(ControlledObject.All_ENGINE_ACTIVE);
                 break;
             }
+
 			case InputToAction.fire1: {
 				level.getPlayer().getControlledObject()
 						.doAction(ControlledObject.FIRE_FIRST_WEAPON);
 				break;
 			}
-            case InputToAction.fire2: {
-                level.getPlayer().getControlledObject()
-                            .doAction(ControlledObject.FIRE_SECOND_WEAPON);
-                break;
-                }
 			
 			case InputToAction.zoomIn: {
 				render.setZoom((float) (render.getZoom()+0.05));
@@ -181,11 +178,11 @@ public class Game {
 					render.setStateViewPort(Render.VIEWPORT_GLOBAL_WORLD);
 					break;
 				}
-				if (render.getStateViewPort()==Render.VIEWPORT_GLOBAL_WORLD){
+				if (render.getStateViewPort() == Render.VIEWPORT_GLOBAL_WORLD) {
 					render.setStateViewPort(Render.VIEWPORT_ON_PLAYER);
 					break;
 				}
-				
+
 			}
 			case InputToAction.menu: {
 				client.exit();

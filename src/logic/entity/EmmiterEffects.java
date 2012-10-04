@@ -41,7 +41,7 @@ public class EmmiterEffects {
 				level.getNotAddedGameObjects().add(
 						new Particle(new Vector2f(v.x * 30, v.y * 30), speed,
 								2,
-								(int) (random.nextFloat() * impulses[j] *3),
+								(int) (random.nextFloat() * impulses[j] * 3),
 								color));
 
 			}
@@ -60,7 +60,7 @@ public class EmmiterEffects {
 			if (random.nextBoolean())
 				color = (Color) Color.RED;
 			else
-				color = (Color) Color.YELLOW;
+				color = (Color) Color.PURPLE;
 
 			angleParticle = (float) (random.nextFloat() * 2 * Math.PI);
 			speedParticle = (float) (random.nextFloat() * maxSpeed / 2);

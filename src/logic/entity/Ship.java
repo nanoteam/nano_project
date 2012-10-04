@@ -13,11 +13,12 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.dynamics.joints.Joint;
+import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Image;
-
 import render.RenderUtil;
 import util.MathUtil;
 import controller.ControlledObject;
@@ -30,6 +31,8 @@ final public class Ship extends GameObjectPhysicMoving implements
 	private boolean leftEngineActive = false;
 	private boolean rightEngineActive = false;
 	private boolean allEngineActive = false;
+	private boolean turnEnginesLeft = false;
+	private boolean turnEnginesRight = false;
 	private boolean weapon1Shot = false;
 	private boolean weapon2Shot = false;
 	private float width, height;
@@ -38,7 +41,12 @@ final public class Ship extends GameObjectPhysicMoving implements
 	private Image image;
 	private final static float SPEED_PARTICLE_FROM_ENGINE = 200f;
 	private final static float SPEED_PARTICLE_KOOF_RANDOM = 20f;
-	private final static float ENGINE_FORCE = 90;
+	private final static float ENGINE_TURN_VELOCITY = 10f;
+	private final static float ENGINE_FORCE = 1;
+	private Vector2f ENGINE_POSITION = new Vector2f(50f, 0f);
+	private Engine leftEngine, rightEngine;
+	private float engineRelativeAngle = 0;
+	private static final float MAX_ENGINE_ANGLE = 45/60f;
 
 	// private ArrayList<ShipComponent> shipComponents;
 	public Ship(Level level, float x, float y) {
@@ -53,7 +61,7 @@ final public class Ship extends GameObjectPhysicMoving implements
 	public void init() {
 		width = 100f;
 		height = 40f;
-		liveHealth = 100000;
+		liveHealth = 1000000;
 		BodyDef shipDef = new BodyDef();
 		shipDef.position.set(new Vec2(position.x / 30, position.y / 30));
 		shipDef.type = BodyType.DYNAMIC;
@@ -67,55 +75,49 @@ final public class Ship extends GameObjectPhysicMoving implements
 		shipFixture.density = 0.5f; // plotnost'
 		shipFixture.restitution = 0.15f;
 		shipFixture.shape = shipShape;
-		// ships do not interact ships with each other
-		// shipFixture.filter.groupIndex = -1;
 		body.createFixture(shipFixture);
 		body.setAngularDamping(3);
 
-		SimpleWeapon weap1 = new SimpleWeapon(this, 20, 3, 1, 3, 4);
-		SimpleWeapon weap2 = new SimpleWeapon(this, 10, 5, 2, 15, 70);
-		arsenalList.add(weap1);
-		arsenalList.add(weap2);
-		level.getGameObjects().add(weap1);
-		level.getGameObjects().add(weap2);
+		{
+			// adding weapons
+			SimpleWeapon weap1 = new SimpleWeapon(this, 20, 3, 1, 3, 4);
+			SimpleWeapon weap2 = new SimpleWeapon(this, 10, 5, 2, 15, 70);
+			arsenalList.add(weap1);
+			arsenalList.add(weap2);
+			level.getGameObjects().add(weap1);
+			level.getGameObjects().add(weap2);
+		}
+
+		{	
+			// adding engines
+			leftEngine = new Engine(level, new Vector2f(position.x
+					- ENGINE_POSITION.x, position.y - ENGINE_POSITION.y));
+			rightEngine = new Engine(level, new Vector2f(position.x
+					+ ENGINE_POSITION.x, position.y - ENGINE_POSITION.y));
+			addEngine(leftEngine);
+			addEngine(rightEngine);
+			level.getNotAddedGameObjects().add(leftEngine);
+			level.getNotAddedGameObjects().add(rightEngine);
+		}
+	}
+
+	private void addEngine(Engine engine) {
+		RevoluteJointDef jointDef = new RevoluteJointDef();
+		jointDef.initialize(body, engine.getBody(),
+				new Vec2(engine.getPosition().x / 30f,
+						engine.getPosition().y / 30f));
+		jointDef.collideConnected = false;
+//		jointDef.enableLimit = true;
+//		jointDef.lowerAngle = -MAX_ENGINE_ANGLE;
+//		jointDef.upperAngle = MAX_ENGINE_ANGLE;
+//		jointDef.referenceAngle = 0;
+		Joint joint = level.getWorld().createJoint(jointDef);
+		engine.setEngineJoint(joint);
 
 	}
 
 	@Override
 	public void update() {
-		speed = new Vector2f(body.getLinearVelocity().x,
-				body.getLinearVelocity().y);
-		if (leftEngineActive) {
-
-			EmmiterEffects.drawParticlesFromEngine(
-					new Vector2f((float) (position.x + MathUtil.newXTurn(
-							-width / 2f, -height / 2f, angle)),
-							(float) (position.y + MathUtil.newYTurn(
-									-width / 2f, -height / 2f, angle))), angle);
-		}
-
-		if (rightEngineActive) {
-
-			EmmiterEffects.drawParticlesFromEngine(
-					new Vector2f((float) (position.x + MathUtil.newXTurn(
-							width / 2f, -height / 2f, angle)),
-							(float) (position.y + MathUtil.newYTurn(width / 2f,
-									-height / 2f, angle))), angle);
-		}
-
-		if (allEngineActive) {
-
-			EmmiterEffects.drawParticlesFromEngine(
-					new Vector2f((float) (position.x + MathUtil.newXTurn(
-							-width / 2f, -height / 2f, angle)),
-							(float) (position.y + MathUtil.newYTurn(
-									-width / 2f, -height / 2f, angle))), angle);
-			EmmiterEffects.drawParticlesFromEngine(
-					new Vector2f((float) (position.x + MathUtil.newXTurn(
-							width / 2f, -height / 2f, angle)),
-							(float) (position.y + MathUtil.newYTurn(width / 2f,
-									-height / 2f, angle))), angle);
-		}
 
 		if (weapon1Shot && !arsenalList.isEmpty()) {
 			arsenalList.get(0).setShootOn();
@@ -138,27 +140,43 @@ final public class Ship extends GameObjectPhysicMoving implements
 		position = new Vector2f(body.getPosition().x * 30,
 				body.getPosition().y * 30);
 		angle = body.getAngle();
-		Vec2 force = new Vec2((float) (-ENGINE_FORCE * Math.sin(angle)),
-				(float) (ENGINE_FORCE * Math.cos(angle)));
 
 		if (allEngineActive) {
-			body.applyForce(force, body.getPosition());
+			leftEngine.enableForce();
+			rightEngine.enableForce();
+
 		}
 
 		if (rightEngineActive) {
+			rightEngine.enableForce();
 
-			Vec2 pointOfForce = body.getPosition().add(
-					new Vec2((float) (width / 30 / 7 * Math.cos(angle)),
-							(float) (width / 30 / 7 * Math.sin(angle))));
-			body.applyForce(force, pointOfForce);
 		}
 
 		if (leftEngineActive) {
-			Vec2 pointOfForce = body.getPosition().add(
-					new Vec2((float) -(width / 30 / 7 * Math.cos(angle)),
-							(float) -(width / 30 / 7 * Math.sin(angle))));
-			body.applyForce(force, pointOfForce);
+			leftEngine.enableForce();
 		}
+
+		if (turnEnginesLeft) {
+			// leftEngine.getBody().setAngularVelocity(ENGINE_TURN_VELOCITY);
+			// rightEngine.getBody().setAngularVelocity(ENGINE_TURN_VELOCITY);
+			engineRelativeAngle += 0.1;
+		}
+		if (turnEnginesRight) {
+			// leftEngine.getBody().setAngularVelocity(-ENGINE_TURN_VELOCITY);
+			// rightEngine.getBody().setAngularVelocity(-ENGINE_TURN_VELOCITY);
+			engineRelativeAngle -= 0.1;
+
+		}
+
+		if (engineRelativeAngle > MAX_ENGINE_ANGLE)
+			engineRelativeAngle = MAX_ENGINE_ANGLE;
+		else if (engineRelativeAngle < -MAX_ENGINE_ANGLE)
+			engineRelativeAngle = -MAX_ENGINE_ANGLE;
+		System.out.println(engineRelativeAngle * 60);
+		leftEngine.getBody().setTransform(leftEngine.getBody().getPosition(),
+				body.getAngle() + engineRelativeAngle);
+		rightEngine.getBody().setTransform(rightEngine.getBody().getPosition(),
+				body.getAngle() + engineRelativeAngle);
 
 	}
 
@@ -237,13 +255,19 @@ final public class Ship extends GameObjectPhysicMoving implements
 			break;
 		}
 		case ControlledObject.FIRE_FIRST_WEAPON: {
-			// TODO more situat. check
 			weapon1Shot = true;
 			break;
 		}
 		case ControlledObject.FIRE_SECOND_WEAPON: {
-			// TODO more situat. check
 			weapon2Shot = true;
+			break;
+		}
+		case ControlledObject.TURN_ENGINES_LEFT: {
+			turnEnginesLeft = true;
+			break;
+		}
+		case ControlledObject.TURN_ENGINES_RIGHT: {
+			turnEnginesRight = true;
 			break;
 		}
 		}
@@ -256,6 +280,8 @@ final public class Ship extends GameObjectPhysicMoving implements
 		rightEngineActive = false;
 		weapon1Shot = false;
 		weapon2Shot = false;
+		turnEnginesLeft = false;
+		turnEnginesRight = false;
 	}
 
 	@Override

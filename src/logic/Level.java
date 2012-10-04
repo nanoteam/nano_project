@@ -1,12 +1,17 @@
 package logic;
 
+import logic.entity.AeroDynTest;
+import logic.entity.Asteroid;
 import logic.entity.Bot;
 import logic.entity.Chain;
 import logic.entity.EmmiterEffects;
+import logic.entity.Engine;
 import logic.entity.JumpWall;
 import logic.entity.Bot;
+import logic.entity.ManipulareTool;
 import logic.entity.Player;
 import logic.entity.Ship;
+import logic.entity.TrapRotation;
 import logic.entity.Wall;
 
 import java.util.ArrayList;
@@ -18,6 +23,8 @@ import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.joints.DistanceJointDef;
+import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.util.vector.Vector2f;
 
 import controller.Cursor;
@@ -30,7 +37,7 @@ public class Level {
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;
-	private Cursor cursor;
+	public Cursor cursor;
 	private World world = null;
 	private AABB aabb = null;
 	// physic constans
@@ -86,10 +93,10 @@ public class Level {
 		gameObjects.add(ship);
 
 		Ship ship2 = new Ship(this, 500f, 500f);
-		Bot bot = new Bot(ship2);
+		//Bot bot = new Bot(ship2);
 
 		gameObjects.add(ship2);
-		gameObjects.add(bot);
+	    //gameObjects.add(bot);
 		Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight);
 		gameObjects.add(leftWall);
 		Wall upWall = new Wall(this, defaultWidth / 2, defaultHeight - 5,
@@ -101,10 +108,8 @@ public class Level {
 		Wall downWall = new Wall(this, defaultWidth / 2, 5, defaultWidth, 10);
 		gameObjects.add(downWall);
 
-		gameObjects.add(new Wall(this, 700, 100, 20, 200));
+		// gameObjects.add(new Wall(this, 700, 100, 20, 200));
 		gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
-
-		gameObjects.add(new Wall(this, 700, 50, 30, 350));
 
 		// add to world a chain
 		gameObjects.add(new Chain(this, upWall.getBody(), new Vector2f(
@@ -113,9 +118,31 @@ public class Level {
 		gameObjects.add(new Chain(this, upWall.getBody(), new Vector2f(
 				defaultWidth / 4f, defaultHeight - 5), ship2.getBody(),
 				new Vector2f(500 - 50, 500 + 20)));
-		gameObjects.add(new Chain(this, downWall.getBody(),
-				new Vector2f(100, 5), ship.getBody(), new Vector2f(100,
-						500 - 20)));
+
+		/* gameObjects.add(new Chain(this, downWall.getBody(),
+		 new Vector2f(100, 5), ship.getBody(), new Vector2f(100,
+		 500 - 20)));*/
+		/*{
+		 TrapRotation tr = new TrapRotation(this, new Vector2f(900f, 300f));
+		 gameObjects.add(tr);
+		 RevoluteJointDef join = new RevoluteJointDef();
+		 join.initialize(tr.getBody(), downWall.getBody(), tr.getBody()
+		 .getPosition());
+		 world.createJoint(join);
+		 }*/
+
+		gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
+		gameObjects.add(new Asteroid(this, new Vector2f(500f, 300f)));
+
+		 // /gameObjects.add(new Engine(this,new Vector2f(200f,200f)));
+		 //gameObjects.add(new Chain(this, ship.getBody(), ship.getPosition(),
+		 //ship.getBody(), new Vector2f(100, 200)));
+
+		//gameObjects.add(new AeroDynTest(this));
+		//ManipulareTool mt = new ManipulareTool(this, new Vector2f(670f, 500f));
+		//gameObjects.add(mt);
+		//gameObjects.add(new Chain(this, upWall.getBody(),
+				//new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));
 	}
 
 	public Player getPlayer() {
@@ -152,5 +179,16 @@ public class Level {
 
 	public World getWorld() {
 		return world;
+	}
+
+	public void clearWorld() {
+		for (GameObject go : gameObjects) {
+			go.destroy();
+		}
+		gameObjects.clear();
+	}
+
+	public float getGravity() {
+		return gravity;
 	}
 }

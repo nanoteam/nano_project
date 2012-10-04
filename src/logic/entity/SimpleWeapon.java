@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
+import render.RenderUtil;
 import util.MathUtil;
 
 public class SimpleWeapon extends ArsenalGameObject {
@@ -86,8 +87,7 @@ public class SimpleWeapon extends ArsenalGameObject {
 		Vector2f fPos = fatherObj.getPosition();
 
 		position = new Vector2f(fPos.x
-				+ MathUtil.newXTurn(30, 17, fatherObj.getAlfa()), fPos.y
-				+ MathUtil.newYTurn(30, 17, fatherObj.getAlfa()));
+				+ MathUtil.newXTurn(30, 17, fatherObj.getAlfa()), fPos.y + MathUtil.newYTurn(30, 17, fatherObj.getAlfa()));
 
 		Vector2f vector = level.getPositionMouse();
 
@@ -97,24 +97,9 @@ public class SimpleWeapon extends ArsenalGameObject {
 
 	@Override
 	public void draw() {
-
-		glPushMatrix();
-		glTranslatef(position.x, position.y, 0.0f);
-		// 0.01f - angle
-
-		glRotatef(angle * 60, 0, 0, 1.0f);
-		GL11.glColor3ub(Color.GREEN.getRedByte(), Color.GREEN.getGreenByte(),
-				Color.GREEN.getBlueByte());
-
-		glBegin(GL_QUADS);
-		glVertex2i(-width / 2, -height / 2);
-		glVertex2i(width / 2, -height / 2);
-		glVertex2i(width / 2, height / 2);
-		glVertex2i(-width / 2, height / 2);
-		glEnd();
-		glPopMatrix();
-
-	}
+        RenderUtil.drawQaud(position.x,position.y,width,height,angle,(Color)Color.DKGREY);
+        RenderUtil.drawPlot(new Vector2f(position.x+MathUtil.newXTurn(width/2,0,angle),position.y+MathUtil.newYTurn(width/2,0, angle)),4,(Color)(Color.RED));
+    }
 
 	@Override
 	public void playSound() {

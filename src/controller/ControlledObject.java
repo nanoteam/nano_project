@@ -13,6 +13,8 @@ public interface ControlledObject {
 	public static final int All_ENGINE_ACTIVE = 3;
 	public static final int FIRE_FIRST_WEAPON = 4;
 	public static final int FIRE_SECOND_WEAPON = 5;
+	public static final int TURN_ENGINES_LEFT = 10;
+	public static final int TURN_ENGINES_RIGHT = 11;
 	
 	
 }

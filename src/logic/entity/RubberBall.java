@@ -121,10 +121,10 @@ public class RubberBall extends GameObjectPhysicMoving {
 	@Override
 	public void draw() {
 
-		RenderUtil.drawImage(position.x, position.y,width, height,angle,0.5f,image );
+		//RenderUtil.drawImage(position.x, position.y,width, height,angle,0.5f,image );
 		
-		 //RenderUtil.drawQaud(position.x, position.y, width, height, angle,
-		 //color);
+		 RenderUtil.drawQaud(position.x, position.y, width, height, angle,
+		 color);
 		 }
 
 	@Override
