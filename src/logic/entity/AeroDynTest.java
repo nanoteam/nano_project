@@ -17,20 +17,24 @@ public class AeroDynTest extends GameObject {
 
 	@Override
 	public void init() {
-		this.begin = level.getPositionMouse();
 	}
 
 	@Override
 	public void update() {
-		if (level.cursor.isLeftPressed())
-			isActivated = true;
-		else
-			isActivated = false;
+        //arthur, may be i delete your good code(. but this code work to!
 
-		if (isActivated)
-			this.end = level.getPositionMouse();
-		else
-			this.begin = level.getPositionMouse();
+		if ((level.cursor.isLeftPressed())&&(!isActivated)){
+			isActivated = true;
+            begin = level.getPositionMouse();
+
+        }
+        if (isActivated){
+            end = level.getPositionMouse();
+        }
+
+        if ((!level.cursor.isLeftPressed())&&(isActivated)){
+            isActivated = false;
+        }
 	}
 
 	@Override

@@ -93,10 +93,9 @@ public class Level {
 		gameObjects.add(ship);
 
 		Ship ship2 = new Ship(this, 500f, 500f);
-		// Bot bot = new Bot(ship2);
-
+		//Bot bot = new Bot(ship2);
 		gameObjects.add(ship2);
-		// gameObjects.add(bot);
+	    //gameObjects.add(bot);
 		Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight);
 		gameObjects.add(leftWall);
 		Wall upWall = new Wall(this, defaultWidth / 2, defaultHeight - 5,
@@ -119,29 +118,31 @@ public class Level {
 				defaultWidth / 4f, defaultHeight - 5), ship2.getBody(),
 				new Vector2f(500 - 50, 500 + 20)));
 
-		// gameObjects.add(new Chain(this, downWall.getBody(),
-		// new Vector2f(100, 5), ship.getBody(), new Vector2f(100,
-		// 500 - 20)));
-		// {
-		// TrapRotation tr = new TrapRotation(this, new Vector2f(900f, 300f));
-		// gameObjects.add(tr);
-		// RevoluteJointDef join = new RevoluteJointDef();
-		// join.initialize(tr.getBody(), downWall.getBody(), tr.getBody()
-		// .getPosition());
-		// world.createJoint(join);
-		// }
+
+		/* gameObjects.add(new Chain(this, downWall.getBody(),
+		 new Vector2f(100, 5), ship.getBody(), new Vector2f(100,
+		 500 - 20)));*/
+		/*{
+		 TrapRotation tr = new TrapRotation(this, new Vector2f(900f, 300f));
+		 gameObjects.add(tr);
+		 RevoluteJointDef join = new RevoluteJointDef();
+		 join.initialize(tr.getBody(), downWall.getBody(), tr.getBody()
+		 .getPosition());
+		 world.createJoint(join);
+		 }*/
 
 		gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
 		gameObjects.add(new Asteroid(this, new Vector2f(500f, 300f)));
-		// gameObjects.add(new Engine(this,new Vector2f(200f,200f)));
-		// gameObjects.add(new Chain(this, ship.getBody(), ship.getPosition(),
-		// ship.getBody(), new Vector2f(100, 200)));
 
-		gameObjects.add(new AeroDynTest(this));
-		ManipulareTool mt = new ManipulareTool(this, new Vector2f(670f, 500f));
-		gameObjects.add(mt);
-		gameObjects.add(new Chain(this, upWall.getBody(),
-				new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));
+		 // /gameObjects.add(new Engine(this,new Vector2f(200f,200f)));
+		 //gameObjects.add(new Chain(this, ship.getBody(), ship.getPosition(),
+		 //ship.getBody(), new Vector2f(100, 200)));
+
+		//gameObjects.add(new AeroDynTest(this));
+		//ManipulareTool mt = new ManipulareTool(this, new Vector2f(670f, 500f));
+		//gameObjects.add(mt);
+		//gameObjects.add(new Chain(this, upWall.getBody(),
+				//new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));
 	}
 
 	public Player getPlayer() {

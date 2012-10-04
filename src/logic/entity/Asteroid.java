@@ -46,7 +46,8 @@ public class Asteroid extends GameObjectPhysicMoving {
 
 		FixtureDef asteroidFixture = new FixtureDef();
 		asteroidFixture.friction = 0.7f; // trenie
-		asteroidFixture.density = 100; // plotnost'
+
+		asteroidFixture.density = 50; // plotnost'
 		asteroidFixture.restitution = 1f;
 		asteroidFixture.shape = asteroidShape;
 		// asteroids do not interact asteroids with each other
