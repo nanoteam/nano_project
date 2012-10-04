@@ -19,9 +19,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Image;
-
-import com.sun.xml.internal.bind.v2.runtime.reflect.Accessor.SetterOnlyReflection;
-
 import render.RenderUtil;
 import util.MathUtil;
 import controller.ControlledObject;
@@ -81,8 +78,8 @@ final public class Ship extends GameObjectPhysicMoving implements
 		body.createFixture(shipFixture);
 		body.setAngularDamping(3);
 
-		{// adding weapons
-
+		{
+			// adding weapons
 			SimpleWeapon weap1 = new SimpleWeapon(this, 20, 3, 1, 3, 4);
 			SimpleWeapon weap2 = new SimpleWeapon(this, 10, 5, 2, 15, 70);
 			arsenalList.add(weap1);
@@ -91,8 +88,8 @@ final public class Ship extends GameObjectPhysicMoving implements
 			level.getGameObjects().add(weap2);
 		}
 
-		{// adding engines
-
+		{	
+			// adding engines
 			leftEngine = new Engine(level, new Vector2f(position.x
 					- ENGINE_POSITION.x, position.y - ENGINE_POSITION.y));
 			rightEngine = new Engine(level, new Vector2f(position.x

@@ -5,9 +5,6 @@
 package controller;
 
 import org.lwjgl.util.vector.Vector2f;
-
-import com.sun.corba.se.spi.orbutil.fsm.Input;
-
 import main.Engine;
 
 class Mouse implements Engine {
