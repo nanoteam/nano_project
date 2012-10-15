@@ -58,12 +58,12 @@ public final class Client {
 	public Client() {
 		state = LOAD_RESOURCES;
 		configsLibrary =ConfigsLibrary.getConfigsLibrary();
-        
-		inputToAction = new InputToAction();
+        inputToAction = new InputToAction();
         
         inputToAction.init(configsLibrary.getConfig(ConfigsLibrary.pathToSetting));
-        
-        resourcesManager = new ResourcesManager();
+
+        //must call first, before entity with resources
+        resourcesManager = ResourcesManager.geResourcesManager();
 
         state = MAIN_MENU;
 		controller = Controller.createController(true, true, this);
@@ -73,6 +73,10 @@ public final class Client {
 		physic = new Physic();
 		render = new Render();
 		sound = new Sound();
+
+
+
+
 
 		state = GAME;
 

@@ -94,7 +94,6 @@ public class Level {
 
 		Ship ship2 = new Ship(this, 500f, 500f);
 		//Bot bot = new Bot(ship2);
-
 		gameObjects.add(ship2);
 	    //gameObjects.add(bot);
 		Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight);
@@ -118,6 +117,7 @@ public class Level {
 		gameObjects.add(new Chain(this, upWall.getBody(), new Vector2f(
 				defaultWidth / 4f, defaultHeight - 5), ship2.getBody(),
 				new Vector2f(500 - 50, 500 + 20)));
+
 
 		/* gameObjects.add(new Chain(this, downWall.getBody(),
 		 new Vector2f(100, 5), ship.getBody(), new Vector2f(100,

@@ -80,7 +80,7 @@ public class PlazmaBall extends GameObjectPhysicMoving {
 
 	@Override
 	public void draw() {
-		RenderUtil.drawPlot(position, size, color);
+		RenderUtil.drawCircle(position.x,position.y, size,3, color);
 	}
 
 	@Override

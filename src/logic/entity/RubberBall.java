@@ -17,9 +17,10 @@ import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import render.RenderUtil;
+import resourses.ResourcesManager;
 
 public class RubberBall extends GameObjectPhysicMoving {
-	private float maxSpeed;
+    private float maxSpeed;
 	private int lifeTime;
 	private float size;
 	private Color color;
@@ -27,11 +28,18 @@ public class RubberBall extends GameObjectPhysicMoving {
 	private float height;
     private static Image image;
 
+    static {
+        name = "RubberBall";
+    }
+
+    public static String getName(){
+        return RubberBall.name;
+    }
 
 	public RubberBall(Vector2f pos, float angle, float randTrajectory,
 			Level level) {
 
-		this.maxSpeed = 7;
+        this.maxSpeed = 7;
 		this.position = new Vector2f(pos.x, pos.y + 30);
 
 		this.speed = new Vector2f((float) (maxSpeed * Math.cos(angle)
@@ -68,11 +76,18 @@ public class RubberBall extends GameObjectPhysicMoving {
 		body.setLinearVelocity(new Vec2(speed.x, speed.y));
 		body.setAngularVelocity((float) (random.nextFloat() * 0.5 - 1) * 10);
 
-        try {
-            image = new Image("res/rubberbomb.png");
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
+        // delete, when complite ersourses manager \/
+       /* if (image == null){
+            try {
+                image = new Image("rubberbomb.png");
+            } catch (SlickException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }          */
+        // delete, when complite ersourses manager /\
+        /*if (image==null){
+            image = ResourcesManager.geResourcesManager().getImageByName(RubberBall.name);
+        } */
     }
 
 	@Override

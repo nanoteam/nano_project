@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import render.RenderUtil;
 import util.MathUtil;
 import controller.ControlledObject;
@@ -47,6 +48,11 @@ final public class Ship extends GameObjectPhysicMoving implements
 	private Engine leftEngine, rightEngine;
 	private float engineRelativeAngle = 0;
 	private static final float MAX_ENGINE_ANGLE = 45/60f;
+
+    static {
+        name = "Ship";
+    }
+
 
 	// private ArrayList<ShipComponent> shipComponents;
 	public Ship(Level level, float x, float y) {
@@ -99,6 +105,21 @@ final public class Ship extends GameObjectPhysicMoving implements
 			level.getNotAddedGameObjects().add(leftEngine);
 			level.getNotAddedGameObjects().add(rightEngine);
 		}
+
+        /*
+        // delete, when complite ersourses manager \/
+        if (image == null){
+            try {
+                image = new Image("ship.png");
+            } catch (SlickException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+        // delete, when complite ersourses manager /\
+          */
+
+
+
 	}
 
 	private void addEngine(Engine engine) {
@@ -296,4 +317,8 @@ final public class Ship extends GameObjectPhysicMoving implements
 			result += f;
 		liveHealth -= result * (1 - protection);
 	}
+
+    public static String getName(){
+        return name;
+    }
 }
