@@ -36,29 +36,17 @@ public class Render implements Engine {
 
     @Override
     public void tick() {
-        if (!Display.isVisible()) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException inte) {
-                inte.printStackTrace();
-            }
-        }
         if (stateViewPort == VIEWPORT_ON_PLAYER) {
 
             Vector2f p = level.getPlayer().getControlledObject().getPosition();
-            // size of resolution
-            float Width = 1440, Height = 800;
-
-            //zoom = 1f;
-
-            float left = -Width / 2;
-            float right = Width / 2;
-            float bottom = -Height / 2;
-            float top = Height / 2;
+            float left = -Global.RESOLUTION_X / 2;
+            float right = Global.RESOLUTION_X / 2;
+            float bottom = -Global.RESOLUTION_Y / 2;
+            float top = Global.RESOLUTION_Y / 2;
 
             //glOrtho(left, right, bottom, top, -1, 1);
 
-            glViewport(0, 0, (int) Width, (int) Height);
+            glViewport(0, 0, Global.RESOLUTION_X, Global.RESOLUTION_Y);
 
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
@@ -68,7 +56,7 @@ public class Render implements Engine {
             glLoadIdentity();
             glScalef(zoom, zoom, zoom);
 
-            glTranslatef((int) (-p.x + Width / 2 / zoom), (int) (-p.y + Height / 2 / zoom), 0);
+            glTranslatef((int) (-p.x + Global.RESOLUTION_X / 2 / zoom), (int) (-p.y + Global.RESOLUTION_Y / 2 / zoom), 0);
         } else {
             zoom = 1;
 
@@ -77,7 +65,7 @@ public class Render implements Engine {
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
 
-            glOrtho(0, 1600, 0, 900, -1, 1);
+            glOrtho(0, Global.RESOLUTION_X, 0, Global.RESOLUTION_Y, -1, 1);
 
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();

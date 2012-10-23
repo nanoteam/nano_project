@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import main.Game;
 import org.jbox2d.callbacks.QueryCallback;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
@@ -16,15 +17,12 @@ import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.util.vector.Vector2f;
 
-import controller.Cursor;
-
 public class Level {
 	private static int defaultWidth = 640;
 	private static int defaultHeight = 480;
 	private int widthLevel;
 	private int heightLevel;
-	private Player player;
-	public Cursor cursor;
+    private Game game;
 	private World world = null;
 	private AABB aabb = null;
 	// physic constans
@@ -40,12 +38,11 @@ public class Level {
 
 	private static Random random = new Random();
 
-	public Level(Player player, Cursor cursor) {
+	public Level(Game game) {
 		EmmiterEffects.init(this);
-		this.player = player;
+        this.game = game;
 		this.widthLevel = Level.defaultWidth;
 		this.heightLevel = Level.defaultHeight;
-		this.cursor = cursor;
 		this.aabb = new AABB(new Vec2(), new Vec2(this.widthLevel / 30,
 				600 / 30));
 		this.world = new World(new Vec2(0, gravity), false);
@@ -80,7 +77,7 @@ public class Level {
 
 
 		Ship ship = new Ship(this, 100f, 500f);
-		player.setControlledObject(ship);
+		game.getPlayer().setControlledObject(ship);
 		gameObjects.add(ship);
 
 		Ship ship2 = new Ship(this, 500f, 500f);
@@ -158,7 +155,7 @@ public class Level {
 	}
 
 	public Player getPlayer() {
-		return this.player;
+		return game.getPlayer();
 	}
 
 	/**
@@ -185,10 +182,6 @@ public class Level {
 			return true;
 	}
 
-	public Vector2f getPositionMouse() {
-		return cursor.getPosition();
-	}
-
 	public World getWorld() {
 		return world;
 	}
@@ -203,4 +196,7 @@ public class Level {
 	public float getGravity() {
 		return gravity;
 	}
+    public Vector2f getMousePosition(){
+        return game.getPositionMouse();
+    }
 }

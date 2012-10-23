@@ -37,6 +37,7 @@ public class SimpleWeapon extends ArsenalGameObject {
 		this.randomizeFire = randomizeFire;
 		this.sizeBullet = sizeBullet;
 		this.reloadTime = reloadTime;
+
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class SimpleWeapon extends ArsenalGameObject {
 		position = new Vector2f(fPos.x
 				+ MathUtil.newXTurn(30, 17, fatherObj.getAlfa()), fPos.y + MathUtil.newYTurn(30, 17, fatherObj.getAlfa()));
 
-		Vector2f vector = level.getPositionMouse();
+		Vector2f vector = level.getMousePosition();
 
 		angle = (float) Math.atan2(vector.y - this.position.y, vector.x
 				- this.position.y);

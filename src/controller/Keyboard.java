@@ -25,7 +25,7 @@ class Keyboard implements Engine {
 
     }
 
-    public List<StateKey> getEvent() {
+    public List<StateKey> getStateKeyboard() {
         return statesKeys;
     }
     //TODO add support this code!

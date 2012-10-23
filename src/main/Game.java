@@ -12,6 +12,7 @@ import logic.Level;
 import logic.Logic;
 import logic.entity.Player;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import physic.Physic;
 import render.Render;
 import sound.Sound;
@@ -40,8 +41,6 @@ public class Game {
     // TODO add more good code to change work Game with Player
     private Player player;
 
-    private Cursor cursor;
-
     private InputToAction inputToAction;
 
     public static boolean isFinished() {
@@ -56,7 +55,7 @@ public class Game {
     public Game(Client client) {
 
         this.player = new Player();
-        level = new Level(player, client.getController().getCursor());
+        level = new Level(this);
 
         level.testInitLevel();
         this.client = client;
@@ -219,8 +218,7 @@ public class Game {
             }
         }
     }
-
-    public void updateCursor(Cursor cursor) {
-        this.cursor = cursor;
+    public Vector2f getPositionMouse(){
+        return controller.getMousePosition();
     }
 }

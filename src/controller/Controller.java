@@ -8,11 +8,10 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
+import org.lwjgl.util.vector.Vector2f;
 import util.LightInteger;
 
-import logic.Level;
 import main.Client;
 import main.Engine;
 
@@ -41,32 +40,19 @@ public class Controller implements Engine {
         return controller;
     }
 
-    public Cursor getCursor(){
-		return mouse.getCursor();
-	}
-
 	@Override
 	public void tick() {
         if (keyboardOn) {
             keyboard.tick();
-            client.sendEventsKeyboard(keyboard.getEvent());
+            client.sendEventsKeyboard(keyboard.getStateKeyboard());
 
         }
 
 		if (mouseOn) {
 			mouse.tick();
-			client.updateCursor(mouse.getCursor());
-			ArrayList<LightInteger> list_key = new ArrayList<LightInteger>();
-			// what a format of Mouse.event key?
-			// there are no capability with method client.keyAction()
-			while (org.lwjgl.input.Mouse.next()) {
-				list_key.add(new LightInteger(org.lwjgl.input.Mouse
-						.getEventButton()));
-			}
-			if (list_key.size() > 0) {
-				client.mouseAction(list_key);
-			}
+            //client.sendEventMouse(mouse.getStateMouse());
 		}
+
 	}
 
 	@Override
@@ -88,5 +74,8 @@ public class Controller implements Engine {
 
     public boolean isMouseOn() {
         return mouseOn;
+    }
+    public Vector2f getMousePosition(){
+        return mouse.getPosition();
     }
 }

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.Controller;
-import controller.Cursor;
 import controller.StateKey;
 import controller.InputToAction;
 import logic.Logic;
+import org.lwjgl.util.vector.Vector2f;
 import physic.Physic;
 import render.Render;
 import resourses.configuration.ConfigsLibrary;
@@ -136,21 +136,6 @@ public final class Client {
 		return mainMenu;
 	}
 
-	// TODO add support mouse in client
-	// TODO add support mouse in game 
-	public void mouseAction(List<LightInteger> eventMouse) {
-
-		if (state == Client.MAIN_MENU) {
-			return;
-		}
-
-		if (state == Client.GAME) {
-			//game.sendEventKeyboard(eventMouse);
-			return;
-		}
-
-	}
-
 	public void sendEventsKeyboard (List<StateKey> eventsKeyboard) {
 		if (state == Client.MAIN_MENU) {
 			return;
@@ -161,18 +146,10 @@ public final class Client {
 			return;
 		}
 	}
+    public void sendEventMouse(List<Object> list){
 
-	public void updateCursor(Cursor cursor) {
-		if (state == Client.MAIN_MENU) {
-			return;
-		}
+    }
 
-		if (state == Client.GAME) {
-			game.updateCursor(cursor);
-			return;
-		}
-		
-	}
     public InputToAction getInputToAction(){
         return inputToAction;
     }
