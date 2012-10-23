@@ -4,32 +4,45 @@
  */
 package controller;
 
-import org.lwjgl.util.vector.Vector2f;
 import main.Engine;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.util.vector.Vector2f;
+
+import java.util.List;
 
 class Mouse implements Engine {
+    private Controller controller;
+    private Vector2f position;
+    private Vector2f lastPosition;
+    //private List<>
 
-	private Cursor cursor;
+    Mouse(Controller controller) {
+        this.controller = controller;
+        createMouse();
+        position = lastPosition = new Vector2f(org.lwjgl.input.Mouse.getX(),org.lwjgl.input.Mouse.getY());
+    }
 
-	Mouse() {
-		cursor = new Cursor();
-	}
+    @Override
+    public void tick() {
+        lastPosition = new Vector2f(position);
+        position = new Vector2f(org.lwjgl.input.Mouse.getX(),org.lwjgl.input.Mouse.getY());
+    }
 
-	@Override
-	public void tick() {
-		cursor.setPosition(new Vector2f(org.lwjgl.input.Mouse.getX(),
-				org.lwjgl.input.Mouse.getY()));
-		cursor.setIsPressed(org.lwjgl.input.Mouse.isButtonDown(0), false);
-	}
+    Vector2f getPosition(){
+        return new Vector2f(position);
+    }
 
-	@Override
-	public void cleanUp() {
-		// TODO Auto-generated method stub
+    private void createMouse() {
+        try {
+            org.lwjgl.input.Mouse.create();
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
+    }
 
-	}
-
-	public Cursor getCursor() {
-		return cursor;
-	}
+    @Override
+    public void cleanUp() {
+        org.lwjgl.input.Mouse.destroy();
+    }
 
 }

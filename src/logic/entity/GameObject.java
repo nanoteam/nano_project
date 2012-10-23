@@ -23,6 +23,10 @@ import render.RenderObject;
 //TODO add modificator visiable to protected code to field and method
 abstract public class GameObject {
 
+    //unique name for class, uses by Resourses manager
+    //by this name creater pair Class RubberBall - config file RubberBall.ini, RubberBall.jpg
+    protected static String name = "unknown";
+
 	static Random random = new Random();
 	Vector2f position;
 	boolean live = true;

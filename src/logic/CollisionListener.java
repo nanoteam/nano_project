@@ -82,9 +82,9 @@ public class CollisionListener implements ContactListener {
 		String nameA = bodyA.getClass().getSimpleName();
 		String nameB = bodyB.getClass().getSimpleName();
 
-		System.out.println("Collision " + nameA + " with " + nameB
+		/*System.out.println("Collision " + nameA + " with " + nameB
 				+ " with impulses " + Arrays.toString(impulses));
-
+         */
 		if (nameA.equals("Ship") || nameB.equals("Ship")) {
 			// will be added 'else's in future for more optimization
 			if (nameA.equals("Ship") && nameB.equals("Ship")) {

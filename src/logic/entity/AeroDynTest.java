@@ -22,7 +22,7 @@ public class AeroDynTest extends GameObject {
 	@Override
 	public void update() {
         //arthur, may be i delete your good code(. but this code work to!
-
+        /*
 		if ((level.cursor.isLeftPressed())&&(!isActivated)){
 			isActivated = true;
             begin = level.getPositionMouse();
@@ -34,17 +34,17 @@ public class AeroDynTest extends GameObject {
 
         if ((!level.cursor.isLeftPressed())&&(isActivated)){
             isActivated = false;
-        }
+        } */
 	}
 
 	@Override
 	public void move() {
 		if (isActivated) {
-			this.end = level.getPositionMouse();
+			/*this.end = level.getPositionMouse();
 			Vector2f speed = new Vector2f((end.x - begin.x) * 2,
 					(end.y - begin.y) * 2);
 			level.getNotAddedGameObjects().add(new Partic(level, begin, speed));
-
+              */
 		}
 	}
 

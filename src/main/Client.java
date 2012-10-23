@@ -1,11 +1,13 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import controller.Controller;
-import controller.Cursor;
+import controller.StateKey;
 import controller.InputToAction;
 import logic.Logic;
+import org.lwjgl.util.vector.Vector2f;
 import physic.Physic;
 import render.Render;
 import resourses.configuration.ConfigsLibrary;
@@ -58,24 +60,23 @@ public final class Client {
 	public Client() {
 		state = LOAD_RESOURCES;
 		configsLibrary =ConfigsLibrary.getConfigsLibrary();
-        
-		inputToAction = new InputToAction();
+        inputToAction = InputToAction.get();
         
         inputToAction.init(configsLibrary.getConfig(ConfigsLibrary.pathToSetting));
-        
-        resourcesManager = new ResourcesManager();
+
+        //must call first, before entity with resources
+        resourcesManager = ResourcesManager.geResourcesManager();
 
         state = MAIN_MENU;
-		controller = Controller.createController(true, true, this);
-
 		// menu = new Menu();
 		logic = new Logic(this);
 		physic = new Physic();
 		render = new Render();
 		sound = new Sound();
 
+        controller = Controller.createController(this);
 		state = GAME;
-
+		
 		// TODO change this line by call construktor with good parametrs - type of level
 		// , physic const, logic const
 		game = new Game(this);
@@ -135,43 +136,20 @@ public final class Client {
 		return mainMenu;
 	}
 
-	// TODO add support mouse in client
-	// TODO add support mouse in game 
-	public void mouseAction(ArrayList<LightInteger> list_key) {
-
+	public void sendEventsKeyboard (List<StateKey> eventsKeyboard) {
 		if (state == Client.MAIN_MENU) {
 			return;
 		}
 
 		if (state == Client.GAME) {
-			game.keyAction(list_key);
-			return;
-		}
-
-	}
-
-	public void keyAction(ArrayList<LightInteger> list_key) {
-		if (state == Client.MAIN_MENU) {
-			return;
-		}
-
-		if (state == Client.GAME) {
-			game.keyAction(list_key);
+			game.sendEventsKeyboard(eventsKeyboard);
 			return;
 		}
 	}
+    public void sendEventMouse(List<Object> list){
 
-	public void updateCursor(Cursor cursor) {
-		if (state == Client.MAIN_MENU) {
-			return;
-		}
+    }
 
-		if (state == Client.GAME) {
-			game.updateCursor(cursor);
-			return;
-		}
-		
-	}
     public InputToAction getInputToAction(){
         return inputToAction;
     }

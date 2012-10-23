@@ -18,7 +18,7 @@ public class Engine extends GameObjectPhysicMoving {
 
 	private float height = 20f;
 	private float width = 10f;
-	private final static float ENGINE_FORCE = 45;
+	private final static float ENGINE_FORCE = 20;
 	private Joint engineJoint;
 
 	public Engine(Level level, Vector2f position) {

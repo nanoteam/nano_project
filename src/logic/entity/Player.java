@@ -1,7 +1,6 @@
 package logic.entity;
 
 import controller.ControlledObject;
-import controller.Cursor;
 
 public class Player {
 	private ControlledObject controlledObject;

@@ -1,6 +1,6 @@
 /**
  *    
- * this class inkapsulate 2 class - keyboard and mouse;this class is singlton
+ * this class inkapsulate 2 class - keyboard and mouse;singlton;
  *
  * @author Andreyuk Artyom happydroidx@gmail.com
  * @version 1.0
@@ -8,80 +8,49 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
+import org.lwjgl.util.vector.Vector2f;
 import util.LightInteger;
 
-import logic.Level;
 import main.Client;
 import main.Engine;
 
-//OMG, there are singlton, in begin i think thats this is good idea.
-//
 public class Controller implements Engine {
-	private Keyboard keyboard;
+    private Keyboard keyboard;
 	private Mouse mouse;
 
-	private Client client;
+    private Client client;
 	private static Controller controller;
 
-	private Controller(boolean active_keyboard, boolean active_mouse,
-			Client client) {
-		if (active_keyboard) {
-			keyboard = new Keyboard();
-		}
-		if (active_mouse) {
-			mouse = new Mouse();
+    private boolean keyboardOn = false;
+    private boolean mouseOn = false;
 
-		}
+	private Controller(	Client client) {
+		keyboard = new Keyboard(this, client.getInputToAction().getAllNeedKeybKeys());
+        keyboardOn = true;
+        mouseOn = true;
+		mouse = new Mouse(this);
 		this.client = client;
-
 	}
 
-	public static Controller createController(boolean active_keyboard,
-			boolean active_mouse, Client client) {
-		if (controller == null) {
-			controller = new Controller(active_keyboard, active_mouse, client);
-		}
-		return controller;
-	}
-
-	public static Controller getController() {
-		return controller;
-	}
-	public Cursor getCursor(){
-		return mouse.getCursor();
-	}
+    public static Controller createController(Client client) {
+        if (controller == null) {
+            controller = new Controller(client);
+        }
+        return controller;
+    }
 
 	@Override
 	public void tick() {
-		if (null != keyboard) {
-			keyboard.tick();
-			ArrayList<LightInteger> list_key = new ArrayList<LightInteger>();
-			while (org.lwjgl.input.Keyboard.next()) {
-				list_key.add(new LightInteger(org.lwjgl.input.Keyboard
-						.getEventKey()));
-			}
-			if (list_key.size() > 0) {
-				client.keyAction(list_key);
-			}
+        if (keyboardOn) {
+            keyboard.tick();
+            client.sendEventsKeyboard(keyboard.getStateKeyboard());
 
-		}
+        }
 
-		if (null != mouse) {
+		if (mouseOn) {
 			mouse.tick();
-			client.updateCursor(mouse.getCursor());
-			ArrayList<LightInteger> list_key = new ArrayList<LightInteger>();
-			// what a format of Mouse.event key?
-			// there are no capability with method client.keyAction()
-			while (org.lwjgl.input.Mouse.next()) {
-				list_key.add(new LightInteger(org.lwjgl.input.Mouse
-						.getEventButton()));
-			}
-			if (list_key.size() > 0) {
-				client.mouseAction(list_key);
-			}
-
+            //client.sendEventMouse(mouse.getStateMouse());
 		}
 
 	}
@@ -92,16 +61,21 @@ public class Controller implements Engine {
 		mouse.cleanUp();
 	}
 
-	/*
-	 * public get
-	 * 
-	 * Mouse.poll(); Keyboard.poll();
-	 */
+    public void setKeyboardOn(boolean keyboardOn){
+        this.keyboardOn = keyboardOn;
+    }
+    public void setMouseOn(boolean mouseOn){
+        this.mouseOn = mouseOn;
+    }
 
-	/*
-	 * public Keyboard getKeyboard() { return keyboard; }
-	 * 
-	 * public Mouse getMouse() { return mouse; }
-	 */
+    public boolean isKeyboardOn() {
+        return keyboardOn;
+    }
 
+    public boolean isMouseOn() {
+        return mouseOn;
+    }
+    public Vector2f getMousePosition(){
+        return mouse.getPosition();
+    }
 }
