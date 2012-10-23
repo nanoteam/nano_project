@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import main.Game;
+import main.Global;
 import org.jbox2d.callbacks.QueryCallback;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
@@ -18,8 +19,8 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.util.vector.Vector2f;
 
 public class Level {
-	private static int defaultWidth = 640;
-	private static int defaultHeight = 480;
+	private static int defaultWidth = Global.RESOLUTION_X;
+	private static int defaultHeight = Global.RESOLUTION_Y;
 	private int widthLevel;
 	private int heightLevel;
     private Game game;
