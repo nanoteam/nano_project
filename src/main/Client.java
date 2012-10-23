@@ -1,9 +1,11 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import controller.Controller;
 import controller.Cursor;
+import controller.StateKey;
 import controller.InputToAction;
 import logic.Logic;
 import physic.Physic;
@@ -58,7 +60,7 @@ public final class Client {
 	public Client() {
 		state = LOAD_RESOURCES;
 		configsLibrary =ConfigsLibrary.getConfigsLibrary();
-        inputToAction = new InputToAction();
+        inputToAction = InputToAction.get();
         
         inputToAction.init(configsLibrary.getConfig(ConfigsLibrary.pathToSetting));
 
@@ -66,20 +68,15 @@ public final class Client {
         resourcesManager = ResourcesManager.geResourcesManager();
 
         state = MAIN_MENU;
-		controller = Controller.createController(true, true, this);
-
 		// menu = new Menu();
 		logic = new Logic(this);
 		physic = new Physic();
 		render = new Render();
 		sound = new Sound();
 
-
-
-
-
+        controller = Controller.createController(this);
 		state = GAME;
-
+		
 		// TODO change this line by call construktor with good parametrs - type of level
 		// , physic const, logic const
 		game = new Game(this);
@@ -141,26 +138,26 @@ public final class Client {
 
 	// TODO add support mouse in client
 	// TODO add support mouse in game 
-	public void mouseAction(ArrayList<LightInteger> list_key) {
+	public void mouseAction(List<LightInteger> eventMouse) {
 
 		if (state == Client.MAIN_MENU) {
 			return;
 		}
 
 		if (state == Client.GAME) {
-			game.keyAction(list_key);
+			//game.sendEventKeyboard(eventMouse);
 			return;
 		}
 
 	}
 
-	public void keyAction(ArrayList<LightInteger> list_key) {
+	public void sendEventsKeyboard (List<StateKey> eventsKeyboard) {
 		if (state == Client.MAIN_MENU) {
 			return;
 		}
 
 		if (state == Client.GAME) {
-			game.keyAction(list_key);
+			game.sendEventsKeyboard(eventsKeyboard);
 			return;
 		}
 	}

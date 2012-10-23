@@ -43,11 +43,11 @@ final public class Ship extends GameObjectPhysicMoving implements
 	private final static float SPEED_PARTICLE_FROM_ENGINE = 200f;
 	private final static float SPEED_PARTICLE_KOOF_RANDOM = 20f;
 	private final static float ENGINE_TURN_VELOCITY = 10f;
-	private final static float ENGINE_FORCE = 1;
+	private final static float ENGINE_FORCE = 0.1f;
 	private Vector2f ENGINE_POSITION = new Vector2f(50f, 0f);
 	private Engine leftEngine, rightEngine;
 	private float engineRelativeAngle = 0;
-	private static final float MAX_ENGINE_ANGLE = 45/60f;
+	private static final float MAX_ENGINE_ANGLE = 360/60f;
 
     static {
         name = "Ship";

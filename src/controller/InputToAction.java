@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 import resourses.configuration.SheetParse;
@@ -27,6 +28,10 @@ public final class InputToAction {
 	public final static int spec1 = 6;
 	public final static int spec2 = 7;
 
+	public final static int engineLeft = 8;
+	public final static int engineRight = 9;
+
+	
 	public final static int menu = 20;
 
 	public final static int zoomIn = 21;
@@ -40,8 +45,9 @@ public final class InputToAction {
 	// list (key code:action code)
 	private HashMap<LightInteger, LightInteger> keyToAction = new HashMap<LightInteger, LightInteger>();
 
+    private static InputToAction inputToAction;
 	// name of action must be equals name action in files!!!
-	public InputToAction() {
+    private InputToAction() {
 		nameToAction.put("ActionLeft", new LightInteger(left));
 		nameToAction.put("ActionRight", new LightInteger(right));
 		nameToAction.put("ActionUp", new LightInteger(up));
@@ -51,12 +57,21 @@ public final class InputToAction {
 		nameToAction.put("ActionSpec1", new LightInteger(spec1));
 		nameToAction.put("ActionSpec2", new LightInteger(spec2));
 		nameToAction.put("ActionMenu", new LightInteger(menu));
-
+		
+		nameToAction.put("ActionEngineLeft", new LightInteger(engineLeft));
+		nameToAction.put("ActionEngineRight", new LightInteger(engineRight));
+		
 		nameToAction.put("ActionZoomIn", new LightInteger(zoomIn));
 		nameToAction.put("ActionZoomOut", new LightInteger(zoomOut));
 		nameToAction.put("ActionZoomCenter", new LightInteger(zoomCenter));
-
 	}
+
+    public static InputToAction get(){
+        if (inputToAction==null){
+            inputToAction = new InputToAction();
+        }
+        return inputToAction;
+    }
 
 	// filling keyToAction
 	public void init(SheetParse sheetParse) {
@@ -84,18 +99,6 @@ public final class InputToAction {
 			}
 		}
 
-		/*
-		 * for (String action : nameToAction.keySet()) {
-		 * 
-		 * 
-		 * if (list.containsKey(action)) { int key = -1; try { key =
-		 * Integer.valueOf((String) (list.get(action))); } catch (Exception e) {
-		 * e.printStackTrace(); }
-		 * 
-		 * keyToAction.put(new LightInteger(key), new LightInteger(
-		 * ((LightInteger) (nameToAction.get(action))).data)); } }
-		 */
-
 		// TODO Add validating key value, if key == -1;
 		// if valid true
 
@@ -112,10 +115,7 @@ public final class InputToAction {
 			new Exception("InputToAction:getAction - not init!");
 		}
 		LightInteger key = new LightInteger(code);
-		System.out.println(keyToAction);
-		System.out.println("InpuToAction.getAction " + code);
 		if (keyToAction.containsKey(key)) {
-			System.out.println("yes");
 			return keyToAction.get(key).data;
 		}
 		return -10;
@@ -149,14 +149,14 @@ public final class InputToAction {
 
 	}
 
-	// TODO add this future\/
-	/*
-	 * private void saveChangeInFile(){ FileWriter fileWriter; try { fileWriter
-	 * = new FileWriter(new File("D:/setting.ini")); } catch (IOException e) {
-	 * // TODO Auto-generated catch block e.printStackTrace(); }
-	 * 
-	 * 
-	 * }
-	 */
-
+    public List<LightInteger> getAllNeedKeybKeys(){
+        if (complete){
+            //get all key, whose need in the game
+            return new ArrayList<LightInteger>(keyToAction.keySet());
+        }
+        else{
+            new Exception("InputToAction.getAllCodeKey - InputToAction not initialized");
+        }
+        return null;
+    }
 }

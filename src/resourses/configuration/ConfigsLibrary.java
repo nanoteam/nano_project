@@ -1,7 +1,7 @@
 package resourses.configuration;
 
-//Parse configuration files, storage link on obj with parsing files
 //
+//Parse configuration files, storage link on obj with parsing files
 //
 //
 //
@@ -20,8 +20,8 @@ public final class ConfigsLibrary {
     private Parser parser;
     private Map<String, SheetParse> mapConfigurations;
 
-    public static final String pathToSetting = "D:/settings.ini";
 
+    public static final String pathToSetting = "d:/settings.ini";
     private ConfigsLibrary() {
     	mapConfigurations = new HashMap<String, SheetParse>();
         //some main game files parse on start ConfigsLibrary
@@ -44,6 +44,7 @@ public final class ConfigsLibrary {
             try {
             	SheetParse parse = Parser.startParser(pathToFile);
                 mapConfigurations.put(pathToFile, parse);
+                System.out.println(parse);
                 
                 return parse;
             } catch (Exception e) {

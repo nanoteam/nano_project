@@ -4,15 +4,20 @@
  */
 package controller;
 
+import main.Client;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.util.vector.Vector2f;
 import main.Engine;
 
 class Mouse implements Engine {
-
+    private Controller controller;
 	private Cursor cursor;
 
-	Mouse() {
-		cursor = new Cursor();
+	Mouse(Controller controller) {
+        this.controller = controller;
+        createMouse();
+        cursor = new Cursor();
+
 	}
 
 	@Override
@@ -24,7 +29,6 @@ class Mouse implements Engine {
 
 	@Override
 	public void cleanUp() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -32,4 +36,11 @@ class Mouse implements Engine {
 		return cursor;
 	}
 
+    private void createMouse(){
+        try {
+            org.lwjgl.input.Mouse.create();
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,18 +1,7 @@
 package logic;
 
-import logic.entity.AeroDynTest;
-import logic.entity.Asteroid;
+import logic.entity.*;
 import logic.entity.Bot;
-import logic.entity.Chain;
-import logic.entity.EmmiterEffects;
-import logic.entity.Engine;
-import logic.entity.JumpWall;
-import logic.entity.Bot;
-import logic.entity.ManipulareTool;
-import logic.entity.Player;
-import logic.entity.Ship;
-import logic.entity.TrapRotation;
-import logic.entity.Wall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +18,9 @@ import org.lwjgl.util.vector.Vector2f;
 
 import controller.Cursor;
 
-import logic.entity.GameObject;
-
 public class Level {
-	private static int defaultWidth = 1280;
-	private static int defaultHeight = 800;
+	private static int defaultWidth = 640;
+	private static int defaultHeight = 480;
 	private int widthLevel;
 	private int heightLevel;
 	private Player player;
@@ -88,6 +75,10 @@ public class Level {
 
 	// this is method for running game in test mode
 	public void testInitLevel() {
+
+
+
+
 		Ship ship = new Ship(this, 100f, 500f);
 		player.setControlledObject(ship);
 		gameObjects.add(ship);
@@ -119,9 +110,9 @@ public class Level {
 				new Vector2f(500 - 50, 500 + 20)));
 
 
-		/* gameObjects.add(new Chain(this, downWall.getBody(),
+		 /*gameObjects.add(new Chain(this, downWall.getBody(),
 		 new Vector2f(100, 5), ship.getBody(), new Vector2f(100,
-		 500 - 20)));*/
+		 500 - 20)));                          */
 		/*{
 		 TrapRotation tr = new TrapRotation(this, new Vector2f(900f, 300f));
 		 gameObjects.add(tr);
@@ -129,20 +120,41 @@ public class Level {
 		 join.initialize(tr.getBody(), downWall.getBody(), tr.getBody()
 		 .getPosition());
 		 world.createJoint(join);
-		 }*/
+		 } */
+
+
 
 		gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
-		gameObjects.add(new Asteroid(this, new Vector2f(500f, 300f)));
+		gameObjects.add(new Asteroid(this, new Vector2f(550f, 300f)));
+        /*gameObjects.add(new Asteroid(this, new Vector2f(600f, 300f)));
+        gameObjects.add(new Asteroid(this, new Vector2f(650f, 300f)));
+        gameObjects.add(new Asteroid(this, new Vector2f(700f, 300f)));
+        gameObjects.add(new Asteroid(this, new Vector2f(750f, 300f)));
+        gameObjects.add(new Asteroid(this, new Vector2f(800f, 300f)));
+        gameObjects.add(new Asteroid(this, new Vector2f(850f, 300f)));*/
 
-		 // /gameObjects.add(new Engine(this,new Vector2f(200f,200f)));
-		 //gameObjects.add(new Chain(this, ship.getBody(), ship.getPosition(),
-		 //ship.getBody(), new Vector2f(100, 200)));
 
-		//gameObjects.add(new AeroDynTest(this));
-		//ManipulareTool mt = new ManipulareTool(this, new Vector2f(670f, 500f));
-		//gameObjects.add(mt);
-		//gameObjects.add(new Chain(this, upWall.getBody(),
-				//new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));
+		gameObjects.add(new AeroDynTest(this));
+
+        //coment
+
+        // /gameObjects.add(new Engine(this,new Vector2f(200f,200f)));
+        //gameObjects.add(new Chain(this, ship.getBody(), ship.getPosition(),
+        //ship.getBody(), new Vector2f(100, 200)));
+
+        //gameObjects.add(new AeroDynTest(this));
+        //ManipulareTool mt = new ManipulareTool(this, new Vector2f(670f, 500f));
+        //gameObjects.add(mt);
+        //gameObjects.add(new Chain(this, upWall.getBody(),
+        //new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));
+        // gameObjects.add(new Engine(this,new Vector2f(200f,200f)));
+        // gameObjects.add(new Chain(this, ship.getBody(), ship.getPosition(),
+        // ship.getBody(), new Vector2f(100, 200)));
+
+// ManipulareTool mt = new ManipulareTool(this, new Vector2f(670f, 500f));
+//		gameObjects.add(mt);
+//		gameObjects.add(new Chain(this, upWall.getBody(),
+//				new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));     */
 	}
 
 	public Player getPlayer() {
