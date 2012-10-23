@@ -68,9 +68,11 @@ final public class Ship extends GameObjectPhysicMoving implements
 
 	@Override
 	public void init() {
+
 		width = 100f;
 		height = 40f;
 		liveHealth = 100;
+
 		BodyDef shipDef = new BodyDef();
 		shipDef.position.set(new Vec2(position.x / 30, position.y / 30));
 		shipDef.type = BodyType.DYNAMIC;

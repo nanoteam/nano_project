@@ -107,10 +107,6 @@ public class Level {
 				defaultWidth / 4f, defaultHeight - 5), ship2.getBody(),
 				new Vector2f(500 - 50, 500 + 20)));
 
-
-		 /*gameObjects.add(new Chain(this, downWall.getBody(),
-		 new Vector2f(100, 5), ship.getBody(), new Vector2f(100,
-		 500 - 20)));                          */
 		/*{
 		 TrapRotation tr = new TrapRotation(this, new Vector2f(900f, 300f));
 		 gameObjects.add(tr);
@@ -131,7 +127,7 @@ public class Level {
 
 		gameObjects.add(new AeroDynTest(this));
 
-        //coment
+  
 
         // /gameObjects.add(new Engine(this,new Vector2f(200f,200f)));
         //gameObjects.add(new Chain(this, ship.getBody(), ship.getPosition(),
@@ -150,7 +146,6 @@ public class Level {
 //		gameObjects.add(mt);
 //		gameObjects.add(new Chain(this, upWall.getBody(),
 //				new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));     */
-
 	}
 
 	public Player getPlayer() {
