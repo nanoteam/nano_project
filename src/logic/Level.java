@@ -119,9 +119,6 @@ public class Level {
 		 .getPosition());
 		 world.createJoint(join);
 		 } */
-
-
-
 		gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
 		gameObjects.add(new Asteroid(this, new Vector2f(550f, 300f)));
         /*gameObjects.add(new Asteroid(this, new Vector2f(600f, 300f)));
@@ -153,6 +150,7 @@ public class Level {
 //		gameObjects.add(mt);
 //		gameObjects.add(new Chain(this, upWall.getBody(),
 //				new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));     */
+
 	}
 
 	public Player getPlayer() {

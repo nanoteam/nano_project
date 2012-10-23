@@ -7,11 +7,14 @@ package logic.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jbox2d.callbacks.QueryCallback;
+import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
@@ -67,7 +70,7 @@ final public class Ship extends GameObjectPhysicMoving implements
 	public void init() {
 		width = 100f;
 		height = 40f;
-		liveHealth = 1000000;
+		liveHealth = 100;
 		BodyDef shipDef = new BodyDef();
 		shipDef.position.set(new Vec2(position.x / 30, position.y / 30));
 		shipDef.type = BodyType.DYNAMIC;
@@ -94,7 +97,7 @@ final public class Ship extends GameObjectPhysicMoving implements
 			level.getGameObjects().add(weap2);
 		}
 
-		{	
+		{
 			// adding engines
 			leftEngine = new Engine(level, new Vector2f(position.x
 					- ENGINE_POSITION.x, position.y - ENGINE_POSITION.y));
@@ -128,10 +131,10 @@ final public class Ship extends GameObjectPhysicMoving implements
 				new Vec2(engine.getPosition().x / 30f,
 						engine.getPosition().y / 30f));
 		jointDef.collideConnected = false;
-//		jointDef.enableLimit = true;
-//		jointDef.lowerAngle = -MAX_ENGINE_ANGLE;
-//		jointDef.upperAngle = MAX_ENGINE_ANGLE;
-//		jointDef.referenceAngle = 0;
+		// jointDef.enableLimit = true;
+		// jointDef.lowerAngle = -MAX_ENGINE_ANGLE;
+		// jointDef.upperAngle = MAX_ENGINE_ANGLE;
+		// jointDef.referenceAngle = 0;
 		Joint joint = level.getWorld().createJoint(jointDef);
 		engine.setEngineJoint(joint);
 
@@ -307,8 +310,11 @@ final public class Ship extends GameObjectPhysicMoving implements
 
 	@Override
 	public void destroy() {
+
 		EmmiterEffects.drawBoom(position);
 		level.getWorld().destroyBody(body);
+		level.getNotAddedGameObjects().add(new Explosion(level, position, 60, 1));
+
 	}
 
 	public void damage(float... impulses) {

@@ -39,6 +39,7 @@ public class AeroDynTest extends GameObject {
 
 	@Override
 	public void move() {
+
 		if (isActivated) {
 			/*this.end = level.getPositionMouse();
 			Vector2f speed = new Vector2f((end.x - begin.x) * 2,

@@ -193,7 +193,6 @@ public class Game {
                 }
             }
 
-
             if (stateKey.state == StateKey.DOWN_PRESSED) {
                 switch (inputToAction.getAction(stateKey.keyCode)) {
 

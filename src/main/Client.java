@@ -68,12 +68,12 @@ public final class Client {
         resourcesManager = ResourcesManager.geResourcesManager();
 
         state = MAIN_MENU;
+
 		// menu = new Menu();
 		logic = new Logic(this);
 		physic = new Physic();
 		render = new Render();
 		sound = new Sound();
-
         controller = Controller.createController(this);
 		state = GAME;
 		

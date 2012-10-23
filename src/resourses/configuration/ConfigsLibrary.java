@@ -19,9 +19,8 @@ public final class ConfigsLibrary {
     private static ConfigsLibrary configsLibrary;
     private Parser parser;
     private Map<String, SheetParse> mapConfigurations;
-
-
     public static final String pathToSetting = "d:/settings.ini";
+
     private ConfigsLibrary() {
     	mapConfigurations = new HashMap<String, SheetParse>();
         //some main game files parse on start ConfigsLibrary
