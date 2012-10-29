@@ -6,10 +6,8 @@ package logic;
 
 import java.util.List;
 
-import org.jbox2d.dynamics.Body;
-import org.lwjgl.input.Keyboard;
 import logic.entity.GameObject;
-import logic.entity.Ship;
+import logic.entity.ship.CromsonManager;
 import main.Client;
 import main.Engine;
 
@@ -31,7 +29,7 @@ public class Logic implements Engine {
 
 	@Override
 	public void tick() {
-		
+
 		List<GameObject> game_objects = level.getGameObjects();
 		for (GameObject game_object : game_objects) {
 			game_object.update();

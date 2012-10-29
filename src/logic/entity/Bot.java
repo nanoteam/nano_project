@@ -1,11 +1,12 @@
 package logic.entity;
 
+import logic.entity.ship.Ship;
 import org.lwjgl.util.vector.Vector2f;
 
 import controller.ControlledObject;
-
+/*
 public class Bot extends GameObject {
-
+     /*
 	static private float V_ERROR = 0.1f;
 	private Vector2f prevPosition;
 	private float prevSpeedY;
@@ -132,4 +133,4 @@ public class Bot extends GameObject {
 		// TODO Auto-generated method stub
 
 	}
-}
+}    */

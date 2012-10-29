@@ -14,17 +14,15 @@ import physic.PhysicObject;
 
 //TODO add modificator visiable to protected code to field and method
 abstract public class GameObjectPhysicMoving extends GameObjectSimpleMoving {
-	float mass;
+    protected float mass;
 	// w - omega, speed rotate, in radian
-	float w;
+    protected float w;
 	// angle of position, in radian. pi, pi/2, -3*pi/2
-	float angle;
+    protected float angle;
 	// inertia, this is importent, but need manual setting
-	float I;
-	
-	
+    protected float I;
 
-	PhysicObject physicObject;
+    protected PhysicObject physicObject;
 
 	@Override
 	abstract public void init();
