@@ -1,9 +1,6 @@
 package resourses;
 
-import logic.entity.RubberBall;
-import logic.entity.Ship;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.opengl.InternalTextureLoader;
 import java.util.HashMap;
 
@@ -18,7 +15,7 @@ public class ResourcesManager {
     private ResourcesManager() {
         /*nameForPath = new HashMap<String, String>();
         nameForPath.put(RubberBall.getName(), "res/rubberbomb.png");
-        //nameForPath.put(Ship.getName(), "res/ship.png");
+        //nameForPath.put(ship.getName(), "res/ship.png");
 
         nameForImage = new HashMap<String, Image>();
         for (String className : nameForPath.keySet()) {

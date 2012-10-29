@@ -76,11 +76,17 @@ public class SheetParse extends Object {
 	}
 
 	public String getName() {
-		return name;
+        if (name!=null){
+            return name.trim();
+        }
+		return null;
 	}
 
 	public String getValue() {
-		return value;
+        if (value!=null){
+            return value.trim();
+        }
+        return null;
 	}
 
 	public ArrayList<SheetParse> getSheets() {

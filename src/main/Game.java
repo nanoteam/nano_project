@@ -11,6 +11,7 @@ import controller.*;
 import logic.Level;
 import logic.Logic;
 import logic.entity.Player;
+import logic.entity.ship.CromsonManager;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import physic.Physic;
@@ -89,7 +90,7 @@ public class Game {
                 finished = true;
             } else if (Display.isActive()) {
                 // The window is in the foreground, so we should play the game
-                controller.tick();
+//                controller.tick();
                 physic.tick();
                 logic.tick();
                 sound.tick();
@@ -128,96 +129,158 @@ public class Game {
         this.player = player;
     }
 
-    public void sendEventsKeyboard(List<StateKey> eventsKeyboard) {
+    public void sendStatesInput(List<StateKeyboard> eventsKeyboard, List<StateMouse> eventsMouses) {
+        byte moving = 0;
+        byte firing = 0;
+        //keyboard event
+        if (eventsKeyboard != null && (!eventsKeyboard.isEmpty())) {
+            for (StateKeyboard stateKeyboard : eventsKeyboard) {
+                if (stateKeyboard.state == StateKeyboard.DOWN || stateKeyboard.state == StateKeyboard.DOWN_PRESSED) {
+                    switch (inputToAction.getActionByDevice(stateKeyboard.keyCode, InputToAction.KEYBOARD)) {
+                        case InputToAction.left: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.left);
+                            break;
+                        }
+                        case InputToAction.right: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.right);
+                            break;
+                        }
 
-        if (eventsKeyboard == null) {
-            return;
+                        case InputToAction.down: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.down);
+                            break;
+                        }
 
-        }
+                        case InputToAction.up: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.up);
+                            break;
+                        }
 
-        for (StateKey stateKey : eventsKeyboard) {
-            System.out.println(stateKey.toString());
-        }
+                        case InputToAction.fire: {
+                            firing++;
+                            break;
+                        }
 
-        for (StateKey stateKey : eventsKeyboard) {
-            if (stateKey.state == StateKey.DOWN || stateKey.state == StateKey.DOWN_PRESSED) {
-                switch (inputToAction.getAction(stateKey.keyCode)) {
-                    case InputToAction.left: {
-                        level.getPlayer().getControlledObject()
-                                .doAction(ControlledObject.LEFT_ENGINE_ACTIVE);
-                        break;
+                        case InputToAction.move: {
+                            moving++;
+                            break;
+                        }
+
+
+                        /*
+                        case InputToAction.fire1: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(ControlledObject.FIRE_FIRST_WEAPON);
+                            break;
+                        }
+
+                        case InputToAction.engineLeft: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(ControlledObject.TURN_ENGINES_LEFT);
+                            break;
+                        }
+
+                        case InputToAction.engineRight: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(ControlledObject.TURN_ENGINES_RIGHT);
+                            break;
+                        } */
+
+                        case InputToAction.zoomIn: {
+                            render.setZoom((float) (render.getZoom() + 0.05));
+                            break;
+                        }
+                        case InputToAction.zoomOut: {
+                            render.setZoom((float) (render.getZoom() - 0.05));
+                            break;
+                        }
                     }
-                    case InputToAction.right: {
-                        level.getPlayer().getControlledObject()
-                                .doAction(ControlledObject.RIGHT_ENGINE_ACTIVE);
-                        break;
+                }
+
+                if (stateKeyboard.state == StateKeyboard.DOWN_PRESSED) {
+                    switch (inputToAction.getActionByDevice(stateKeyboard.keyCode, InputToAction.KEYBOARD)) {
+
+                        case InputToAction.zoomCenter: {
+                            if (render.getStateViewPort() == Render.VIEWPORT_ON_PLAYER) {
+                                render.setStateViewPort(Render.VIEWPORT_GLOBAL_WORLD);
+                                break;
+                            }
+                            if (render.getStateViewPort() == Render.VIEWPORT_GLOBAL_WORLD) {
+                                render.setStateViewPort(Render.VIEWPORT_ON_PLAYER);
+                                break;
+                            }
+
+                        }
+                        case InputToAction.menu: {
+                            client.exit();
+                            break;
+                        }
+
                     }
 
-                    case InputToAction.down: {
-                        level.getPlayer().getControlledObject()
-                                .doAction(ControlledObject.All_ENGINE_ACTIVE);
-                        break;
-                    }
-
-                    case InputToAction.up: {
-                        level.getPlayer().getControlledObject()
-                                .doAction(ControlledObject.All_ENGINE_ACTIVE);
-                        break;
-                    }
-
-                    case InputToAction.fire1: {
-                        level.getPlayer().getControlledObject()
-                                .doAction(ControlledObject.FIRE_FIRST_WEAPON);
-                        break;
-                    }
-
-                    case InputToAction.engineLeft: {
-                        level.getPlayer().getControlledObject()
-                                .doAction(ControlledObject.TURN_ENGINES_LEFT);
-                        break;
-                    }
-
-                    case InputToAction.engineRight: {
-                        level.getPlayer().getControlledObject()
-                                .doAction(ControlledObject.TURN_ENGINES_RIGHT);
-                        break;
-                    }
-                    case InputToAction.zoomIn: {
-                        render.setZoom((float) (render.getZoom() + 0.05));
-                        break;
-                    }
-                    case InputToAction.zoomOut: {
-                        render.setZoom((float) (render.getZoom() - 0.05));
-                        break;
-                    }
                 }
             }
-
-            if (stateKey.state == StateKey.DOWN_PRESSED) {
-                switch (inputToAction.getAction(stateKey.keyCode)) {
-
-                    case InputToAction.zoomCenter: {
-                        if (render.getStateViewPort() == Render.VIEWPORT_ON_PLAYER) {
-                            render.setStateViewPort(Render.VIEWPORT_GLOBAL_WORLD);
-                            break;
-                        }
-                        if (render.getStateViewPort() == Render.VIEWPORT_GLOBAL_WORLD) {
-                            render.setStateViewPort(Render.VIEWPORT_ON_PLAYER);
-                            break;
-                        }
-
-                    }
-                    case InputToAction.menu: {
-                        client.exit();
-                        break;
-                    }
+        }
+        //mouse event
+        if (eventsMouses != null && (!eventsMouses.isEmpty())) {
+            for (StateMouse stateMouse : eventsMouses) {
+                if (stateMouse.rolickEvent){
 
                 }
+                if (!stateMouse.rolickEvent){
+                    if (stateMouse.buttonCode == StateKeyboard.DOWN || stateMouse.stateButton == StateKeyboard.DOWN_PRESSED) {
+                        switch (inputToAction.getActionByDevice(stateMouse.buttonCode, InputToAction.MOUSE)) {
+                            case InputToAction.comboChoiseFirst: {
+                                if (firing!=0){
+                                    //player.get
+                                    firing = 0;
+                                }
+                                if (moving!=0){
+
+                                    moving = 0;
+                                }
+                                break;
+                            }
+                            case InputToAction.comboChoiseSecond: {
+                                if (firing!=0){
+
+                                    firing = 0;
+                                }
+                                if (moving!=0){
+
+                                    moving = 0;
+                                }
+                                break;
+                            }
+                            case InputToAction.comboChoiseStop: {
+                                if (firing!=0){
+
+                                    firing = 0;
+                                }
+                                if (moving!=0){
+
+                                    moving = 0;
+                                }
+                                break;
+                            }
+
+                            
+                            
+                        }
+                    }
+                }
+
+
 
             }
         }
     }
-    public Vector2f getPositionMouse(){
+
+    public Vector2f getPositionMouse() {
         return controller.getMousePosition();
     }
 }

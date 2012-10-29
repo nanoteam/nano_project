@@ -19,7 +19,7 @@ public class Explosion extends GameObject {
 		this.level = level;
 		this.position = position;
 		this.distance = distance/30;
-		this.force = force;
+		this.force = force*5;
 		// this.lifeTime = distance * 30;
 		init();
 	}

@@ -1,12 +1,14 @@
 package logic;
 
 import logic.entity.*;
-import logic.entity.Bot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import logic.entity.ammo.RubberBall;
+import logic.entity.ship.CromsonManager;
+import logic.entity.ship.Ship;
 import main.Game;
 import main.Global;
 import org.jbox2d.callbacks.QueryCallback;
@@ -14,8 +16,6 @@ import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.World;
-import org.jbox2d.dynamics.joints.DistanceJointDef;
-import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.util.vector.Vector2f;
 
 public class Level {
@@ -38,7 +38,6 @@ public class Level {
 	private List<GameObject> gameObjectsToDelete = new ArrayList<GameObject>();
 
 	private static Random random = new Random();
-
 	public Level(Game game) {
 		EmmiterEffects.init(this);
         this.game = game;
@@ -74,16 +73,15 @@ public class Level {
 	// this is method for running game in test mode
 	public void testInitLevel() {
 
+		Ship ship = new Ship(this, 200f, 200f);
 
 
-
-		Ship ship = new Ship(this, 100f, 500f);
-		game.getPlayer().setControlledObject(ship);
+        game.getPlayer().setControlledObject(ship);
 		gameObjects.add(ship);
 
-		Ship ship2 = new Ship(this, 500f, 500f);
-		//Bot bot = new Bot(ship2);
-		gameObjects.add(ship2);
+		///Ship ship2 = new Ship(this, 500f, 500f);
+        //Bot bot = new Bot(ship2);
+		//gameObjects.add(ship2);
 	    //gameObjects.add(bot);
 		Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight);
 		gameObjects.add(leftWall);
@@ -96,11 +94,12 @@ public class Level {
 		Wall downWall = new Wall(this, defaultWidth / 2, 5, defaultWidth, 10);
 		gameObjects.add(downWall);
 
+
 		// gameObjects.add(new Wall(this, 700, 100, 20, 200));
 		gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
 
 		// add to world a chain
-		gameObjects.add(new Chain(this, upWall.getBody(), new Vector2f(
+		/*gameObjects.add(new Chain(this, upWall.getBody(), new Vector2f(
 				defaultWidth / 2f, defaultHeight - 5), ship2.getBody(),
 				new Vector2f(500 + 50, 500 + 20)));
 		gameObjects.add(new Chain(this, upWall.getBody(), new Vector2f(
@@ -117,15 +116,15 @@ public class Level {
 		 } */
 		gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
 		gameObjects.add(new Asteroid(this, new Vector2f(550f, 300f)));
-        /*gameObjects.add(new Asteroid(this, new Vector2f(600f, 300f)));
+        gameObjects.add(new Asteroid(this, new Vector2f(600f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(650f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(700f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(750f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(800f, 300f)));
-        gameObjects.add(new Asteroid(this, new Vector2f(850f, 300f)));*/
+        gameObjects.add(new Asteroid(this, new Vector2f(850f, 300f)));
 
 
-		gameObjects.add(new AeroDynTest(this));
+		//gameObjects.add(new AeroDynTest(this));
 
   
 

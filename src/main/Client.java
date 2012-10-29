@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.Controller;
-import controller.StateKey;
+import controller.StateKeyboard;
 import controller.InputToAction;
+import controller.StateMouse;
 import logic.Logic;
-import org.lwjgl.util.vector.Vector2f;
 import physic.Physic;
 import render.Render;
 import resourses.configuration.ConfigsLibrary;
 import resourses.ResourcesManager;
 import sound.Sound;
-import util.LightInteger;
 
 public final class Client {
 
@@ -136,19 +135,16 @@ public final class Client {
 		return mainMenu;
 	}
 
-	public void sendEventsKeyboard (List<StateKey> eventsKeyboard) {
+	public void sendStatesInput (List<StateKeyboard> eventsKeyboard,List<StateMouse> eventsMouse) {
 		if (state == Client.MAIN_MENU) {
 			return;
 		}
 
 		if (state == Client.GAME) {
-			game.sendEventsKeyboard(eventsKeyboard);
+			game.sendStatesInput(eventsKeyboard, eventsMouse);
 			return;
 		}
 	}
-    public void sendEventMouse(List<Object> list){
-
-    }
 
     public InputToAction getInputToAction(){
         return inputToAction;

@@ -7,10 +7,9 @@
  */
 package controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
-import util.LightInteger;
 
 import main.Client;
 import main.Engine;
@@ -24,6 +23,8 @@ public class Controller implements Engine {
 
     private boolean keyboardOn = false;
     private boolean mouseOn = false;
+    private List<StateMouse> stateMouseList;
+    private List<StateKeyboard> stateKeyboardList;
 
 	private Controller(	Client client) {
 		keyboard = new Keyboard(this, client.getInputToAction().getAllNeedKeybKeys());
@@ -42,17 +43,17 @@ public class Controller implements Engine {
 
 	@Override
 	public void tick() {
+        stateMouseList = null;
+        stateKeyboardList = null;
         if (keyboardOn) {
             keyboard.tick();
-            client.sendEventsKeyboard(keyboard.getStateKeyboard());
-
+            stateKeyboardList = keyboard.getStatesKeyboard();
         }
-
 		if (mouseOn) {
 			mouse.tick();
-            //client.sendEventMouse(mouse.getStateMouse());
+            stateMouseList = mouse.getStatesMouse();
 		}
-
+        client.sendStatesInput(stateKeyboardList,stateMouseList);
 	}
 
 	@Override
@@ -75,6 +76,7 @@ public class Controller implements Engine {
     public boolean isMouseOn() {
         return mouseOn;
     }
+    //fix)
     public Vector2f getMousePosition(){
         return mouse.getPosition();
     }

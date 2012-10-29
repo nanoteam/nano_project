@@ -8,16 +8,17 @@ import org.lwjgl.util.vector.Vector2f;
  * @author Arthur
  * 
  */
+
 public abstract class ArsenalGameObject extends GameObjectPhysicMoving{
 
-	GameObjectPhysicMoving fatherObj;
-	
-	boolean onShoot;
-	boolean onReload;
-	float randomizeFire;
+    //Arthur, can you add comment for this fields?
+	protected GameObjectPhysicMoving fatherObj;
+    protected boolean onShoot;
+    protected boolean onReload;
+    protected float randomizeFire;
 	public int reloadTime;
-	float angle;
-	Vector2f relativePosition;
+    protected float angle;
+    protected Vector2f relativePosition;
 
 	abstract public boolean setShootOn();
 

@@ -13,8 +13,8 @@ import org.lwjgl.util.vector.Vector2f;
 
 //TODO add modificator visiable to protected code to field and method
 abstract public class GameObjectSimpleMoving extends GameObject {
-	Vector2f speed;
-	boolean isCollision = false;
+    protected Vector2f speed;
+    protected boolean isCollision = false;
 
 	@Override
 	abstract public void init();

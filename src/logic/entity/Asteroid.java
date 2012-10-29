@@ -18,7 +18,7 @@ import logic.Level;
 public class Asteroid extends GameObjectPhysicMoving {
 
 	private float radius;
-	private int MAX_SPEED = 30;
+	private int MAX_SPEED = 50;
 
 	public Asteroid(Level level, Vector2f position) {
 		this.position = position;
@@ -47,7 +47,7 @@ public class Asteroid extends GameObjectPhysicMoving {
 		FixtureDef asteroidFixture = new FixtureDef();
 		asteroidFixture.friction = 0.7f; // trenie
 
-		asteroidFixture.density = 50; // plotnost'
+		asteroidFixture.density = 10; // plotnost'
 		asteroidFixture.restitution = 1f;
 		asteroidFixture.shape = asteroidShape;
 		// asteroids do not interact asteroids with each other

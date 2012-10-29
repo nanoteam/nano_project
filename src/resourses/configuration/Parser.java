@@ -77,22 +77,6 @@ class Parser {
             int depthLine = getNumberFirstTabs(line);
             // if there is header.
             if (!line.contains("=")) {
-                if (depthLine == stateParserDepth) {
-                    tokenizer = new StringTokenizer(line.trim());
-                    String name = tokenizer.nextToken();
-                    if (currentSheetParse == null) {
-                        currentSheetParse = new SheetParse(name, null,
-                                new ArrayList<SheetParse>(), null,
-                                stateParserDepth);
-                        stackSheets.push(currentSheetParse);
-                    } else {
-                        stackSheets.push(currentSheetParse);
-                        currentSheetParse = currentSheetParse
-                                .addNewChildHeader(name);
-                    }
-                    stateParserDepth++;
-                    continue;
-                }
                 // ------>
                 if (depthLine > stateParserDepth) {
                     new Exception(
@@ -111,6 +95,25 @@ class Parser {
                     stateParserDepth = depthLine;
 
                 }
+
+
+                if (depthLine == stateParserDepth) {
+                    tokenizer = new StringTokenizer(line.trim());
+                    String name = tokenizer.nextToken();
+                    if (currentSheetParse == null) {
+                        currentSheetParse = new SheetParse(name, null,
+                                new ArrayList<SheetParse>(), null,
+                                stateParserDepth);
+                        stackSheets.push(currentSheetParse);
+                    } else {
+                        stackSheets.push(currentSheetParse);
+                        currentSheetParse = currentSheetParse
+                                .addNewChildHeader(name);
+                    }
+                    stateParserDepth++;
+                    continue;
+                }
+                continue;
             }
 
             // if there is one pair name:value
@@ -165,6 +168,4 @@ class Parser {
         }
         return realDepth;
     }
-
-
 }

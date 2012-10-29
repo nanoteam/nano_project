@@ -6,14 +6,13 @@ package controller;
 
 import main.Engine;
 import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
 import util.LightInteger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Keyboard implements Engine {
-    private ArrayList<StateKey> statesKeys;
+final class Keyboard implements Engine {
+    private ArrayList<StateKeyboard> statesKeyboards;
     private List<LightInteger> allNeedKeys;
     private Controller controller;
 
@@ -25,8 +24,8 @@ class Keyboard implements Engine {
 
     }
 
-    public List<StateKey> getStateKeyboard() {
-        return statesKeys;
+    public List<StateKeyboard> getStatesKeyboard() {
+        return statesKeyboards;
     }
     //TODO add support this code!
     @Override
@@ -37,7 +36,7 @@ class Keyboard implements Engine {
 	   	}          */
 
         //reset collection, must be!
-        statesKeys = new ArrayList<StateKey>();
+        statesKeyboards = new ArrayList<StateKeyboard>();
 
         //check keys, buffered
         org.lwjgl.input.Keyboard.poll();
@@ -46,29 +45,29 @@ class Keyboard implements Engine {
         int count = org.lwjgl.input.Keyboard.getNumKeyboardEvents();
 
         while (org.lwjgl.input.Keyboard.next()) {
-            StateKey keyboardEvent = null;
+            StateKeyboard keyboardEvent = null;
             if (org.lwjgl.input.Keyboard.getEventKeyState()) {
-                keyboardEvent = new StateKey(
-                        org.lwjgl.input.Keyboard.getEventKey(), StateKey.DOWN_PRESSED);
+                keyboardEvent = new StateKeyboard(
+                        org.lwjgl.input.Keyboard.getEventKey(), StateKeyboard.DOWN_PRESSED);
             } else {
-                keyboardEvent = new StateKey(
-                        org.lwjgl.input.Keyboard.getEventKey(), StateKey.UP_RELEASED);
+                keyboardEvent = new StateKeyboard(
+                        org.lwjgl.input.Keyboard.getEventKey(), StateKeyboard.UP_RELEASED);
 
             }
-            statesKeys.add(keyboardEvent);
+            statesKeyboards.add(keyboardEvent);
         }
 
 
         //filling output list by key with state down and up.
         if (allNeedKeys!=null&&allNeedKeys.size()!=0){
             for (LightInteger key : allNeedKeys) {
-                StateKey keyboardEvent = null;
+                StateKeyboard keyboardEvent = null;
                 if (org.lwjgl.input.Keyboard.isKeyDown(key.data)) {
-                    keyboardEvent = new StateKey(key.data,StateKey.DOWN);
+                    keyboardEvent = new StateKeyboard(key.data, StateKeyboard.DOWN);
                 } else {
-                    keyboardEvent = new StateKey(key.data,StateKey.UP);
+                    keyboardEvent = new StateKeyboard(key.data, StateKeyboard.UP);
                 }
-                statesKeys.add(keyboardEvent);
+                statesKeyboards.add(keyboardEvent);
             }
         }
     }
