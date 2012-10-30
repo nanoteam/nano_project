@@ -11,11 +11,14 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
+import physic.Material;
+import physic.PhysicObject;
+
 import render.RenderUtil;
 
 import logic.Level;
 
-public class Asteroid extends GameObjectPhysicMoving {
+public class Asteroid extends GameObjectMoving {
 
 	private float radius;
 	private int MAX_SPEED = 50;
@@ -35,27 +38,9 @@ public class Asteroid extends GameObjectPhysicMoving {
 		this.speed = new Vector2f((float) MAX_SPEED
 				- random.nextInt(MAX_SPEED * 2), (float) MAX_SPEED
 				- random.nextInt(MAX_SPEED * 2));
-
-		BodyDef asteroidDef = new BodyDef();
-		asteroidDef.position.set(new Vec2(position.x / 30f, position.y / 30f));
-		asteroidDef.type = BodyType.DYNAMIC;
-		PolygonShape asteroidShape = new PolygonShape();
-		asteroidShape.setAsBox(radius / 30f, radius / 30f);
-		this.body = level.getWorld().createBody(asteroidDef);
-		this.body.m_userData = this;
-
-		FixtureDef asteroidFixture = new FixtureDef();
-		asteroidFixture.friction = 0.7f; // trenie
-
-		asteroidFixture.density = 10; // plotnost'
-		asteroidFixture.restitution = 1f;
-		asteroidFixture.shape = asteroidShape;
-		// asteroids do not interact asteroids with each other
-		// asteroidFixture.filter.groupIndex = -1;
-		body.createFixture(asteroidFixture);
-		//body.setAngularVelocity(50);
-
-		body.setLinearVelocity(new Vec2(speed.x / 30, speed.y / 30));
+		this.physicObject = PhysicObject.createBall(this, position, radius,
+				Material.Stone);
+		physicObject.setSpeed(speed);
 	}
 
 	@Override
@@ -65,19 +50,17 @@ public class Asteroid extends GameObjectPhysicMoving {
 
 	@Override
 	public void move() {
-		this.position = new Vector2f(body.getPosition().x * 30f,
-				body.getPosition().y * 30f);
-		this.angle = body.getAngle();
-		body.applyForce(new Vec2(0,-level.getGravity() * body.getMass()),
-				body.getWorldCenter());
-
+		position = physicObject.getPosition();
+		angle = physicObject.getAngle();
+		physicObject.applyForce(0,
+				-level.getGravity() * physicObject.getMass(), position);
 	}
 
 	@Override
 	public void draw() {
-		
-		RenderUtil.drawQaud(position.x, position.y, radius * 2, radius * 2,
-				angle, (Color) Color.PURPLE);
+
+		RenderUtil.drawCircle(position.x, position.y, radius, 4,
+				(Color) Color.RED);
 	}
 
 	@Override
@@ -87,7 +70,7 @@ public class Asteroid extends GameObjectPhysicMoving {
 
 	@Override
 	public void destroy() {
-		level.getWorld().destroyBody(body);
+		physicObject.destroy();
 	}
 
 }

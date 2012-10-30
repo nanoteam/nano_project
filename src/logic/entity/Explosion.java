@@ -18,8 +18,8 @@ public class Explosion extends GameObject {
 	public Explosion(Level level, Vector2f position, float distance, float force) {
 		this.level = level;
 		this.position = position;
-		this.distance = distance/30;
-		this.force = force*5;
+		this.distance = distance / 30;
+		this.force = force * 5;
 		// this.lifeTime = distance * 30;
 		init();
 	}
@@ -42,6 +42,7 @@ public class Explosion extends GameObject {
 				float dy = fixturePosition.y - posit2.y;
 				float pr = 0.2f;
 
+				// must be refactoring
 				if (dx < pr && dx > 0)
 					dx = pr;
 				if (dy < pr && dy > 0)

@@ -10,19 +10,17 @@
  */
 package logic.entity;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import physic.PhysicObject;
 
 //TODO add modificator visiable to protected code to field and method
-abstract public class GameObjectPhysicMoving extends GameObjectSimpleMoving {
-    protected float mass;
-	// w - omega, speed rotate, in radian
-    protected float w;
-	// angle of position, in radian. pi, pi/2, -3*pi/2
-    protected float angle;
-	// inertia, this is importent, but need manual setting
-    protected float I;
+abstract public class GameObjectMoving extends GameObject {
+	protected float mass;
+	protected float angle;
+	protected Vector2f speed;
 
-    protected PhysicObject physicObject;
+	protected PhysicObject physicObject;
 
 	@Override
 	abstract public void init();
@@ -39,22 +37,6 @@ abstract public class GameObjectPhysicMoving extends GameObjectSimpleMoving {
 	@Override
 	abstract public void playSound();
 
-	public float getAlfa() {
-		return angle;
-	}
-
-	public void setAlfa(float alfa) {
-		this.angle = alfa;
-	}
-
-	public float getW() {
-		return w;
-	}
-
-	public void setW(float w) {
-		this.w = w;
-	}
-
 	public float getMass() {
 		return mass;
 	}
@@ -63,17 +45,12 @@ abstract public class GameObjectPhysicMoving extends GameObjectSimpleMoving {
 		this.mass = mass;
 	}
 
-	public float getI() {
-		return I;
-	}
-
-	public void setI(float i) {
-		I = i;
-	}
-
 	public float getAngle() {
 		return angle;
 	}
-	
+
+	public PhysicObject getPhysicObject() {
+		return physicObject;
+	}
 
 }

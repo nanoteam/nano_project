@@ -9,16 +9,23 @@ import org.lwjgl.util.vector.Vector2f;
  * 
  */
 
-public abstract class ArsenalGameObject extends GameObjectPhysicMoving{
+public abstract class ArsenalGameObject extends GameObjectMoving {
 
-    //Arthur, can you add comment for this fields?
-	protected GameObjectPhysicMoving fatherObj;
-    protected boolean onShoot;
-    protected boolean onReload;
-    protected float randomizeFire;
+	// Arthur, can you add comment for this fields?
+
+	// the arsenalObject is situated on fatherObj
+	protected GameObjectMoving fatherObj;
+	// is shooting
+	protected boolean onShoot;
+	// is relodaing
+	protected boolean onReload;
+	//value of error fire's trajectory
+	protected float randomizeFire;
+	// time of reload
 	public int reloadTime;
-    protected float angle;
-    protected Vector2f relativePosition;
+	protected float angle;
+	// delta of ship's position and this object's position
+	protected Vector2f relativePosition;
 
 	abstract public boolean setShootOn();
 

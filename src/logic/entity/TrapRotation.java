@@ -16,9 +16,12 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.jbox2d.dynamics.joints.WeldJointDef;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
+
+import physic.Material;
+import physic.PhysicObject;
 import render.RenderUtil;
 
-public class TrapRotation extends GameObjectPhysicMoving {
+public class TrapRotation extends GameObjectMoving {
 
 	private static final int TRAP_TIME = 60;
 
@@ -41,24 +44,10 @@ public class TrapRotation extends GameObjectPhysicMoving {
 
 	@Override
 	public void init() {
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.position.set(new Vec2(position.x / 30f, position.y / 30f));
-		bodyDef.type = BodyType.DYNAMIC;
-		PolygonShape bodyShape = new PolygonShape();
-		bodyShape.setAsBox(lenght / 30f / 2, 10f / 30 / 2);
-
-		bodyDef.angle = angle;
-		this.body = level.getWorld().createBody(bodyDef);
-		this.body.m_userData = this;
-		FixtureDef bodyFixture = new FixtureDef();
-		bodyFixture.friction = 0.1f; // trenie
-		bodyFixture.density = 0.1f; // plotnost'
-		bodyFixture.restitution = 0f;
-		bodyFixture.shape = bodyShape;
-		this.body.createFixture(bodyFixture);
-		// body.setLinearDamping(100);
-		body.setFixedRotation(true);
-		body.setAngularVelocity(1f);
+		physicObject = PhysicObject.createBox(this, position, lenght, lenght,
+				Material.Stone);
+		physicObject.getBody().setFixedRotation(true);
+		physicObject.getBody().setAngularVelocity(1f);
 
 	}
 
@@ -76,10 +65,8 @@ public class TrapRotation extends GameObjectPhysicMoving {
 
 	@Override
 	public void move() {
-		// TODO Auto-generated method stub
-		position = new Vector2f(body.getPosition().x * 30f,
-				body.getPosition().y * 30f);
-		this.angle = body.getAngle();
+		position = physicObject.getPosition();
+		angle = physicObject.getAngle();
 	}
 
 	@Override
@@ -107,7 +94,7 @@ public class TrapRotation extends GameObjectPhysicMoving {
 
 	public void activateTrap(Body bodyB, Vec2 point) {
 		joinDef = new RevoluteJointDef();
-		joinDef.initialize(body, bodyB, point);
+		joinDef.initialize(physicObject.getBody(), bodyB, point);
 		join = level.getWorld().createJoint(joinDef);
 		// isActivated = true;
 		trapTime = TRAP_TIME;

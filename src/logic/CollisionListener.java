@@ -33,8 +33,6 @@ public class CollisionListener implements ContactListener {
 
 		isCollision = true;
 
-
-
 		// WorldManifold worldManifold = new WorldManifold();
 		// contact.getWorldManifold(worldManifold);
 		// Vec2[] points = worldManifold.points;
@@ -66,14 +64,13 @@ public class CollisionListener implements ContactListener {
 		Object bodyB = contact.m_fixtureB.m_body.m_userData;
 		String nameA = bodyA.getClass().getSimpleName();
 		String nameB = bodyB.getClass().getSimpleName();
-        /*
-		System.out.println("Collision " + nameA + " with " + nameB
-				+ " with impulses " + Arrays.toString(impulses));
-        */
 
-		if (nameA.equals("ship") || nameB.equals("ship")) {
+//		System.out.println("Collision " + nameA + " with " + nameB
+//				+ " with impulses " + Arrays.toString(impulses));
+
+		if (nameA.equals("Ship") || nameB.equals("Ship")) {
 			// will be added 'else's in future for more optimization
-			if (nameA.equals("ship") && nameB.equals("ship")) {
+			if (nameA.equals("Ship") && nameB.equals("Ship")) {
 				EmmiterEffects.drawCollision(points, impulses,
 						CollisionListener.SHIP_WITH_SHIP);
 
@@ -83,17 +80,18 @@ public class CollisionListener implements ContactListener {
 
 			}
 			if (nameA.equals("Wall") || nameB.equals("Wall")) {
-
 				// TODO nono, not good
 				float maxF = 0;
 				for (float f : impulses)
 					if (f > maxF)
 						maxF = f;
 				if (maxF < 1f)
-					//return;
+					 return;
 
-				EmmiterEffects.drawCollision(points, impulses, SHIP_WITH_WALL);
-				if (nameA.equals("ship")) {
+					EmmiterEffects.drawCollision(points, impulses,
+							SHIP_WITH_WALL);
+				
+				if (nameA.equals("Ship")) {
 					((Ship) bodyA).damage(impulses);
 				} else {
 					((Ship) bodyB).damage(impulses);
@@ -101,8 +99,8 @@ public class CollisionListener implements ContactListener {
 				}
 			}
 			if (nameA.equals("RubberBall") || nameB.equals("RubberBall")) {
-                System.out.println("!");
-				if (nameA.equals("ship")) {
+				System.out.println("!");
+				if (nameA.equals("Ship")) {
 					((Ship) bodyA).damage(50);
 				} else {
 					((Ship) bodyB).damage(50);
@@ -113,14 +111,14 @@ public class CollisionListener implements ContactListener {
 				if (nameA.equals("TrapRotation")) {
 					TrapRotation tr = (TrapRotation) bodyA;
 					Ship s = (Ship) bodyB;
-					tr.activateTrap(s.getBody(), points[0]);
+					tr.activateTrap(s.getPhysicObject().getBody(), points[0]);
 				} else if (nameB.equals("TrapRotation")) {
 					TrapRotation tr = (TrapRotation) bodyB;
 					Ship s = (Ship) bodyA;
-					tr.activateTrap(s.getBody(), points[0]);
+					tr.activateTrap(s.getPhysicObject().getBody(), points[0]);
 					System.out.println("points is " + Arrays.toString(points));
 				}
 			}
-        }
+		}
 	}
 }

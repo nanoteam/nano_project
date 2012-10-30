@@ -18,7 +18,7 @@ public class SimpleWeapon2 extends ArsenalGameObject {
 	int width = 30;
 	int height = 10;
 
-	public SimpleWeapon2(GameObjectPhysicMoving gameObject) {
+	public SimpleWeapon2(GameObjectMoving gameObject) {
 		// this way or draw throw draw-method of ship
 		this.position = gameObject.getPosition();
 		this.fatherObj = gameObject;

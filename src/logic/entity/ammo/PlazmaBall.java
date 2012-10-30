@@ -2,14 +2,14 @@ package logic.entity.ammo;
 
 import logic.Level;
 
-import logic.entity.GameObjectPhysicMoving;
+import logic.entity.GameObjectMoving;
 import logic.entity.Particle;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
 import render.RenderUtil;
 
-public class PlazmaBall extends GameObjectPhysicMoving {
+public class PlazmaBall extends GameObjectMoving {
 	// constant
 	private float maxSpeed;
 	private int lifeTime;
@@ -59,20 +59,21 @@ public class PlazmaBall extends GameObjectPhysicMoving {
 			 * level.getNotAddedGameObjects().add( new PlazmaBall(new
 			 * Vector2f(position), (float) (random .nextInt(360)), 0, level));
 			 */
-            float angleParticle = 0;
-            float speedParticle = 0;
+			float angleParticle = 0;
+			float speedParticle = 0;
 			for (int i = 0; i < 100; i++) {
-                angleParticle = (float) (random.nextFloat()*2*Math.PI);
-                speedParticle = (float) (random.nextFloat()*maxSpeed/2);
+				angleParticle = (float) (random.nextFloat() * 2 * Math.PI);
+				speedParticle = (float) (random.nextFloat() * maxSpeed / 2);
 				level.getNotAddedGameObjects().add(
 						new Particle(new Vector2f(position), new Vector2f(
-                                (float) (Math.cos(angleParticle)*speedParticle + speed.x),
-                                (float) (Math.sin(angleParticle)*speedParticle + speed.y)), 2,
-								30 + random.nextInt(20) , (Color) Color.RED));
+								(float) (Math.cos(angleParticle)
+										* speedParticle + speed.x),
+								(float) (Math.sin(angleParticle)
+										* speedParticle + speed.y)), 2,
+								30 + random.nextInt(20), (Color) Color.RED));
 			}
 		}
 	}
-
 
 	@Override
 	public void move() {
@@ -82,7 +83,7 @@ public class PlazmaBall extends GameObjectPhysicMoving {
 
 	@Override
 	public void draw() {
-		RenderUtil.drawCircle(position.x,position.y, size,3, color);
+		RenderUtil.drawCircle(position.x, position.y, size, 3, color);
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class PlazmaBall extends GameObjectPhysicMoving {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
