@@ -40,7 +40,7 @@ public class Engine extends GameObjectMoving {
 	public void init() {
 		physicObject = PhysicObject.createBox(this, position, width, height,
 				Material.Metal);
-		physicObject.getBody().setAngularDamping(500);
+		physicObject.getBody().setAngularDamping(50);
 	}
 
 	@Override
@@ -95,9 +95,5 @@ public class Engine extends GameObjectMoving {
 	public float getAngle() {
 		return angle;
 	}
-    public void turnOnAngle(float dAngle){
-        physicObject.setAngle(angle+=dAngle);
-        //angle+=dAngle;
-    }
 
 }

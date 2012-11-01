@@ -114,7 +114,7 @@ public class Level {
 		 .getPosition());
 		 world.createJoint(join);
 		 } */
-		/*gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
+		gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
 		gameObjects.add(new Asteroid(this, new Vector2f(550f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(600f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(650f, 300f)));
@@ -122,7 +122,7 @@ public class Level {
         gameObjects.add(new Asteroid(this, new Vector2f(750f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(800f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(850f, 300f)));
-        */
+
 
 		//gameObjects.add(new AeroDynTest(this));
 
