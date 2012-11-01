@@ -24,6 +24,7 @@ public class CromsonManager {
 
     //main method
     public void touchWall() {
+        System.out.println("touch wall, cromsone is " + cromsoneList.get(counter));
         //first call - initialezed
         if (!start) {
             counter = 0;
@@ -34,7 +35,7 @@ public class CromsonManager {
         }
 
         timeEndExperiment = System.currentTimeMillis() / 1000;
-        cromsoneList.get(counter).setMark((timeEndExperiment-timeStartExperiment)/LENGHT_EXPERIMENT_SECOND);
+        cromsoneList.get(counter).setMark((timeEndExperiment - timeStartExperiment) / LENGHT_EXPERIMENT_SECOND);
         //create generation
         if (counter + 1 == NUMBER_CROMSONE) {
             counter = 0;
@@ -49,13 +50,13 @@ public class CromsonManager {
         counter++;
     }
 
-    public float[] getActivityCurrentCromsone(float[] input){
-        if(!start){
+    public float[] getActivityCurrentCromsone(float[] input) {
+        if (!start) {
             new Exception("not initialized!");
         }
         return cromsoneList.get(counter).checkActivity(input);
     }
-    
+
     private void sortingCromsonListByMark() {
         for (int i = 0; i < cromsoneList.size(); i++) {
             for (int k = i; k < cromsoneList.size(); k++) {
@@ -115,7 +116,12 @@ public class CromsonManager {
         cromsoneList = newCromsoneList;
     }
 
-    private void printBestGen(){
+    private void printBestGen() {
+        System.out.println("******************");
+        System.out.println(cromsoneList.get(0));
+        System.out.println(cromsoneList.get(1));
+        System.out.println(cromsoneList.get(2));
+        System.out.println("******************");
 
     }
 }
