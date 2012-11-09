@@ -5,7 +5,7 @@ import logic.Level;
 public class JumpWall extends Wall {
 	public JumpWall(Level level, float x, float y, float width, float height) {
 		super(level, x, y, width, height);
-		body.getFixtureList().m_restitution = 1f;
+		physicObject.getBody().getFixtureList().m_restitution = 1f;
 	}
 
 }

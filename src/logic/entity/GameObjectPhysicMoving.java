@@ -25,9 +25,6 @@ abstract public class GameObjectPhysicMoving extends GameObjectSimpleMoving {
     protected PhysicObject physicObject;
 
 	@Override
-	abstract public void init();
-
-	@Override
 	abstract public void update();
 
 	@Override

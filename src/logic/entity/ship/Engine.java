@@ -1,111 +1,123 @@
 package logic.entity.ship;
 
-import logic.Level;
-
 import logic.entity.EmmiterEffects;
-import logic.entity.GameObjectPhysicMoving;
-import org.jbox2d.collision.shapes.PolygonShape;
+import logic.entity.GameObjectMoving;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
-
+import physic.Material;
+import physic.PhysicObject;
 import render.RenderUtil;
 
-public class Engine extends GameObjectPhysicMoving {
+public class Engine extends GameObjectMoving {
 
     private final static float SPEED_PARTICLE_FROM_ENGINE = 200f;
     private final static float SPEED_PARTICLE_KOOF_RANDOM = 20f;
     private final static float ENGINE_TURN_VELOCITY = 10f;
-    private final static float ENGINE_FORCE = 20;
-	private float height = 20f;
-	private float width = 10f;
+    private final static float ENGINE_FORCE = 15;
+    private float height = 20f;
+    private float width = 10f;
 
-	private Joint engineJoint;
+    private Ship fatherObj;
+    private Joint engineJoint;
 
-	public Engine(Level level, Vector2f position) {
-		this.level = level;
-		this.position = position;
-		init();
-	}
+    public Engine(Ship fatherObj, Vector2f position) {
+        this.fatherObj = fatherObj;
+        this.position = position;
+        level = fatherObj.getLevel();
+        physicObject = PhysicObject.createBox(this, position, width, height,
+                Material.Metal);
+        physicObject.getBody().setAngularDamping(50);
+        liveHealth = 100;
+        live = true;
+        angle = 0f;
 
-	@Override
-	public void init() {
+        RevoluteJointDef jointDef = new RevoluteJointDef();
+        jointDef.initialize(fatherObj.getPhysicObject().getBody(), physicObject.getBody(),
+                new Vec2(position.x / 30f, position.y / 30f));
+        jointDef.collideConnected = false;
+        //jointDef.enableLimit = true;
+        // jointDef.lowerAngle = -MAX_ENGINE_ANGLE;
+        // jointDef.upperAngle = MAX_ENGINE_ANGLE;
+        // jointDef.referenceAngle = 0;
 
-		BodyDef engineDef = new BodyDef();
-		engineDef.position.set(new Vec2(position.x / 30, position.y / 30));
-		engineDef.type = BodyType.DYNAMIC;
-		PolygonShape engineShape = new PolygonShape();
-		engineShape.setAsBox(width / 30 / 2, height / 30 / 2);
-		this.body = level.getWorld().createBody(engineDef);
-		this.body.m_userData = this;
+        Joint joint = level.getWorld().createJoint(jointDef);
+        setEngineJoint(joint);
 
-		FixtureDef engineFixture = new FixtureDef();
-		engineFixture.friction = 0.2f; // trenie
-		engineFixture.density = 0.1f; // plotnost'
-		engineFixture.restitution = 0.15f;
-		engineFixture.shape = engineShape;
-		body.createFixture(engineFixture);
-		body.setAngularDamping(50);
-	}
+        level.getNotAddedGameObjects().add(this);
 
-	@Override
-	public void update() {
+    }
 
-	}
+    @Override
+    public void update() {
+        if (liveHealth < 0) {
+            live = false;
+            fatherObj.startDestroy();
+        }
+    }
 
-	@Override
-	public void move() {
-        //wtf??? magic constans?
-		this.position = new Vector2f(body.getPosition().x * 30,
-				body.getPosition().y * 30);
-		this.angle = body.getAngle();
-	}
+    @Override
+    public void move() {
+        position = physicObject.getPosition();
+        physicObject.setAngle(angle+fatherObj.getAngle());
 
-	@Override
-	public void draw() {
-		RenderUtil.drawQaud(position.x, position.y, width, height, angle,
-				(Color) Color.BLUE);
-	}
+    }
 
-	@Override
-	public void playSound() {
+    @Override
+    public void draw() {
+        RenderUtil.drawQaud(position.x, position.y, width, height, angle+fatherObj.getAngle(),
+                (Color) Color.BLUE);
+    }
 
-	}
+    @Override
+    public void playSound() {
 
-	@Override
-	public void destroy() {
+    }
 
-	}
+    @Override
+    public void destroy() {
+        engineJoint.destructor();
+        physicObject.destroy();
+    }
 
-	void enableForce() {
-		angle = body.getAngle();
-		Vec2 force = new Vec2((float) (-ENGINE_FORCE * Math.sin(angle)),
-				(float) (ENGINE_FORCE * Math.cos(angle)));
-//		Vec2 pointOfForce = body.getPosition().add(
-//				new Vec2((float) (width / 30 / 2 * Math.sin(angle)),
-//						(float) (-height / 30 / 2 * Math.cos(angle))));
-		Vec2 pointOfForce = new Vec2(position.x/30f,position.y/30f);
-		body.applyForce(force, pointOfForce);
+    void enableForce() {
+        float forceX = (float) (-ENGINE_FORCE * Math.sin(angle+fatherObj.getAngle()));
+        float forceY = (float) (ENGINE_FORCE * Math.cos(angle+fatherObj.getAngle()));
+        // Vec2 force = new Vec2((float) (-ENGINE_FORCE * Math.sin(angle)),
+        // (float) (ENGINE_FORCE * Math.cos(angle)));
+        // // Vec2 pointOfForce = body.getPosition().add(
+        // // new Vec2((float) (width / 30 / 2 * Math.sin(angle)),
+        // // (float) (-height / 30 / 2 * Math.cos(angle))));
+        // Vec2 pointOfForce = new Vec2(position.x / 30f, position.y / 30f);
+        physicObject.applyForce(forceX, forceY, position);
+        if (ChromosomeManager.getRealTime()){
+            EmmiterEffects.drawParticlesFromEngine(position, angle+fatherObj.getAngle());
+        }
 
-		EmmiterEffects.drawParticlesFromEngine(new Vector2f(
-                pointOfForce.x * 30, pointOfForce.y * 30), angle);
-	}
+    }
 
-	void setEngineJoint(Joint joint) {
-		this.engineJoint = joint;
-	}
+    void setEngineJoint(Joint joint) {
+        this.engineJoint = joint;
+    }
 
-	Joint getEngineJoint() {
-		return engineJoint;
-	}
+    Joint getEngineJoint() {
+        return engineJoint;
+    }
 
-    public float getAngle(){
-        return body.getAngle();
+    public float getAngle() {
+        return angle;
+    }
+
+    public void turnByAngle(float angle) {
+        this.angle+= angle;
+    }
+
+    public void damage() {
+        liveHealth = -1;
+        //level.getPlayer().getControlledObject().doAction(InputToAction.death);
+        //ChromosomeManager.get().touchWall();
     }
 
 }

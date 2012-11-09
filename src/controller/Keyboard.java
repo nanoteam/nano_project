@@ -56,8 +56,6 @@ final class Keyboard implements Engine {
             }
             statesKeyboards.add(keyboardEvent);
         }
-
-
         //filling output list by key with state down and up.
         if (allNeedKeys!=null&&allNeedKeys.size()!=0){
             for (LightInteger key : allNeedKeys) {

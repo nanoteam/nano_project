@@ -4,7 +4,7 @@ import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import render.RenderUtil;
 
-public class Particle extends GameObjectSimpleMoving {
+public class Particle extends GameObjectMoving {
 	private Color color;
 	private int lifeTime;
 	private float size;
@@ -16,11 +16,6 @@ public class Particle extends GameObjectSimpleMoving {
 		this.size = size;
 		this.lifeTime = lifeTime;
 		this.color = color;
-	}
-
-	@Override
-	public void init() {
-
 	}
 
 	@Override
@@ -50,8 +45,11 @@ public class Particle extends GameObjectSimpleMoving {
 	
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-
+		color = null;
+        speed = null;
+        physicObject = null;
+        position = null;
+        renderObject = null;
 	}
 
 	public Color getColor() {

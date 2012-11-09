@@ -20,7 +20,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
-public class Wall extends GameObject {
+import physic.Material;
+import physic.PhysicObject;
+
+public class Wall extends GameObjectMoving {
 	float height, width;
 	float wallRestitution;
 	float angle;
@@ -31,26 +34,9 @@ public class Wall extends GameObject {
 		this.height = height;
 		this.width = width;
 		wallRestitution = 0;
-		init();
-	}
-
-	@Override
-	public void init() {
-
-		BodyDef wallDef = new BodyDef();
-		wallDef.position.set(new Vec2(position.x / 30, position.y / 30));
-		wallDef.type = BodyType.STATIC;
-		PolygonShape downWallShape = new PolygonShape();
-		downWallShape.setAsBox(width / 30 / 2, height / 30 / 2);
-		this.body = level.getWorld().createBody(wallDef);
-		this.body.m_userData = this;
-
-		FixtureDef wallFixture = new FixtureDef();
-		wallFixture.density = 1f;
-		wallFixture.friction = 1f;
-		wallFixture.restitution = wallRestitution;
-		wallFixture.shape = downWallShape;
-		body.createFixture(wallFixture);
+        physicObject = PhysicObject.createBox(this, position, width, height,
+                Material.Wood);
+        physicObject.getBody().setType(BodyType.STATIC);
 	}
 
 	@Override
@@ -65,7 +51,7 @@ public class Wall extends GameObject {
 
 	@Override
 	public void draw() {
-		angle = body.getAngle();
+		angle = physicObject.getAngle();
 		glPushMatrix();
 
 		glTranslatef(position.x, position.y, 0.0f);
@@ -91,10 +77,9 @@ public class Wall extends GameObject {
 
 	}
 
-
 	@Override
 	public void destroy() {
-level.getWorld().destroyBody(body);
+		physicObject.destroy();
 	}
 
 }

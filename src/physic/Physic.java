@@ -6,6 +6,7 @@ package physic;
 
 import java.util.List;
 
+import main.Global;
 import org.lwjgl.util.vector.Vector2f;
 
 import logic.Level;
@@ -37,7 +38,7 @@ public class Physic implements Engine {
 			 */
 			
 		}
-		level.getWorld().step(1/60f, 7, 3);
+		level.getWorld().step(Global.DT, 7, 3);
 	}
 
 	public Physic() {

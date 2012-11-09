@@ -54,8 +54,9 @@ public class SheetParse extends Object {
 		} else {
 			for (SheetParse parse : localSheets) {
 				if (parse != null) {
-					if (parse.findSheetParse(name, parse) != null) {
-						return parse;
+                    SheetParse output = parse.findSheetParse(name, parse);
+					if (output != null) {
+						return output;
 					}
 				}
 			}

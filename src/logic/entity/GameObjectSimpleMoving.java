@@ -17,9 +17,6 @@ abstract public class GameObjectSimpleMoving extends GameObject {
     protected boolean isCollision = false;
 
 	@Override
-	abstract public void init();
-
-	@Override
 	abstract public void update();
 
 	@Override

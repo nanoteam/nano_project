@@ -1,7 +1,7 @@
 package logic.entity.ship;
 
 import logic.entity.ArsenalGameObject;
-import logic.entity.GameObjectPhysicMoving;
+import logic.entity.GameObjectMoving;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
@@ -18,8 +18,8 @@ public class Weapon extends ArsenalGameObject {
 	private int time = 0;
 	private int reloadTime;
 
-	public Weapon(GameObjectPhysicMoving gameObject, int width,
-                  int height, int randomizeFire, int reloadTime) {
+	public Weapon(GameObjectMoving gameObject, int width, int height,
+			int randomizeFire, int reloadTime) {
 		// this way or draw throw draw-method of ship
 		this.position = gameObject.getPosition();
 		this.fatherObj = gameObject;
@@ -28,13 +28,9 @@ public class Weapon extends ArsenalGameObject {
 		this.height = height;
 		this.randomizeFire = randomizeFire;
 		this.reloadTime = reloadTime;
+        onShoot = false;
+        onReload = false;
 
-	}
-
-	@Override
-	public void init() {
-		onShoot = false;
-		onReload = false;
 
 	}
 
@@ -49,9 +45,9 @@ public class Weapon extends ArsenalGameObject {
 			onReload = true;
 			time = reloadTime;
 			// plazma ball
-			 //PlazmaBall plazmaBall = new PlazmaBall(position, angle, 0,
-			 //level);
-			 //fatherObj.level.getNotAddedGameObjects().add(plazmaBall);
+			// PlazmaBall plazmaBall = new PlazmaBall(position, angle, 0,
+			// level);
+			// fatherObj.level.getNotAddedGameObjects().add(plazmaBall);
 
 			// bullet
 			// Bullet bullet = new Bullet(position, angle, sizeBullet,
@@ -59,15 +55,15 @@ public class Weapon extends ArsenalGameObject {
 			// fatherObj.level.getNotAddedGameObjects().add(bullet);
 
 			// rubber ball
-			if (random.nextFloat()>0.9) {
-			
-				 PlazmaBall plazmaBall = new PlazmaBall(position, angle, 0,
-				 level);
-				 level.getNotAddedGameObjects().add(plazmaBall);
+			if (random.nextFloat() > 0.9) {
+
+				PlazmaBall plazmaBall = new PlazmaBall(position, angle, 0,
+						level);
+				level.getNotAddedGameObjects().add(plazmaBall);
 
 			}
 			RubberBall rubberBall = new RubberBall(position, angle, 0, level);
-			
+
 			level.getNotAddedGameObjects().add(rubberBall);
 			onShoot = false;
 		}
@@ -78,7 +74,8 @@ public class Weapon extends ArsenalGameObject {
 		Vector2f fPos = fatherObj.getPosition();
 
 		position = new Vector2f(fPos.x
-				+ MathUtil.newXTurn(30, 17, fatherObj.getAlfa()), fPos.y + MathUtil.newYTurn(30, 17, fatherObj.getAlfa()));
+				+ MathUtil.newXTurn(30, 17, fatherObj.getAngle()), fPos.y
+				+ MathUtil.newYTurn(30, 17, fatherObj.getAngle()));
 
 		Vector2f vector = level.getMousePosition();
 
@@ -88,9 +85,14 @@ public class Weapon extends ArsenalGameObject {
 
 	@Override
 	public void draw() {
-        RenderUtil.drawQaud(position.x,position.y,width,height,angle,(Color)Color.DKGREY);
-        RenderUtil.drawPlot(new Vector2f(position.x+MathUtil.newXTurn(width/2,0,angle),position.y+MathUtil.newYTurn(width/2,0, angle)),4,(Color)(Color.RED));
-    }
+		RenderUtil.drawQaud(position.x, position.y, width, height, angle,
+				(Color) Color.DKGREY);
+		RenderUtil.drawPlot(
+				new Vector2f(position.x
+						+ MathUtil.newXTurn(width / 2, 0, angle), position.y
+						+ MathUtil.newYTurn(width / 2, 0, angle)), 4,
+				(Color) (Color.RED));
+	}
 
 	@Override
 	public void playSound() {
@@ -106,7 +108,7 @@ public class Weapon extends ArsenalGameObject {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

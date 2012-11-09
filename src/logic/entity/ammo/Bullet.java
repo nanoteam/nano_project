@@ -1,20 +1,16 @@
 package logic.entity.ammo;
 
-import logic.entity.GameObjectSimpleMoving;
 import org.lwjgl.util.Color;
 
-import java.util.Random;
 
-import logic.entity.GameObjectPhysicMoving;
-import logic.entity.GameObject;
+import logic.entity.GameObjectMoving;
 
-import logic.entity.GameObjectSimpleMoving;
 
 import org.lwjgl.util.vector.Vector2f;
 
 import render.RenderUtil;
 
-public class Bullet extends GameObjectSimpleMoving {
+public class Bullet extends GameObjectMoving {
 
 	
 	// temp
@@ -31,12 +27,6 @@ public class Bullet extends GameObjectSimpleMoving {
 		speed.x += randTrajectory * Math.random() - randTrajectory/2f;
 		speed.y += randTrajectory * Math.random() - randTrajectory/2f;
 		
-
-	}
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -16,10 +16,6 @@ public class AeroDynTest extends GameObject {
 	}
 
 	@Override
-	public void init() {
-	}
-
-	@Override
 	public void update() {
         //arthur, may be i delete your good code(. but this code work to!
         /*

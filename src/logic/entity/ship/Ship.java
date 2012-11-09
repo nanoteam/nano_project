@@ -8,28 +8,21 @@ import controller.ControlledObject;
 import controller.InputToAction;
 import logic.Level;
 import logic.entity.ArsenalGameObject;
-import logic.entity.EmmiterEffects;
-import logic.entity.Explosion;
-import logic.entity.GameObjectPhysicMoving;
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.joints.Joint;
-import org.jbox2d.dynamics.joints.RevoluteJointDef;
+import logic.entity.GameObjectMoving;
+import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Image;
+import physic.Material;
+import physic.PhysicObject;
 import render.RenderUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-final public class Ship extends GameObjectPhysicMoving implements
-        ControlledObject {
+public class Ship extends GameObjectMoving implements ControlledObject {
 
-    //flags
+    // flags
     private boolean leftEngineActive = false;
     private boolean rightEngineActive = false;
     private boolean allEngineActive = false;
@@ -37,113 +30,69 @@ final public class Ship extends GameObjectPhysicMoving implements
     private boolean turnEnginesRight = false;
     private boolean weapon1Shot = false;
     private boolean weapon2Shot = false;
-    private boolean collision = false;
 
-    //end flags
+    //data for ai
+    private static int stateMove = ControlledObject.MOVE_NONE;
+    private static int stateFire = ControlledObject.FIRE_NONE;
+    private Vector2f moveData;
+    private Vector2f fireData;
+    private ChromosomeManager chromosomeManager = ChromosomeManager.get();
+
     private float width, height;
     private float protection = 0.1f;
     private List<ArsenalGameObject> arsenalList = new ArrayList<ArsenalGameObject>();
     private Image image;
-    private Vector2f ENGINE_POSITION = new Vector2f(50f, 0f);
+
+    private static Vector2f ENGINE_POSITION = new Vector2f(50f, 0f);
+
     private Engine leftEngine, rightEngine;
-    private float engineRelativeAngle = 0;
-    private static final float MAX_ENGINE_ANGLE = 360 / 60f;
-
-    private int stateMove = ControlledObject.MOVE_NONE;
-    private int stateFire = ControlledObject.FIRE_NONE;
-
-    private Vector2f moveData;
-    private Vector2f fireData;
-
-    private CromsonManager cromsonManager = new CromsonManager();
+    private static final float leftAngleBorder = 4f * 3.14159f;
+    private static final float rightAngleBorder = 5f * 3.14159f;
 
     static {
         name = "ship";
     }
 
-    // private ArrayList<ShipComponent> shipComponents;
     public Ship(Level level, float x, float y) {
-        // if(!loadParametres(..))
-        // throw...;
         this.level = level;
         position = new Vector2f(x, y);
-        speed = new Vector2f(0,0);
-        init();
-    }
-
-    @Override
-    public void init() {
-
+        speed = new Vector2f(0, 0);
         width = 100f;
         height = 40f;
-        liveHealth = 10000;
-
-        BodyDef shipDef = new BodyDef();
-        shipDef.position.set(new Vec2(position.x / 30, position.y / 30));
-        shipDef.type = BodyType.DYNAMIC;
-        PolygonShape shipShape = new PolygonShape();
-        shipShape.setAsBox(width / 30 / 2, height / 30 / 2);
-        this.body = level.getWorld().createBody(shipDef);
-        this.body.m_userData = this;
-
-        FixtureDef shipFixture = new FixtureDef();
-        shipFixture.friction = 0.5f; // trenie
-        shipFixture.density = 0.5f; // plotnost'
-        shipFixture.restitution = 0.15f;
-        shipFixture.shape = shipShape;
-        body.createFixture(shipFixture);
-        body.setAngularDamping(3);
-
+        liveHealth = 100;
+        physicObject = PhysicObject.createBox(this, position, width, height,
+                Material.Metal);
         {
             // adding weapons
+
             Weapon weap1 = new Weapon(this, 20, 3, 1, 0);
-            Weapon weap2 = new Weapon(this, 10, 5, 2, 70);
             arsenalList.add(weap1);
-            arsenalList.add(weap2);
             level.getGameObjects().add(weap1);
+
+            Weapon weap2 = new Weapon(this, 10, 5, 2, 70);
+            arsenalList.add(weap2);
             level.getGameObjects().add(weap2);
         }
 
         {
             // adding engines
-            leftEngine = new Engine(level, new Vector2f(position.x
+
+            leftEngine = new Engine(this, new Vector2f(position.x
                     - ENGINE_POSITION.x, position.y - ENGINE_POSITION.y));
-            rightEngine = new Engine(level, new Vector2f(position.x
+
+            rightEngine = new Engine(this, new Vector2f(position.x
                     + ENGINE_POSITION.x, position.y - ENGINE_POSITION.y));
-            addEngine(leftEngine);
-            addEngine(rightEngine);
-            level.getNotAddedGameObjects().add(leftEngine);
-            level.getNotAddedGameObjects().add(rightEngine);
         }
         /*
-        // delete, when complite ersourses manager \/
-        if (image == null){
-            try {
-                image = new Image("ship.png");
-            } catch (SlickException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        }
-        // delete, when complite ersourses manager /\
-          */
-
+           * // delete, when complite ersourses manager \/ if (image == null){ try
+           * { image = new Image("ship.png"); } catch (SlickException e) {
+           * e.printStackTrace(); //To change body of catch statement use File |
+           * Settings | File Templates. } } // delete, when complite ersourses
+           * manager /\
+           */
 
     }
 
-    private void addEngine(Engine engine) {
-        RevoluteJointDef jointDef = new RevoluteJointDef();
-        jointDef.initialize(body, engine.getBody(),
-                new Vec2(engine.getPosition().x / 30f,
-                        engine.getPosition().y / 30f));
-        jointDef.collideConnected = false;
-        // jointDef.enableLimit = true;
-        // jointDef.lowerAngle = -MAX_ENGINE_ANGLE;
-        // jointDef.upperAngle = MAX_ENGINE_ANGLE;
-        // jointDef.referenceAngle = 0;
-        Joint joint = level.getWorld().createJoint(jointDef);
-        engine.setEngineJoint(joint);
-
-    }
 
     @Override
     public void update() {
@@ -154,111 +103,138 @@ final public class Ship extends GameObjectPhysicMoving implements
         if (weapon2Shot && !arsenalList.isEmpty()) {
             arsenalList.get(1).setShootOn();
         }
-
         clearFlags();
-        if (liveHealth < 0)
-            live = false;
-
+        if (liveHealth < 0) {
+            startDestroy();
+        }
 
         /*
-       if (stateMove==ControlledObject.MOVE_VECTOR){
+           * if (stateMove==ControlledObject.MOVE_VECTOR){
+           *
+           * } if (stateMove == ControlledObject.MOVE_NONE){
+           *
+           * } // create mirage
+           */
+        if (Global.CONTROLED_AI) {
+            //cromsone !!!
 
-       }
-       if (stateMove == ControlledObject.MOVE_NONE){
+            while (angle > 2 * 3.14159f) {
+                angle = angle - 2f * 3.14159f;
+            }
+            while (angle < -2 * 3.14159f) {
+                angle = angle + 2f * 3.14159f;
+            }
 
-       }
-       // create mirage
+            if (angle > leftAngleBorder && angle < rightAngleBorder) {
+                chromosomeManager.sendEvent(ChromosomeManager.STATE_OVERLOAD_ANGLE);
+            }
 
-        */
-         /*
-        //cromsone!!!
-        float[] box = new float[7];
-        while(angle>2*3.14159f){
-            angle = angle-2*3.14159f;
+            float[] box = new float[8];
+
+            box[0] = angle / (2f * 3.14159f);
+            box[1] = speed.x / 200f;
+            box[2] = speed.y / 200f;
+            box[3] = (position.x - 800) / 800f;
+            box[4] = (position.y - 450) / 450f;
+            chromosomeManager.incDx(box[3]);
+            chromosomeManager.incDy(box[4]);
+            float angleEngine = leftEngine.getAngle() + physicObject.getAngle();
+            while (angleEngine > 2 * 3.14159f) {
+                angleEngine = angleEngine - 2f * 3.14159f;
+            }
+            while (angleEngine < -2 * 3.14159f) {
+                angleEngine = angleEngine + 2f * 3.14159f;
+            }
+            box[5] = angleEngine / (2f * 3.14159f);
+
+
+            angleEngine = rightEngine.getAngle() + physicObject.getAngle();
+            ;
+            while (angleEngine > 2f * 3.14159f) {
+                angleEngine = angleEngine - 2f * 3.14159f;
+            }
+            while (angleEngine < -2 * 3.14159f) {
+                angleEngine = angleEngine + 2f * 3.14159f;
+            }
+            box[6] = angleEngine / (2f * 3.14159f);
+
+            box[7] = physicObject.getBody().getAngularVelocity() / 10f;
+
+            float[] activity = chromosomeManager.getActivityCurrentChromosome(box);
+
+
+            if ((Math.abs(box[7])) > 9f) {
+                chromosomeManager.sendEvent(ChromosomeManager.STATE_LIMIT_W);
+            }
+
+            leftEngine.turnByAngle(activity[0] * 2f * 3.14159f - 3.14159f);
+            if (0.5f < activity[1]) {
+                leftEngineActive = true;
+                chromosomeManager.sendEvent(ChromosomeManager.STATE_LEFT_ENGINE_ON);
+            }
+            rightEngine.turnByAngle(activity[2] * 2f * 3.14159f - 3.14159f);
+            if (0.5f < activity[3]) {
+                rightEngineActive = true;
+                chromosomeManager.sendEvent(ChromosomeManager.STATE_RIGHT_ENGINE_ON);
+            }
+
+            box = null;
+            activity = null;
+            /*
+            System.out.println("**");
+            for (int i = 0; i < box.length; i++) {
+                System.out.println(box[i]);
+            }
+
+            System.out.println("*");
+            for (int i = 0; i < activity.length; i++) {
+                System.out.println(activity[i]);
+            }
+            System.out.println("**");
+             */
         }
-        box[0] = angle/(2*3.14159f);
-
-        box[1] = speed.x/200f;
-        box[2] = speed.y/200f;
-        box[3] = Math.abs(position.x-100)/1600f;
-        box[4] = Math.abs(position.x-500)/900f;
-        float angleEngine = leftEngine.getAlfa();
-        while(angleEngine>2*3.14159f){
-            angleEngine = angleEngine-2*3.14159f;
-        }
-        box[5] = angleEngine/(2*3.14159f);
-        box[6] = Math.abs(w)/5f;
-        float[] activity = cromsonManager.getActivityCurrentCromsone(box);
-
-        if (random.nextFloat()<activity[0]){
-            allEngineActive = true;
-        }
-        leftEngine.setAlfa(activity[1]);
-
-
-        //end cromsone!!!*/
-
-
     }
 
     // TODO add *dt
     @Override
     public void move() {
-        position.x = body.getPosition().x * 30;
-        position.y = body.getPosition().y * 30;
-        speed.x = body.getLinearVelocity().x;
-        speed.y = body.getLinearVelocity().y;
-        w = body.getAngularVelocity();
-        
-        angle = body.getAngle();
+        position = null;
+        position = physicObject.getPosition();
+        speed = null;
+        speed = physicObject.getSpeed();
+
+        angle = physicObject.getAngle();
 
         if (allEngineActive) {
             leftEngine.enableForce();
             rightEngine.enableForce();
 
         }
-
         if (rightEngineActive) {
             rightEngine.enableForce();
         }
-
         if (leftEngineActive) {
             leftEngine.enableForce();
         }
-
         if (turnEnginesLeft) {
-            // leftEngine.getBody().setAngularVelocity(ENGINE_TURN_VELOCITY);
-            // rightEngine.getBody().setAngularVelocity(ENGINE_TURN_VELOCITY);
-            engineRelativeAngle += 0.1;
+            leftEngine.turnByAngle(0.1f);
+            rightEngine.turnByAngle(0.1f);
         }
         if (turnEnginesRight) {
-            // leftEngine.getBody().setAngularVelocity(-ENGINE_TURN_VELOCITY);
-            // rightEngine.getBody().setAngularVelocity(-ENGINE_TURN_VELOCITY);
-            engineRelativeAngle -= 0.1;
-
+            leftEngine.turnByAngle(-0.1f);
+            rightEngine.turnByAngle(-0.1f);
         }
-
-        if (engineRelativeAngle > MAX_ENGINE_ANGLE)
-            engineRelativeAngle = MAX_ENGINE_ANGLE;
-        else if (engineRelativeAngle < -MAX_ENGINE_ANGLE)
-            engineRelativeAngle = -MAX_ENGINE_ANGLE;
-        //System.out.println(engineRelativeAngle * 60);
-        leftEngine.getBody().setTransform(leftEngine.getBody().getPosition(),
-                body.getAngle() + engineRelativeAngle);
-        rightEngine.getBody().setTransform(rightEngine.getBody().getPosition(),
-                body.getAngle() + engineRelativeAngle);
-
     }
 
     @Override
     public void draw() {
-        RenderUtil.drawQaud(position.x,position.y,width,height,angle,(Color) Color.GREY);
+        RenderUtil.drawQaud(position.x, position.y, width, height, angle,
+                (Color) Color.GREY);
     }
 
     @Override
     public void playSound() {
     }
-
 
     @Override
     public void doAction(int code) {
@@ -276,71 +252,71 @@ final public class Ship extends GameObjectPhysicMoving implements
                 allEngineActive = true;
                 break;
             }
-            /*case InputToAction.: {
-                allEngineActive = true;
-                break;
-            } */
-
-
-               /*
-            case ControlledObject.FIRE_FIRST_WEAPON: {
-                weapon1Shot = true;
-                break;
-            }
-            case ControlledObject.FIRE_SECOND_WEAPON: {
-                weapon2Shot = true;
-                break;
-            }*/
+            /*
+            * case InputToAction.: { allEngineActive = true; break; }
+            */
 
             /*
-            case InputToAction.left: {
+            * case ControlledObject.FIRE_FIRST_WEAPON: { weapon1Shot = true; break;
+            * } case ControlledObject.FIRE_SECOND_WEAPON: { weapon2Shot = true;
+            * break; }
+            */
+
+            case InputToAction.engineLeft: {
                 turnEnginesLeft = true;
                 break;
             }
-            case ControlledObject.TURN_ENGINES_RIGHT: {
+            case InputToAction.engineRight: {
                 turnEnginesRight = true;
                 break;
-            }  */
+            }
+            case InputToAction.fire1: {
+                weapon1Shot = true;
+                break;
+            }
+            case InputToAction.death: {
+                liveHealth = -1;
+                break;
+            }
         }
     }
 
     public void doAction(int code, Vector2f actionData) {
         switch (code) {
-            //move
-            case ControlledObject.MOVE_TARGET:{
+            // move
+            case ControlledObject.MOVE_TARGET: {
                 stateMove = ControlledObject.MOVE_TARGET;
                 moveData = actionData;
                 break;
             }
-            case ControlledObject.MOVE_VECTOR:{
+            case ControlledObject.MOVE_VECTOR: {
                 stateMove = ControlledObject.MOVE_VECTOR;
                 moveData = actionData;
                 break;
             }
-            case ControlledObject.MOVE_NONE:{
+            case ControlledObject.MOVE_NONE: {
                 stateMove = ControlledObject.MOVE_TARGET;
                 moveData = null;
                 break;
             }
-            //data
-            case ControlledObject.FIRE_TARGET:{
+            // data
+            case ControlledObject.FIRE_TARGET: {
                 stateFire = ControlledObject.FIRE_TARGET;
                 fireData = actionData;
                 break;
             }
-            case ControlledObject.FIRE_SHOOT:{
+            case ControlledObject.FIRE_SHOOT: {
                 stateFire = ControlledObject.FIRE_SHOOT;
                 fireData = actionData;
                 break;
             }
-            case ControlledObject.FIRE_NONE:{
+            case ControlledObject.FIRE_NONE: {
                 stateFire = ControlledObject.FIRE_NONE;
                 fireData = null;
                 break;
             }
         }
     }
-    
 
     @Override
     public void clearFlags() {
@@ -351,21 +327,43 @@ final public class Ship extends GameObjectPhysicMoving implements
         weapon2Shot = false;
         turnEnginesLeft = false;
         turnEnginesRight = false;
-        collision = false;
     }
+
 
     @Override
     public void destroy() {
+        leftEngine.setLive(false);
+        rightEngine.setLive(false);
+        for (ArsenalGameObject arsenalGameObject : arsenalList) {
+            arsenalGameObject.setLive(false);
+        }
+        level.getPlayer().setControlledObject(null);
+        physicObject.destroy();
         //EmmiterEffects.drawBoom(position);
-        //level.getWorld().destroyBody(body);
-        //level.getNotAddedGameObjects().add(new Explosion(level, position, 60, 1));
+        /*level.getNotAddedGameObjects().add(
+                new Explosion(level, position, 60, 1)); */
+    }
+
+    void startDestroy() {
+        live = false;
+        leftEngine.setLive(false);
+        rightEngine.setLive(false);
+        if (arsenalList != null && arsenalList.size() != 0) {
+            for (GameObjectMoving arsenalObj : arsenalList) {
+                arsenalObj.setLive(false);
+            }
+        }
+        ChromosomeManager.get().touchWall();
     }
 
     public void damage(float... impulses) {
+        /*
         float result = 0;
         for (float f : impulses)
             result += f;
-        liveHealth -= result * (1 - protection);
+        liveHealth -= result * (1 - protection);*/
+        liveHealth = -1;
+
     }
 
     public static String getName() {

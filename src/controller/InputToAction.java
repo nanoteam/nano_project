@@ -22,9 +22,14 @@ public final class InputToAction {
 	public final static int up = 2;
 	public final static int down = 3;
 
-	public final static int spec1 = 6;
+    public final static int fire1 = 4;
+    public final static int fire2 = 5;
+
+    public final static int spec1 = 6;
 	public final static int spec2 = 7;
-	
+
+    public final static int engineLeft = 8;
+    public final static int engineRight = 9;
 	public final static int menu = 20;
 
 	public final static int zoomIn = 21;
@@ -33,6 +38,8 @@ public final class InputToAction {
 
     public final static int move = 30;
     public final static int fire = 31;
+
+    public final static int death = 666;
 
     public final static int comboChoiseFirst = 40;
     public final static int comboChoiseSecond = 41;
@@ -55,7 +62,11 @@ public final class InputToAction {
 		nameToAction.put("ActionLeft", new LightInteger(left));
 		nameToAction.put("ActionRight", new LightInteger(right));
 		nameToAction.put("ActionUp", new LightInteger(up));
-		nameToAction.put("ActionDown", new LightInteger(down));
+
+        nameToAction.put("ActionEngineLeft", new LightInteger(engineLeft));
+        nameToAction.put("ActionEngineRight", new LightInteger(engineRight));
+
+        nameToAction.put("ActionDown", new LightInteger(down));
 		nameToAction.put("ActionSpec1", new LightInteger(spec1));
 		nameToAction.put("ActionSpec2", new LightInteger(spec2));
 		nameToAction.put("ActionMenu", new LightInteger(menu));
@@ -83,7 +94,8 @@ public final class InputToAction {
 
 	// filling keyboardEventToAction
 	public void init(SheetParse sheetParse) {
-        SheetParse player1 = sheetParse.findSheetParseByName("Input").findSheetParseByName("Player1");
+        SheetParse player1 = sheetParse.findSheetParseByName("Input");
+        player1 = player1.findSheetParseByName("Player1");
 
         SheetParse player1Keyboard = player1.findSheetParseByName("Keyboard");
 
@@ -140,6 +152,7 @@ public final class InputToAction {
 			System.out.println("key is " + action.data + ", value is "
 					+ keyboardEventToAction.get(action).data);
 		}
+
         System.out.println("mouse event:");
         for (LightInteger action : mouseEventToAction.keySet()) {
             System.out.println("button is " + action.data + ", value is "
@@ -174,6 +187,7 @@ public final class InputToAction {
         }
 		return -10;
 	}
+    //need to
 	public void configKeys() {
 		HashMap<String, String> list = new HashMap<String, String>();
 		boolean complite;

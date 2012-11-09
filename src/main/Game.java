@@ -7,11 +7,15 @@
  */
 package main;
 
-import controller.*;
+import controller.Controller;
+import controller.InputToAction;
+import controller.StateKeyboard;
+import controller.StateMouse;
 import logic.Level;
 import logic.Logic;
 import logic.entity.Player;
-import logic.entity.ship.CromsonManager;
+import logic.entity.ship.Chromosome;
+import logic.entity.ship.ChromosomeManager;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import physic.Physic;
@@ -90,33 +94,50 @@ public class Game {
                 finished = true;
             } else if (Display.isActive()) {
                 // The window is in the foreground, so we should play the game
-//                controller.tick();
+                controller.tick();
                 physic.tick();
                 logic.tick();
                 sound.tick();
                 render.tick();
+                /*
+       try {
+           Thread.sleep(1);
+       } catch (InterruptedException e) {
+           e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+       }         */
+                if (ChromosomeManager.getRealTime()) {
+                    render.syncFps(Client.FRAMERATE);
+                }
 
-                render.syncFps(Client.FRAMERATE);
+
             } else {
                 //go sleep game! game go to menu!
                 //or sleep all resourses
                 //in multi game newtwork must work!
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                }
+
+                physic.tick();
+                logic.tick();
+                sound.tick();
                 /*
-				physic.tick();
-				logic.tick();
-				sound.tick();
-				*/
-                if (Display.isVisible() || Display.isDirty()) {
-                    // Only bother rendering if the window is visible or dirty
-                    render.tick();
-                    // TODO in titurial version this method dosnt call,
-                    // but i think, that call method maut be
+           try {
+               Thread.sleep(2);
+           } catch (InterruptedException e) {
+               e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+           }     */
+
+                if (ChromosomeManager.getRealTime()) {
                     render.syncFps(Client.FRAMERATE);
                 }
+                /*
+            if (Display.isVisible() || Display.isDirty()) {
+                // Only bother rendering if the window is visible or dirty
+                render.tick();
+                // TODO in titurial version this method dosnt call,
+                // but i think, that call method maut be
+                render.syncFps(Client.FRAMERATE);
+            }    */
+
+
             }
         }
     }
@@ -133,6 +154,8 @@ public class Game {
         byte moving = 0;
         byte firing = 0;
         //keyboard event
+        //System.out.println(eventsKeyboard);
+
         if (eventsKeyboard != null && (!eventsKeyboard.isEmpty())) {
             for (StateKeyboard stateKeyboard : eventsKeyboard) {
                 if (stateKeyboard.state == StateKeyboard.DOWN || stateKeyboard.state == StateKeyboard.DOWN_PRESSED) {
@@ -154,41 +177,24 @@ public class Game {
                             break;
                         }
 
-                        case InputToAction.up: {
-                            level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.up);
-                            break;
-                        }
 
-                        case InputToAction.fire: {
-                            firing++;
-                            break;
-                        }
-
-                        case InputToAction.move: {
-                            moving++;
-                            break;
-                        }
-
-
-                        /*
                         case InputToAction.fire1: {
                             level.getPlayer().getControlledObject()
-                                    .doAction(ControlledObject.FIRE_FIRST_WEAPON);
+                                    .doAction(InputToAction.fire1);
                             break;
                         }
 
                         case InputToAction.engineLeft: {
                             level.getPlayer().getControlledObject()
-                                    .doAction(ControlledObject.TURN_ENGINES_LEFT);
+                                    .doAction(InputToAction.engineLeft);
                             break;
                         }
 
                         case InputToAction.engineRight: {
                             level.getPlayer().getControlledObject()
-                                    .doAction(ControlledObject.TURN_ENGINES_RIGHT);
+                                    .doAction(InputToAction.engineRight);
                             break;
-                        } */
+                        }
 
                         case InputToAction.zoomIn: {
                             render.setZoom((float) (render.getZoom() + 0.05));
@@ -203,6 +209,29 @@ public class Game {
 
                 if (stateKeyboard.state == StateKeyboard.DOWN_PRESSED) {
                     switch (inputToAction.getActionByDevice(stateKeyboard.keyCode, InputToAction.KEYBOARD)) {
+
+                        case InputToAction.up: {
+                            /*level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.up);*/
+                            ChromosomeManager.changeRealTime();
+                            break;
+                        }
+
+                        case InputToAction.fire: {
+                            //firing++;
+                            //System.out.println("fire");
+
+                            //ChromosomeManager.get().changeMarkCurrentChromosome(Chromosome.DIFF_MARK);
+                            break;
+                        }
+
+                        case InputToAction.move: {
+                            //moving++;
+                            //System.out.println("move");
+
+                            //ChromosomeManager.get().changeMarkCurrentChromosome(-Chromosome.DIFF_MARK);
+                            break;
+                        }
 
                         case InputToAction.zoomCenter: {
                             if (render.getStateViewPort() == Render.VIEWPORT_ON_PLAYER) {
@@ -228,54 +257,63 @@ public class Game {
         //mouse event
         if (eventsMouses != null && (!eventsMouses.isEmpty())) {
             for (StateMouse stateMouse : eventsMouses) {
-                if (stateMouse.rolickEvent){
+                if (stateMouse.rolickEvent) {
 
                 }
-                if (!stateMouse.rolickEvent){
+                if (!stateMouse.rolickEvent) {
                     if (stateMouse.buttonCode == StateKeyboard.DOWN || stateMouse.stateButton == StateKeyboard.DOWN_PRESSED) {
                         switch (inputToAction.getActionByDevice(stateMouse.buttonCode, InputToAction.MOUSE)) {
-                            case InputToAction.comboChoiseFirst: {
-                                if (firing!=0){
-                                    //player.get
-                                    firing = 0;
-                                }
-                                if (moving!=0){
+                            /* case InputToAction.comboChoiseFirst: {
+                       ChromosomeManager.get().changeMarkCurrentCromsone(+Chromosome.DIFF_MARK);
+                       //System.out.println("left");
+                       break;
+                   }
+                   case InputToAction.comboChoiseSecond: {
+                       ChromosomeManager.get().changeMarkCurrentCromsone(-Chromosome.DIFF_MARK);
+                       //System.out.println("right");
+                       break;
+                   }         */
 
-                                    moving = 0;
-                                }
-                                break;
-                            }
-                            case InputToAction.comboChoiseSecond: {
-                                if (firing!=0){
 
-                                    firing = 0;
-                                }
-                                if (moving!=0){
+                            /*
+//                            case InputToAction.comboChoiseFirst: {
+//                                if (firing!=0){
+//                                    //player.get
+//                                    firing = 0;
+//                                }
+//                                if (moving!=0){
+//
+//                                    moving = 0;
+//                                }
+//                                break;
+//                            }
+//                            case InputToAction.comboChoiseSecond: {
+//                                if (firing!=0){
+//
+//                                    firing = 0;
+//                                }
+//                                if (moving!=0){
+//
+//                                    moving = 0;
+//                                }
+//                                break;
+//                            }
+//                            case InputToAction.comboChoiseStop: {
+//                                if (firing!=0){
+//
+//                                    firing = 0;
+//                                }
+//                                if (moving!=0){
+//
+//                                    moving = 0;
+//                                }
+//                                break;
+//                            }*/
 
-                                    moving = 0;
-                                }
-                                break;
-                            }
-                            case InputToAction.comboChoiseStop: {
-                                if (firing!=0){
 
-                                    firing = 0;
-                                }
-                                if (moving!=0){
-
-                                    moving = 0;
-                                }
-                                break;
-                            }
-
-                            
-                            
                         }
                     }
                 }
-
-
-
             }
         }
     }

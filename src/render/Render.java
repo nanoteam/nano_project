@@ -107,7 +107,7 @@ public class Render implements Engine {
         
 
         // Enable vsync if we can
-        Display.setVSyncEnabled(true);
+        //Display.setVSyncEnabled(true);
 
 
 

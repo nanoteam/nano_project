@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class ParserText {
 	private final File fFile;
 	private HashMap<String,String> pairString = new HashMap<String, String>();
-    public static void main(String... aArgs) throws FileNotFoundException {
+    public static    void main(String... aArgs) throws FileNotFoundException {
     	ParserText parser = new ParserText("D:\\setting.txt");
         parser.startParser();
     }
