@@ -3,7 +3,7 @@ package resourses;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.opengl.InternalTextureLoader;
 import java.util.HashMap;
-
+//must call first, before entity with resources
 public class ResourcesManager {
     private static ResourcesManager resourcesManager;
     //slick 2d loader images

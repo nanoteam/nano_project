@@ -16,10 +16,6 @@ public class AeroDynTest extends GameObject {
 	}
 
 	@Override
-	public void init() {
-	}
-
-	@Override
 	public void update() {
         //arthur, may be i delete your good code(. but this code work to!
         /*
@@ -65,5 +61,10 @@ public class AeroDynTest extends GameObject {
 		// TODO Auto-generated method stub
 
 	}
+
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
 }

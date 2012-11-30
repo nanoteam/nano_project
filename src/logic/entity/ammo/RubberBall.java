@@ -5,6 +5,7 @@ import logic.Level;
 import logic.entity.Explosion;
 import logic.entity.GameObjectMoving;
 import logic.entity.Particle;
+import main.Global;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyDef;
@@ -49,7 +50,7 @@ public class RubberBall extends GameObjectMoving {
 						* Math.random() - randTrajectory / 2f));
 
 		this.size = 5f;
-		this.lifeTime = 500 + random.nextInt(100);
+		this.lifeTime = 500 + Global.random.nextInt(100);
 		this.angle = angle;
 		this.color = new Color(Color.GREEN);
 		this.level = level;
@@ -76,12 +77,6 @@ public class RubberBall extends GameObjectMoving {
 	}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		/*
@@ -97,16 +92,16 @@ public class RubberBall extends GameObjectMoving {
 			/*
 			 * level.getNotAddedGameObjects().add( new PlazmaBall(new
 			 * Vector2f(position), (float) (random .nextInt(360)), 0, level));
-			 * 
+			 *
 			 * level.getNotAddedGameObjects().add( new PlazmaBall(new
 			 * Vector2f(position), (float) (random .nextInt(360)), 0, level));
 			 */
 			for (int i = 0; i < 10; i++) {
 				level.getNotAddedGameObjects()
 						.add(new Particle(new Vector2f(position), new Vector2f(
-								(random.nextFloat() - 0.5f) * 25f + speed.x,
-								(random.nextFloat() - 0.5f) * 25f + speed.y),
-								3, 30 + random.nextInt(20), (Color) Color.GREEN));
+								(Global.random.nextFloat() - 0.5f) * 25f + speed.x,
+								(Global.random.nextFloat() - 0.5f) * 25f + speed.y),
+								3, 30 + Global.random.nextInt(20), (Color) Color.GREEN));
 			}
 		}
 	}
@@ -132,7 +127,12 @@ public class RubberBall extends GameObjectMoving {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		physicObject.destroy();
 		level.getNotAddedGameObjects().add(

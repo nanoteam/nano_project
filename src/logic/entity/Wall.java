@@ -34,15 +34,9 @@ public class Wall extends GameObjectMoving {
 		this.height = height;
 		this.width = width;
 		wallRestitution = 0;
-		init();
-	}
-
-	@Override
-	public void init() {
-
-		physicObject = PhysicObject.createBox(this, position, width, height,
-				Material.Wood);
-		physicObject.getBody().setType(BodyType.STATIC);
+        physicObject = PhysicObject.createBox(this, position, width, height,
+                Material.Wood);
+        physicObject.getBody().setType(BodyType.STATIC);
 	}
 
 	@Override
@@ -83,7 +77,12 @@ public class Wall extends GameObjectMoving {
 
 	}
 
-	@Override
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		physicObject.destroy();
 	}

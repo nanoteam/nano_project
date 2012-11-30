@@ -23,9 +23,6 @@ abstract public class GameObjectMoving extends GameObject {
 	protected PhysicObject physicObject;
 
 	@Override
-	abstract public void init();
-
-	@Override
 	abstract public void update();
 
 	@Override
@@ -36,6 +33,9 @@ abstract public class GameObjectMoving extends GameObject {
 
 	@Override
 	abstract public void playSound();
+
+    @Override
+    abstract public void toThink();
 
 	public float getMass() {
 		return mass;
@@ -52,5 +52,15 @@ abstract public class GameObjectMoving extends GameObject {
 	public PhysicObject getPhysicObject() {
 		return physicObject;
 	}
+
+    public Vector2f getSpeed(){
+        return speed;
+    }
+    public float getAngularVelocity(){
+        return physicObject.getAngularVelocity();
+    }
+
+
+
 
 }

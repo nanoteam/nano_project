@@ -19,11 +19,6 @@ public class Particle extends GameObjectMoving {
 	}
 
 	@Override
-	public void init() {
-
-	}
-
-	@Override
 	public void update() {
 		lifeTime--;
 		if (lifeTime < 0) {
@@ -47,11 +42,19 @@ public class Particle extends GameObjectMoving {
 	@Override
 	public void playSound() {
 	}
-	
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
 
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+	public void destroy() {
+		color = null;
+        speed = null;
+        physicObject = null;
+        position = null;
+        renderObject = null;
 	}
 
 	public Color getColor() {

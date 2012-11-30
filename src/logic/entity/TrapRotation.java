@@ -39,16 +39,10 @@ public class TrapRotation extends GameObjectMoving {
 		this.lenght = 200f;
 		this.angle = 0f;
 		this.speed = 0;
-		init();
-	}
-
-	@Override
-	public void init() {
-		physicObject = PhysicObject.createBox(this, position, lenght, lenght,
-				Material.Stone);
-		physicObject.getBody().setFixedRotation(true);
-		physicObject.getBody().setAngularVelocity(1f);
-
+        physicObject = PhysicObject.createBox(this, position, lenght, lenght,
+                Material.Stone);
+        physicObject.getBody().setFixedRotation(true);
+        physicObject.getBody().setAngularVelocity(1f);
 	}
 
 	@Override
@@ -86,7 +80,12 @@ public class TrapRotation extends GameObjectMoving {
 
 	}
 
-	@Override
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 

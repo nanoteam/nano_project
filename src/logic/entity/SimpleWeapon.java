@@ -11,6 +11,7 @@ import static org.lwjgl.opengl.GL11.glVertex2i;
 import logic.entity.ammo.PlazmaBall;
 import logic.entity.ammo.RubberBall;
 
+import main.Global;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
@@ -40,12 +41,8 @@ public class SimpleWeapon extends ArsenalGameObject {
 		this.sizeBullet = sizeBullet;
 		this.reloadTime = reloadTime;
 
-	}
-
-	@Override
-	public void init() {
-		onShoot = false;
-		onReload = false;
+        onShoot = false;
+        onReload = false;
 
 	}
 
@@ -70,7 +67,7 @@ public class SimpleWeapon extends ArsenalGameObject {
 			// fatherObj.level.getNotAddedGameObjects().add(bullet);
 
 			// rubber ball
-			if (random.nextFloat() > 0.9) {
+			if (Global.random.nextFloat() > 0.9) {
 
 				PlazmaBall plazmaBall = new PlazmaBall(position, angle, 0,
 						level);
@@ -114,7 +111,12 @@ public class SimpleWeapon extends ArsenalGameObject {
 	public void playSound() {
 	}
 
-	// ? funny method
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    // ? funny method
 	@Override
 	public boolean setShootOn() {
 		onShoot = true;

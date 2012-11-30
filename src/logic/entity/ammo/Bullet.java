@@ -31,12 +31,6 @@ public class Bullet extends GameObjectMoving {
 	}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 
@@ -64,7 +58,12 @@ public class Bullet extends GameObjectMoving {
 
 	}
 
-	@Override
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 		

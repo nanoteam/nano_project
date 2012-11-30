@@ -18,9 +18,9 @@ public class Sound implements Engine {
 
 	@Override
 	public void tick() {
-		List<GameObject> game_objects = level.getGameObjects();
-		for (GameObject game_object : game_objects) {
-			game_object.playSound();
+		List<GameObject> gameObjects = level.getGameObjects();
+		for (GameObject gameObject : gameObjects) {
+            gameObject.playSound();
 		}
 	}
 
@@ -33,18 +33,16 @@ public class Sound implements Engine {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Level getLevel(){
 		return level;
 	}
 	public void setLevel(Level level){
-		this.level = level; 
+		this.level = level;
 	}
 
 	@Override
 	public void cleanUp() {
-		// Stop the sound
-		AL.destroy();
 
 	}
 }

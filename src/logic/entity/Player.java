@@ -1,23 +1,21 @@
 package logic.entity;
 
-import controller.ControlledObject;
+import ai.ControlledEntity;
 
 public class Player {
-	private ControlledObject controlledObject;
+    private ControlledEntity controlledEntity;
 
+    public ControlledEntity getControlledObject() {
+        return controlledEntity;
+    }
 
-	public ControlledObject getControlledObject() {
-		return controlledObject;
-	}
+    public void setControlledObject(ControlledEntity controlledEntity) {
+        this.controlledEntity = controlledEntity;
+    }
 
-	public void setControlledObject(ControlledObject controlledObject) {
-		this.controlledObject = controlledObject;
-	}
+    public Player() {
 
-	public Player() {
-
-	}
-
+    }
 
 
 }

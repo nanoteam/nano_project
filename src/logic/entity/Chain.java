@@ -56,47 +56,40 @@ public class Chain extends GameObject {
 		angle = (float) Math.atan(oy / ox);
 		if (end.x - begin.x < 0)
 			angle -= 3.14;
-		init();
+        float linkLenght = length / numOfLinks;
+        float llox = (float) (linkLenght * Math.cos(angle));
+        float lloy = (float) (linkLenght * Math.sin(angle));
+        Vector2f linkBegin = new Vector2f((float) (begin.x + llox / 2),
+                (float) (begin.y + lloy / 2));
+        Body b = beginBody;
+        Vec2 joinPoint = new Vec2(begin.x, begin.y);
+        ChainLink firstLink = new ChainLink(linkBegin, linkLenght, angle);
+        chainLinks.add(firstLink);
+        RevoluteJointDef join1 = new RevoluteJointDef();
 
-	}
+        join1.initialize(b, firstLink.getPhysicObject().getBody(),
+                joinPoint.mul(1 / 30f));
+        level.getWorld().createJoint(join1);
+        Vector2f prevLink = firstLink.getPosition();
 
-	@Override
-	public void init() {
+        for (int i = 1; i < numOfLinks; i++) {
+            joinPoint = new Vec2(joinPoint.x + llox, joinPoint.y + lloy);
+            prevLink = new Vector2f(prevLink.x + llox, prevLink.y + lloy);
+            ChainLink chainLink = new ChainLink(prevLink, linkLenght, angle);
+            chainLinks.add(chainLink);
+            RevoluteJointDef join = new RevoluteJointDef();
+            join.initialize(firstLink.getPhysicObject().getBody(), chainLink
+                    .getPhysicObject().getBody(), joinPoint.mul(1 / 30f));
+            level.getWorld().createJoint(join);
+            firstLink = chainLink;
+            join.collideConnected = false;
+        }
+        joinPoint = new Vec2(end.x, end.y);
 
-		float linkLenght = length / numOfLinks;
-		float llox = (float) (linkLenght * Math.cos(angle));
-		float lloy = (float) (linkLenght * Math.sin(angle));
-		Vector2f linkBegin = new Vector2f((float) (begin.x + llox / 2),
-				(float) (begin.y + lloy / 2));
-		Body b = beginBody;
-		Vec2 joinPoint = new Vec2(begin.x, begin.y);
-		ChainLink firstLink = new ChainLink(linkBegin, linkLenght, angle);
-		chainLinks.add(firstLink);
-		RevoluteJointDef join1 = new RevoluteJointDef();
-
-		join1.initialize(b, firstLink.getPhysicObject().getBody(),
-				joinPoint.mul(1 / 30f));
-		level.getWorld().createJoint(join1);
-		Vector2f prevLink = firstLink.getPosition();
-
-		for (int i = 1; i < numOfLinks; i++) {
-			joinPoint = new Vec2(joinPoint.x + llox, joinPoint.y + lloy);
-			prevLink = new Vector2f(prevLink.x + llox, prevLink.y + lloy);
-			ChainLink chainLink = new ChainLink(prevLink, linkLenght, angle);
-			chainLinks.add(chainLink);
-			RevoluteJointDef join = new RevoluteJointDef();
-			join.initialize(firstLink.getPhysicObject().getBody(), chainLink
-					.getPhysicObject().getBody(), joinPoint.mul(1 / 30f));
-			level.getWorld().createJoint(join);
-			firstLink = chainLink;
-			join.collideConnected = false;
-		}
-		joinPoint = new Vec2(end.x, end.y);
-
-		join1 = new RevoluteJointDef();
-		join1.initialize(firstLink.getPhysicObject().getBody(), endBody,
-				joinPoint.mul(1 / 30f));
-		level.getWorld().createJoint(join1);
+        join1 = new RevoluteJointDef();
+        join1.initialize(firstLink.getPhysicObject().getBody(), endBody,
+                joinPoint.mul(1 / 30f));
+        level.getWorld().createJoint(join1);
 
 	}
 
@@ -130,7 +123,12 @@ public class Chain extends GameObject {
 
 	}
 
-	class ChainLink extends GameObjectMoving {
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    class ChainLink extends GameObjectMoving {
 		private float lenght;
 		private float width = 10;
 		private float angle;
@@ -140,14 +138,9 @@ public class Chain extends GameObject {
 			this.lenght = lenght;
 			this.angle = angle;
 			Chain.this.level.getNotAddedGameObjects().add(this);
-			init();
-		}
-
-		@Override
-		public void init() {
-			physicObject = PhysicObject.createBox(this, position, lenght,
-					width, Material.Metal);
-			physicObject.setAngle(angle);
+            physicObject = PhysicObject.createBox(this, position, lenght,
+                    width, Material.Metal);
+            physicObject.setAngle(angle);
 		}
 
 		@Override
@@ -178,7 +171,12 @@ public class Chain extends GameObject {
 
 		}
 
-		@Override
+        @Override
+        public void toThink() {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
 		public void destroy() {
 
 		}

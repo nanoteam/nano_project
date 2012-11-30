@@ -26,7 +26,7 @@ public class Controller implements Engine {
     private List<StateMouse> stateMouseList;
     private List<StateKeyboard> stateKeyboardList;
 
-	private Controller(	Client client) {
+	private Controller(Client client) {
 		keyboard = new Keyboard(this, client.getInputToAction().getAllNeedKeybKeys());
         keyboardOn = true;
         mouseOn = true;
@@ -61,22 +61,18 @@ public class Controller implements Engine {
 		keyboard.cleanUp();
 		mouse.cleanUp();
 	}
-
     public void setKeyboardOn(boolean keyboardOn){
         this.keyboardOn = keyboardOn;
     }
     public void setMouseOn(boolean mouseOn){
         this.mouseOn = mouseOn;
     }
-
     public boolean isKeyboardOn() {
         return keyboardOn;
     }
-
     public boolean isMouseOn() {
         return mouseOn;
     }
-    //fix)
     public Vector2f getMousePosition(){
         return mouse.getPosition();
     }

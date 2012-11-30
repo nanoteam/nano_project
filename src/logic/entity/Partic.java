@@ -17,14 +17,9 @@ public class Partic extends GameObjectMoving {
 		this.position = pos;
 		this.speed = speed;
 		this.liveHealth = 100;
-		init();
-	}
 
-	@Override
-	public void init() {
-
-		physicObject = PhysicObject
-				.createBall(this, position, 2, Material.Wood);
+        physicObject = PhysicObject
+                .createBall(this, position, 2, Material.Wood);
 	}
 
 	@Override
@@ -50,7 +45,12 @@ public class Partic extends GameObjectMoving {
 
 	}
 
-	@Override
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		physicObject.destroy();
 

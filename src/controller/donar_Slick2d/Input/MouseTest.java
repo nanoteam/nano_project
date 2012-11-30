@@ -380,7 +380,7 @@ public class MouseTest {
     }
 
     /**
-     * @param args the command line arguments
+     * @param args the commands line arguments
      */
     public static void main(String[] args) {
         MouseTest mt = new MouseTest();
