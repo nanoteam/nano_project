@@ -45,7 +45,12 @@ public class Partic extends GameObjectMoving {
 
 	}
 
-	@Override
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		physicObject.destroy();
 

@@ -7,6 +7,8 @@
  */
 package main;
 
+import ai.AI;
+import ai.nnga.Manager;
 import controller.Controller;
 import controller.InputToAction;
 import controller.StateKeyboard;
@@ -14,8 +16,6 @@ import controller.StateMouse;
 import logic.Level;
 import logic.Logic;
 import logic.entity.Player;
-import logic.entity.ship.Chromosome;
-import logic.entity.ship.ChromosomeManager;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import physic.Physic;
@@ -27,10 +27,8 @@ import java.util.List;
 public class Game {
 
     private Client client;
-    /**
-     * Exit the game
-     */
-    private static boolean finished;
+
+    private boolean finished;
 
     private Level level;
 
@@ -43,42 +41,44 @@ public class Game {
     private Logic logic;
 
     private Controller controller;
+
+    private AI ai;
     // TODO add more good code to change work Game with Player
     private Player player;
 
     private InputToAction inputToAction;
 
-    public static boolean isFinished() {
+    public boolean isFinished() {
         return finished;
     }
 
-    public static void setFinished(boolean finished) {
-        Game.finished = finished;
+    void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     // TODO add mechanizm creating level with parametrs from Client
     public Game(Client client) {
-
         this.player = new Player();
         level = new Level(this);
 
-        level.testInitLevel();
+        level.testLevelStudyAI();
+        //level.testInitLevel();
+
         this.client = client;
-
         // this code is WTF, but I think, thats it is not important. code work)
-        this.sound = client.getSound();
-        this.render = client.getRender();
-        this.physic = client.getPhysic();
-        this.logic = client.getLogic();
-        this.controller = client.getController();
+        sound = client.getSound();
+        render = client.getRender();
+        physic = client.getPhysic();
+        logic = client.getLogic();
+        controller = client.getController();
+        ai = client.getAI();
         // TODO repair this hint with object level and engines to normal code
-        this.logic.setLevel(level);
-        this.physic.setLevel(level);
-        this.sound.setLevel(level);
-        this.render.setLevel(level);
-        this.inputToAction = client.getInputToAction();
-        // controller dont need to set level!
-
+        logic.setLevel(level);
+        physic.setLevel(level);
+        sound.setLevel(level);
+        render.setLevel(level);
+        ai.setLevel(level);
+        inputToAction = client.getInputToAction();
     }
 
     /**
@@ -97,19 +97,13 @@ public class Game {
                 controller.tick();
                 physic.tick();
                 logic.tick();
+                ai.tick();
                 sound.tick();
                 render.tick();
-                /*
-       try {
-           Thread.sleep(1);
-       } catch (InterruptedException e) {
-           e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-       }         */
-                if (ChromosomeManager.getRealTime()) {
-                    render.syncFps(Client.FRAMERATE);
+
+                if (Global.realTime) {
+                    render.syncFps(Global.FPS);
                 }
-
-
             } else {
                 //go sleep game! game go to menu!
                 //or sleep all resourses
@@ -117,27 +111,19 @@ public class Game {
 
                 physic.tick();
                 logic.tick();
+                ai.tick();
                 sound.tick();
-                /*
-           try {
-               Thread.sleep(2);
-           } catch (InterruptedException e) {
-               e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-           }     */
-
-                if (ChromosomeManager.getRealTime()) {
-                    render.syncFps(Client.FRAMERATE);
+                if (Global.realTime) {
+                    render.syncFps(Global.FPS);
                 }
                 /*
-            if (Display.isVisible() || Display.isDirty()) {
-                // Only bother rendering if the window is visible or dirty
-                render.tick();
-                // TODO in titurial version this method dosnt call,
-                // but i think, that call method maut be
-                render.syncFps(Client.FRAMERATE);
-            }    */
-
-
+         if (Display.isVisible() || Display.isDirty()) {
+             //Only bother rendering if the window is visible or dirty
+             render.tick();
+             //TODO in titurial version this method dosnt call,
+             //       but i think, that call method maut be
+             render.syncFps(Client.FRAMERATE);
+         }       */
             }
         }
     }
@@ -177,24 +163,41 @@ public class Game {
                             break;
                         }
 
-
-                        case InputToAction.fire1: {
+                        case InputToAction.leftEngineLeft: {
                             level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.fire1);
+                                    .doAction(InputToAction.leftEngineLeft);
                             break;
                         }
 
-                        case InputToAction.engineLeft: {
+                        case InputToAction.leftEngineRight: {
                             level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.engineLeft);
+                                    .doAction(InputToAction.leftEngineRight);
+                            break;
+                        }
+                        case InputToAction.rightEngineLeft: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.leftEngineLeft);
                             break;
                         }
 
-                        case InputToAction.engineRight: {
+                        case InputToAction.rightEngineRight: {
                             level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.engineRight);
+                                    .doAction(InputToAction.leftEngineRight);
                             break;
                         }
+
+                        case InputToAction.leftEngineOn: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.leftEngineOn);
+                            break;
+                        }
+
+                        case InputToAction.rightEngineOn: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.rightEngineOn);
+                            break;
+                        }
+
 
                         case InputToAction.zoomIn: {
                             render.setZoom((float) (render.getZoom() + 0.05));
@@ -204,6 +207,10 @@ public class Game {
                             render.setZoom((float) (render.getZoom() - 0.05));
                             break;
                         }
+
+
+
+
                     }
                 }
 
@@ -213,7 +220,7 @@ public class Game {
                         case InputToAction.up: {
                             /*level.getPlayer().getControlledObject()
                                     .doAction(InputToAction.up);*/
-                            ChromosomeManager.changeRealTime();
+                            Global.realTime = !Global.realTime;
                             break;
                         }
 
@@ -221,7 +228,7 @@ public class Game {
                             //firing++;
                             //System.out.println("fire");
 
-                            //ChromosomeManager.get().changeMarkCurrentChromosome(Chromosome.DIFF_MARK);
+                            //Manager.get().changeMarkCurrentChromosome(Chromosome.DIFF_MARK);
                             break;
                         }
 
@@ -229,7 +236,7 @@ public class Game {
                             //moving++;
                             //System.out.println("move");
 
-                            //ChromosomeManager.get().changeMarkCurrentChromosome(-Chromosome.DIFF_MARK);
+                            //Manager.get().changeMarkCurrentChromosome(-Chromosome.DIFF_MARK);
                             break;
                         }
 
@@ -264,12 +271,12 @@ public class Game {
                     if (stateMouse.buttonCode == StateKeyboard.DOWN || stateMouse.stateButton == StateKeyboard.DOWN_PRESSED) {
                         switch (inputToAction.getActionByDevice(stateMouse.buttonCode, InputToAction.MOUSE)) {
                             /* case InputToAction.comboChoiseFirst: {
-                       ChromosomeManager.get().changeMarkCurrentCromsone(+Chromosome.DIFF_MARK);
+                       Manager.get().changeMarkCurrentCromsone(+Chromosome.DIFF_MARK);
                        //System.out.println("left");
                        break;
                    }
                    case InputToAction.comboChoiseSecond: {
-                       ChromosomeManager.get().changeMarkCurrentCromsone(-Chromosome.DIFF_MARK);
+                       Manager.get().changeMarkCurrentCromsone(-Chromosome.DIFF_MARK);
                        //System.out.println("right");
                        break;
                    }         */

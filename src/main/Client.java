@@ -1,152 +1,150 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ai.AI;
 import controller.Controller;
-import controller.StateKeyboard;
 import controller.InputToAction;
+import controller.StateKeyboard;
 import controller.StateMouse;
 import logic.Logic;
 import physic.Physic;
 import render.Render;
-import resourses.configuration.ConfigsLibrary;
 import resourses.ResourcesManager;
+import resourses.configuration.ConfigsLibrary;
 import sound.Sound;
+
+import java.util.List;
 
 public final class Client {
 
-	/** Desired frame time */
-	public static final int FRAMERATE = 60;
+    private Game game;
 
-	private Game game;
+    private MainMenu mainMenu;
 
-	private MainMenu mainMenu;
+    private Sound sound;
 
-	private Sound sound;
+    private Render render;
 
-	private Render render;
+    private Physic physic;
 
-	private Physic physic;
+    private Logic logic;
 
-	private Logic logic;
+    private AI ai;
 
-	private ResourcesManager resourcesManager;
+    private ResourcesManager resourcesManager;
 
-	private Controller controller;
+    private Controller controller;
 
     private InputToAction inputToAction;
 
     private ConfigsLibrary configsLibrary;
 
-	private int state;
+    private int state;
 
-	// States
+    // States
 
-	public static int ERROR = -1;
+    public static int ERROR = -1;
 
-	public static int LOAD_RESOURCES = 1;
+    public static int LOAD_RESOURCES = 1;
 
-	public static int MAIN_MENU = 2;
+    public static int MAIN_MENU = 2;
 
-	public static int GAME = 3;
+    public static int GAME = 3;
 
-	public static int EXIT = 13;
+    public static int EXIT = 13;
 
-    private final ArrayList<String> pathToMainConfigs = new ArrayList<String>();
-
-	// TODO add full support menu
-	public Client() {
-		state = LOAD_RESOURCES;
-		configsLibrary =ConfigsLibrary.getConfigsLibrary();
+    public Client() {
+        state = LOAD_RESOURCES;
+        configsLibrary = ConfigsLibrary.get();
         inputToAction = InputToAction.get();
-        
         inputToAction.init(configsLibrary.getConfig(ConfigsLibrary.pathToSetting));
-
         //must call first, before entity with resources
         resourcesManager = ResourcesManager.geResourcesManager();
-
         state = MAIN_MENU;
-
-		// menu = new Menu();
-		logic = new Logic(this);
-		physic = new Physic();
-		render = new Render();
-		sound = new Sound();
+        // menu = new Menu();
+        logic = new Logic(this);
+        physic = new Physic();
+        render = new Render();
+        sound = new Sound();
+        ai = new AI();
         controller = Controller.createController(this);
-		state = GAME;
-		
-		// TODO change this line by call construktor with good parametrs - type of level
-		// , physic const, logic const
-		game = new Game(this);
+        state = GAME;
+        // TODO change this line by call construktor with good parametrs - type of level
+        // , physic const, logic const
+        game = new Game(this);
 
-	}
-	/**
-	 * Do any game-specific cleanup
-	 */
-	private void cleanup() {
-		// TODO: save anything you want to disk here
-		physic.cleanUp();
-		sound.cleanUp();
-		render.cleanUp();
-		logic.cleanUp();
-	}
+    }
 
-	public void start() {
-		game.start();
-	}
+    /**
+     * Do any game-specific cleanup
+     */
+    private void cleanup() {
+        // TODO: save anything you want to disk here
+        physic.cleanUp();
+        sound.cleanUp();
+        render.cleanUp();
+        logic.cleanUp();
+        ai.cleanUp();
+    }
 
-	public int getState() {
-		return state;
-	}
+    void start() {
+        game.start();
+    }
 
-	public void exit() {
-		cleanup();
-		System.exit(0);
-	}
+    public int getState() {
+        return state;
+    }
 
-	// TODO add command parametrs to start with there
-	public static void main(String args[]) {
-		Client client = new Client();
-		client.start();
-	}
+    public void exit() {
+        cleanup();
+        System.exit(0);
+    }
 
-	public Sound getSound() {
-		return sound;
-	}
+    Sound getSound() {
+        return sound;
+    }
 
-	public Render getRender() {
-		return render;
-	}
+    Render getRender() {
+        return render;
+    }
 
-	public Physic getPhysic() {
-		return physic;
-	}
+    Physic getPhysic() {
+        return physic;
+    }
 
-	public Logic getLogic() {
-		return logic;
-	}
+    Logic getLogic() {
+        return logic;
+    }
 
-	public Controller getController() {
-		return controller;
-	}
+    Controller getController() {
+        return controller;
+    }
 
-	public MainMenu getMainMenu() {
-		return mainMenu;
-	}
+    MainMenu getMainMenu() {
+        return mainMenu;
+    }
+    
+    AI getAI(){
+        return ai;
+    }
 
-	public void sendStatesInput (List<StateKeyboard> eventsKeyboard,List<StateMouse> eventsMouse) {
-		if (state == Client.MAIN_MENU) {
-			return;
-		}
+    public void sendStatesInput(List<StateKeyboard> eventsKeyboard, List<StateMouse> eventsMouse) {
+        if (state == Client.MAIN_MENU) {
+            return;
+        }
 
-		if (state == Client.GAME) {
-			game.sendStatesInput(eventsKeyboard, eventsMouse);
-			return;
-		}
-	}
+        if (state == Client.GAME) {
+            game.sendStatesInput(eventsKeyboard, eventsMouse);
+            return;
+        }
+    }
 
-    public InputToAction getInputToAction(){
+    public InputToAction getInputToAction() {
         return inputToAction;
+    }
+
+    // TODO add commands parametrs to start with there
+    public static void main(String args[]) {
+        Client client = new Client();
+    client.start();
     }
 }

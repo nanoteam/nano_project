@@ -17,6 +17,7 @@ public class Image {
 	}
 
 	public Image() {
+
 	}
 	
 	public Texture getTexture(){

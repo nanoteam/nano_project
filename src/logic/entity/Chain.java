@@ -123,7 +123,12 @@ public class Chain extends GameObject {
 
 	}
 
-	class ChainLink extends GameObjectMoving {
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    class ChainLink extends GameObjectMoving {
 		private float lenght;
 		private float width = 10;
 		private float angle;
@@ -166,7 +171,12 @@ public class Chain extends GameObject {
 
 		}
 
-		@Override
+        @Override
+        public void toThink() {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
 		public void destroy() {
 
 		}

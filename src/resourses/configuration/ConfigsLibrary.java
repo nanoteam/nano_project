@@ -1,17 +1,5 @@
 package resourses.configuration;
-
-//
 //Parse configuration files, storage link on obj with parsing files
-//
-//
-//
-//
-//
-//
-//
-//
-
-
 import java.util.HashMap;
 import java.util.Map;
 //singlton
@@ -27,7 +15,7 @@ public final class ConfigsLibrary {
         getConfig(pathToSetting);
     }
 
-    public static ConfigsLibrary getConfigsLibrary() {
+    public static ConfigsLibrary get() {
         if (null == configsLibrary) {
             configsLibrary = new ConfigsLibrary();
             return configsLibrary;

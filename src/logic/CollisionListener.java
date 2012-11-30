@@ -23,16 +23,12 @@ public class CollisionListener implements ContactListener {
 
     public CollisionListener(logic.Level level) {
         this.level = level;
-
         // Manifold manifold = new Manifold();
-
     }
 
     @Override
     public void beginContact(Contact contact) {
-
         isCollision = true;
-
         // WorldManifold worldManifold = new WorldManifold();
         // contact.getWorldManifold(worldManifold);
         // Vec2[] points = worldManifold.points;

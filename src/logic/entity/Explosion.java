@@ -83,4 +83,9 @@ public class Explosion extends GameObject {
 
 	}
 
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 }

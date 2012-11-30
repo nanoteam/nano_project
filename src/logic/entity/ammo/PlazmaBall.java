@@ -4,6 +4,7 @@ import logic.Level;
 
 import logic.entity.GameObjectMoving;
 import logic.entity.Particle;
+import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -36,10 +37,10 @@ public class PlazmaBall extends GameObjectMoving {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		if (random.nextInt(32) > 24) {
+		if (Global.random.nextInt(32) > 24) {
 			level.getNotAddedGameObjects().add(
-					new Particle(new Vector2f(position), new Vector2f((random
-							.nextFloat() - 0.5f) * 100f + speed.x, (random
+					new Particle(new Vector2f(position), new Vector2f((Global.random
+							.nextFloat() - 0.5f) * 100f + speed.x, (Global.random
 							.nextFloat() - 0.5f) * 100f + speed.y), 1, 60,
 							(Color) Color.YELLOW));
 		}
@@ -56,15 +57,15 @@ public class PlazmaBall extends GameObjectMoving {
 			float angleParticle = 0;
 			float speedParticle = 0;
 			for (int i = 0; i < 100; i++) {
-				angleParticle = (float) (random.nextFloat() * 2 * Math.PI);
-				speedParticle = (float) (random.nextFloat() * maxSpeed / 2);
+				angleParticle = (float) (Global.random.nextFloat() * 2 * Math.PI);
+				speedParticle = (float) (Global.random.nextFloat() * maxSpeed / 2);
 				level.getNotAddedGameObjects().add(
 						new Particle(new Vector2f(position), new Vector2f(
 								(float) (Math.cos(angleParticle)
 										* speedParticle + speed.x),
 								(float) (Math.sin(angleParticle)
 										* speedParticle + speed.y)), 2,
-								30 + random.nextInt(20), (Color) Color.RED));
+								30 + Global.random.nextInt(20), (Color) Color.RED));
 			}
 		}
 	}
@@ -86,7 +87,12 @@ public class PlazmaBall extends GameObjectMoving {
 
 	}
 
-	@Override
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 

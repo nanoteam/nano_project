@@ -2,6 +2,7 @@ package logic.entity;
 
 import java.util.Random;
 
+import main.Global;
 import org.jbox2d.collision.shapes.MassData;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -28,10 +29,9 @@ public class Asteroid extends GameObjectMoving {
 		this.level = level;
 		this.radius = 30;
 		this.angle = 0f;
-        this.random = new Random();
         this.speed = new Vector2f((float) MAX_SPEED
-                - random.nextInt(MAX_SPEED * 2), (float) MAX_SPEED
-                - random.nextInt(MAX_SPEED * 2));
+                - Global.random.nextInt(MAX_SPEED * 2), (float) MAX_SPEED
+                - Global.random.nextInt(MAX_SPEED * 2));
         this.physicObject = PhysicObject.createBall(this, position, radius,
                 Material.Stone);
         physicObject.setSpeed(speed);
@@ -62,7 +62,12 @@ public class Asteroid extends GameObjectMoving {
 
 	}
 
-	@Override
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		physicObject.destroy();
 	}

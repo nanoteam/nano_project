@@ -31,12 +31,6 @@ public class Physic implements Engine {
 		List<GameObject> game_objects = level.getGameObjects();
 		for (GameObject game_object : game_objects) {
 			game_object.move();
-			// check for borders
-			/*
-			if (!level.isInBorders(game_object.getPosition()))
-				game_object.setLive(false);
-			 */
-			
 		}
 		level.getWorld().step(Global.DT, 7, 3);
 	}

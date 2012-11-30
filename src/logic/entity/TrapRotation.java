@@ -80,7 +80,12 @@ public class TrapRotation extends GameObjectMoving {
 
 	}
 
-	@Override
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 

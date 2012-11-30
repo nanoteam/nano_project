@@ -1,7 +1,9 @@
 package logic.entity.ship;
 
+import ai.nnga.Manager;
 import logic.entity.EmmiterEffects;
 import logic.entity.GameObjectMoving;
+import main.Global;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
@@ -77,6 +79,11 @@ public class Engine extends GameObjectMoving {
     }
 
     @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void destroy() {
         engineJoint.destructor();
         physicObject.destroy();
@@ -92,10 +99,9 @@ public class Engine extends GameObjectMoving {
         // // (float) (-height / 30 / 2 * Math.cos(angle))));
         // Vec2 pointOfForce = new Vec2(position.x / 30f, position.y / 30f);
         physicObject.applyForce(forceX, forceY, position);
-        if (ChromosomeManager.getRealTime()){
+        if (Global.realTime){
             EmmiterEffects.drawParticlesFromEngine(position, angle+fatherObj.getAngle());
         }
-
     }
 
     void setEngineJoint(Joint joint) {
@@ -110,14 +116,21 @@ public class Engine extends GameObjectMoving {
         return angle;
     }
 
+    @Override
+    public float getAngularVelocity() {
+        return 0;
+    }
+
     public void turnByAngle(float angle) {
         this.angle+= angle;
     }
 
-    public void damage() {
-        liveHealth = -1;
+    public void damage(float... impulses) {
+        if (Manager.get().getState() == Manager.TRAINING) {
+            liveHealth = -1;
+        }
         //level.getPlayer().getControlledObject().doAction(InputToAction.death);
-        //ChromosomeManager.get().touchWall();
+        //Manager.get().touchWall();
     }
 
 }

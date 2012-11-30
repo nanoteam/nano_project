@@ -224,7 +224,7 @@ public class KeyboardTest {
     }
 
     /**
-     * @param args the command line arguments
+     * @param args the commands line arguments
      */
     public static void main(String[] args) {
         KeyboardTest kt = new KeyboardTest();

@@ -1,7 +1,9 @@
 package logic;
 
-import logic.entity.*;
-import logic.entity.ship.ChromosomeManager;
+import logic.entity.EmmiterEffects;
+import logic.entity.GameObject;
+import logic.entity.Player;
+import logic.entity.Wall;
 import logic.entity.ship.Ship;
 import main.Game;
 import org.jbox2d.callbacks.QueryCallback;
@@ -71,23 +73,15 @@ public class Level {
     public void restartShip() {
         Object obj = game.getPlayer().getControlledObject();
         obj = null;
-
-        Ship ship = new Ship(this, defaultWidth /2, defaultHeight/12);
-
-        /*Ship ship = new Ship(this, 350f+random.nextInt(100),250f+random.nextInt(100));
-        ship.getPhysicObject().setAngle(random.nextFloat()*3.14159f-3.14159f/4f);
-        ship.getPhysicObject().setSpeed(new Vector2f(random.nextInt(100)-50,random.nextInt(100)-50));
-        ship.getPhysicObject().setAngularVelocity(random.nextFloat()-0.5f);*/
-
+        Ship ship = new Ship(this, 800f, 100);
         game.getPlayer().setControlledObject(ship);
         gameObjectsToAdd.add(ship);
+
     }
 
     // this is method for running game in test mode
     public void testInitLevel() {
-        Ship ship = null;
-        restartShip();
-
+        Ship ship = new Ship(this, 200, 200);
         ///Ship ship2 = new Ship(this, 500f, 500f);
         //Bot bot = new Bot(ship2);
         //gameObjects.add(ship2);
@@ -106,7 +100,7 @@ public class Level {
 
         // gameObjects.add(new Wall(this, 700, 100, 20, 200));
         //gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
-        ChromosomeManager.get().touchWall();
+
         // add to world a chain
         /*gameObjects.add(new Chain(this, upWall.getBody(), new Vector2f(
                   defaultWidth / 2f, defaultHeight - 5), ship2.getBody(),
@@ -156,6 +150,21 @@ public class Level {
 //				new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));     */
     }
 
+    public void testLevelStudyAI() {
+        Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight);
+        gameObjects.add(leftWall);
+        Wall upWall = new Wall(this, defaultWidth / 2, defaultHeight - 5,
+                defaultWidth, 10);
+        gameObjects.add(upWall);
+        Wall righWall = new Wall(this, defaultWidth - 5, defaultHeight / 2, 10,
+                defaultHeight);
+        gameObjects.add(righWall);
+        Wall downWall = new Wall(this, defaultWidth / 2, 5, defaultWidth, 10);
+        gameObjects.add(downWall);
+
+        restartShip();
+    }
+
     public Player getPlayer() {
         return game.getPlayer();
     }
@@ -171,8 +180,8 @@ public class Level {
     }
 
     public void deleteNotDeletedObjects() {
-        if (gameObjectsToDelete.size() != 0){
-            for(GameObject gameObject : gameObjectsToDelete){
+        if (gameObjectsToDelete.size() != 0) {
+            for (GameObject gameObject : gameObjectsToDelete) {
                 gameObject.destroy();
             }
             gameObjects.removeAll(gameObjectsToDelete);

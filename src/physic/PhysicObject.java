@@ -27,7 +27,6 @@ public class PhysicObject {
         this.body = body;
         this.material = material;
         this.gameObject = gameObject;
-
     }
 
     public Vector2f getSpeed() {
@@ -39,11 +38,14 @@ public class PhysicObject {
         body.setLinearVelocity(new Vec2(newSpeed.x / 30, newSpeed.y / 30));
     }
 
-    public void setAngularVelocity(float w){
+    public void setAngularVelocity(float w) {
         body.setAngularVelocity(w);
     }
 
-    
+    public float getAngularVelocity(){
+        return body.getAngularVelocity();
+    }
+
     public Vector2f getPosition() {
         return new Vector2f(body.getPosition().x * 30,
                 body.getPosition().y * 30);
@@ -77,15 +79,8 @@ public class PhysicObject {
     }
 
     public void destroy() {
-        body.destroyFixture(body.m_fixtureList);
+        body.destroyFixture(body.getFixtureList());
         body.getWorld().destroyBody(body);
-
-        //
-        //body.getWorld().step(0.001f, 1, 1);
-        //body.getWorld().
-        //body.destroyFixture(body.getFixtureList());
-        //gameObject = null;
-
 
         // TODO delete object from game, maybe this method must be static and
         // PhysicObject as argument

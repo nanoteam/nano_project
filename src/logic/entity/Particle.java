@@ -42,8 +42,13 @@ public class Particle extends GameObjectMoving {
 	@Override
 	public void playSound() {
 	}
-	
-	@Override
+
+    @Override
+    public void toThink() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		color = null;
         speed = null;

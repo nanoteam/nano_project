@@ -1,10 +1,8 @@
-/**
- * @author Arthur
- * @version 1.3
- */
 package logic.entity.ship;
 
-import controller.ControlledObject;
+import ai.ControlledEntity;
+import ai.commands.Command;
+import ai.nnga.Manager;
 import controller.InputToAction;
 import logic.Level;
 import logic.entity.ArsenalGameObject;
@@ -13,44 +11,45 @@ import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import physic.Material;
 import physic.PhysicObject;
 import render.RenderUtil;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
-public class Ship extends GameObjectMoving implements ControlledObject {
-
+public class Ship extends GameObjectMoving implements ControlledEntity {
     // flags
-    private boolean leftEngineActive = false;
-    private boolean rightEngineActive = false;
+    private boolean leftEngineOn = false;
+    private boolean rightEngineOn = false;
     private boolean allEngineActive = false;
-    private boolean turnEnginesLeft = false;
-    private boolean turnEnginesRight = false;
+
+    private boolean turnLeftEnginesLeft = false;
+    private boolean turnLeftEnginesRight = false;
+
+    private boolean turnRightEnginesLeft = false;
+    private boolean turnRightEnginesRight = false;
+
     private boolean weapon1Shot = false;
     private boolean weapon2Shot = false;
 
-    //data for ai
-    private static int stateMove = ControlledObject.MOVE_NONE;
-    private static int stateFire = ControlledObject.FIRE_NONE;
-    private Vector2f moveData;
-    private Vector2f fireData;
-    private ChromosomeManager chromosomeManager = ChromosomeManager.get();
+    Deque<Command> aiCommand = new ArrayDeque<Command>();
 
     private float width, height;
     private float protection = 0.1f;
-    private List<ArsenalGameObject> arsenalList = new ArrayList<ArsenalGameObject>();
-    private Image image;
+
+    private static Image image;
 
     private static Vector2f ENGINE_POSITION = new Vector2f(50f, 0f);
-
+    //component
     private Engine leftEngine, rightEngine;
-    private static final float leftAngleBorder = 4f * 3.14159f;
-    private static final float rightAngleBorder = 5f * 3.14159f;
+    private List<ArsenalGameObject> arsenalList = new ArrayList<ArsenalGameObject>();
 
     static {
-        name = "ship";
+        name = "Ship";
     }
 
     public Ship(Level level, float x, float y) {
@@ -59,9 +58,10 @@ public class Ship extends GameObjectMoving implements ControlledObject {
         speed = new Vector2f(0, 0);
         width = 100f;
         height = 40f;
-        liveHealth = 100;
+        liveHealth = 1000;
         physicObject = PhysicObject.createBox(this, position, width, height,
                 Material.Metal);
+        /*
         {
             // adding weapons
 
@@ -72,7 +72,7 @@ public class Ship extends GameObjectMoving implements ControlledObject {
             Weapon weap2 = new Weapon(this, 10, 5, 2, 70);
             arsenalList.add(weap2);
             level.getGameObjects().add(weap2);
-        }
+        } */
 
         {
             // adding engines
@@ -83,252 +83,142 @@ public class Ship extends GameObjectMoving implements ControlledObject {
             rightEngine = new Engine(this, new Vector2f(position.x
                     + ENGINE_POSITION.x, position.y - ENGINE_POSITION.y));
         }
-        /*
-           * // delete, when complite ersourses manager \/ if (image == null){ try
-           * { image = new Image("ship.png"); } catch (SlickException e) {
-           * e.printStackTrace(); //To change body of catch statement use File |
-           * Settings | File Templates. } } // delete, when complite ersourses
-           * manager /\
-           */
 
+        // delete, when complite ersourses manager \/
+        /*if (image == null) {
+            try {
+                image = new Image("D:/ship.png");
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+        }      */
     }
 
 
-    @Override
-    public void update() {
+        @Override
+        public void update () {
 
-        if (weapon1Shot && !arsenalList.isEmpty()) {
-            arsenalList.get(0).setShootOn();
-        }
-        if (weapon2Shot && !arsenalList.isEmpty()) {
-            arsenalList.get(1).setShootOn();
-        }
-        clearFlags();
-        if (liveHealth < 0) {
-            startDestroy();
-        }
-
-        /*
-           * if (stateMove==ControlledObject.MOVE_VECTOR){
-           *
-           * } if (stateMove == ControlledObject.MOVE_NONE){
-           *
-           * } // create mirage
-           */
-        if (Global.CONTROLED_AI) {
-            //cromsone !!!
-
-            while (angle > 2 * 3.14159f) {
-                angle = angle - 2f * 3.14159f;
+            if (weapon1Shot && !arsenalList.isEmpty()) {
+                arsenalList.get(0).setShootOn();
             }
-            while (angle < -2 * 3.14159f) {
-                angle = angle + 2f * 3.14159f;
+            if (weapon2Shot && !arsenalList.isEmpty()) {
+                arsenalList.get(1).setShootOn();
             }
-
-            if (angle > leftAngleBorder && angle < rightAngleBorder) {
-                chromosomeManager.sendEvent(ChromosomeManager.STATE_OVERLOAD_ANGLE);
-            }
-
-            float[] box = new float[8];
-
-            box[0] = angle / (2f * 3.14159f);
-            box[1] = speed.x / 200f;
-            box[2] = speed.y / 200f;
-            box[3] = (position.x - 800) / 800f;
-            box[4] = (position.y - 450) / 450f;
-            chromosomeManager.incDx(box[3]);
-            chromosomeManager.incDy(box[4]);
-            float angleEngine = leftEngine.getAngle() + physicObject.getAngle();
-            while (angleEngine > 2 * 3.14159f) {
-                angleEngine = angleEngine - 2f * 3.14159f;
-            }
-            while (angleEngine < -2 * 3.14159f) {
-                angleEngine = angleEngine + 2f * 3.14159f;
-            }
-            box[5] = angleEngine / (2f * 3.14159f);
-
-
-            angleEngine = rightEngine.getAngle() + physicObject.getAngle();
-            ;
-            while (angleEngine > 2f * 3.14159f) {
-                angleEngine = angleEngine - 2f * 3.14159f;
-            }
-            while (angleEngine < -2 * 3.14159f) {
-                angleEngine = angleEngine + 2f * 3.14159f;
-            }
-            box[6] = angleEngine / (2f * 3.14159f);
-
-            box[7] = physicObject.getBody().getAngularVelocity() / 10f;
-
-            float[] activity = chromosomeManager.getActivityCurrentChromosome(box);
-
-
-            if ((Math.abs(box[7])) > 9f) {
-                chromosomeManager.sendEvent(ChromosomeManager.STATE_LIMIT_W);
-            }
-
-            leftEngine.turnByAngle(activity[0] * 2f * 3.14159f - 3.14159f);
-            if (0.5f < activity[1]) {
-                leftEngineActive = true;
-                chromosomeManager.sendEvent(ChromosomeManager.STATE_LEFT_ENGINE_ON);
-            }
-            rightEngine.turnByAngle(activity[2] * 2f * 3.14159f - 3.14159f);
-            if (0.5f < activity[3]) {
-                rightEngineActive = true;
-                chromosomeManager.sendEvent(ChromosomeManager.STATE_RIGHT_ENGINE_ON);
-            }
-
-            box = null;
-            activity = null;
-            /*
-            System.out.println("**");
-            for (int i = 0; i < box.length; i++) {
-                System.out.println(box[i]);
-            }
-
-            System.out.println("*");
-            for (int i = 0; i < activity.length; i++) {
-                System.out.println(activity[i]);
-            }
-            System.out.println("**");
-             */
-        }
-    }
-
-    // TODO add *dt
-    @Override
-    public void move() {
-        position = null;
-        position = physicObject.getPosition();
-        speed = null;
-        speed = physicObject.getSpeed();
-
-        angle = physicObject.getAngle();
-
-        if (allEngineActive) {
-            leftEngine.enableForce();
-            rightEngine.enableForce();
-
-        }
-        if (rightEngineActive) {
-            rightEngine.enableForce();
-        }
-        if (leftEngineActive) {
-            leftEngine.enableForce();
-        }
-        if (turnEnginesLeft) {
-            leftEngine.turnByAngle(0.1f);
-            rightEngine.turnByAngle(0.1f);
-        }
-        if (turnEnginesRight) {
-            leftEngine.turnByAngle(-0.1f);
-            rightEngine.turnByAngle(-0.1f);
-        }
-    }
-
-    @Override
-    public void draw() {
-        RenderUtil.drawQaud(position.x, position.y, width, height, angle,
-                (Color) Color.GREY);
-    }
-
-    @Override
-    public void playSound() {
-    }
-
-    @Override
-    public void doAction(int code) {
-        // System.out.println("ship.doAction()" + code);
-        switch (code) {
-            case InputToAction.left: {
-                leftEngineActive = true;
-                break;
-            }
-            case InputToAction.right: {
-                rightEngineActive = true;
-                break;
-            }
-            case InputToAction.down: {
-                allEngineActive = true;
-                break;
-            }
-            /*
-            * case InputToAction.: { allEngineActive = true; break; }
-            */
-
-            /*
-            * case ControlledObject.FIRE_FIRST_WEAPON: { weapon1Shot = true; break;
-            * } case ControlledObject.FIRE_SECOND_WEAPON: { weapon2Shot = true;
-            * break; }
-            */
-
-            case InputToAction.engineLeft: {
-                turnEnginesLeft = true;
-                break;
-            }
-            case InputToAction.engineRight: {
-                turnEnginesRight = true;
-                break;
-            }
-            case InputToAction.fire1: {
-                weapon1Shot = true;
-                break;
-            }
-            case InputToAction.death: {
-                liveHealth = -1;
-                break;
+            clearFlags();
+            if (liveHealth < 0) {
+                startDestroy();
             }
         }
-    }
 
-    public void doAction(int code, Vector2f actionData) {
-        switch (code) {
-            // move
-            case ControlledObject.MOVE_TARGET: {
-                stateMove = ControlledObject.MOVE_TARGET;
-                moveData = actionData;
-                break;
+        @Override
+        public void move () {
+            position = null;
+            position = physicObject.getPosition();
+            speed = null;
+            speed = physicObject.getSpeed();
+            angle = physicObject.getAngle();
+
+            if (allEngineActive) {
+                leftEngine.enableForce();
+                rightEngine.enableForce();
             }
-            case ControlledObject.MOVE_VECTOR: {
-                stateMove = ControlledObject.MOVE_VECTOR;
-                moveData = actionData;
-                break;
+            if (rightEngineOn) {
+                rightEngine.enableForce();
             }
-            case ControlledObject.MOVE_NONE: {
-                stateMove = ControlledObject.MOVE_TARGET;
-                moveData = null;
-                break;
+            if (leftEngineOn) {
+                leftEngine.enableForce();
             }
-            // data
-            case ControlledObject.FIRE_TARGET: {
-                stateFire = ControlledObject.FIRE_TARGET;
-                fireData = actionData;
-                break;
+            if (turnLeftEnginesLeft) {
+                leftEngine.turnByAngle(0.1f);
             }
-            case ControlledObject.FIRE_SHOOT: {
-                stateFire = ControlledObject.FIRE_SHOOT;
-                fireData = actionData;
-                break;
+            if (turnLeftEnginesRight) {
+                leftEngine.turnByAngle(-0.1f);
             }
-            case ControlledObject.FIRE_NONE: {
-                stateFire = ControlledObject.FIRE_NONE;
-                fireData = null;
-                break;
+            if (turnRightEnginesLeft) {
+                rightEngine.turnByAngle(0.1f);
+            }
+            if (turnRightEnginesRight) {
+                rightEngine.turnByAngle(-0.1f);
+            }
+
+
+        }
+
+        @Override
+        public void draw () {
+            RenderUtil.drawQaud(position.x, position.y, width, height, angle,
+                    (Color) Color.GREY);
+            //RenderUtil.drawImage(position.x, position.y, width, height,angle,1,image);
+        }
+
+        @Override
+        public void playSound () {
+        }
+
+        @Override
+        public void toThink () {
+            Manager.get().getReaction(this);
+        }
+
+        @Override
+        public void doAction ( int code){
+            // System.out.println("ship.doAction()" + code);
+            switch (code) {
+                case InputToAction.left: {
+                    leftEngineOn = true;
+                    break;
+                }
+                case InputToAction.right: {
+                    rightEngineOn = true;
+                    break;
+                }
+                case InputToAction.down: {
+                    allEngineActive = true;
+                    break;
+                }
+
+                case InputToAction.leftEngineLeft: {
+                    turnLeftEnginesLeft = true;
+                    break;
+                }
+
+                case InputToAction.leftEngineRight: {
+                    turnLeftEnginesRight = true;
+                    break;
+                }
+                case InputToAction.rightEngineLeft: {
+                    turnRightEnginesLeft = true;
+                    break;
+                }
+
+                case InputToAction.rightEngineRight: {
+                    turnRightEnginesRight = true;
+                    break;
+                }
+
+                case InputToAction.leftEngineOn: {
+                    leftEngineOn = true;
+                    break;
+                }
+
+                case InputToAction.rightEngineOn: {
+                    rightEngineOn = true;
+                    break;
+                }
             }
         }
-    }
 
-    @Override
     public void clearFlags() {
         allEngineActive = false;
-        leftEngineActive = false;
-        rightEngineActive = false;
+        leftEngineOn = false;
+        rightEngineOn = false;
         weapon1Shot = false;
         weapon2Shot = false;
-        turnEnginesLeft = false;
-        turnEnginesRight = false;
+        turnLeftEnginesLeft = false;
+        turnLeftEnginesRight = false;
+        turnRightEnginesLeft = false;
+        turnRightEnginesRight = false;
     }
-
 
     @Override
     public void destroy() {
@@ -353,20 +243,46 @@ public class Ship extends GameObjectMoving implements ControlledObject {
                 arsenalObj.setLive(false);
             }
         }
-        ChromosomeManager.get().touchWall();
+        Manager.get().nextTest();
     }
 
     public void damage(float... impulses) {
-        /*
-        float result = 0;
-        for (float f : impulses)
-            result += f;
-        liveHealth -= result * (1 - protection);*/
-        liveHealth = -1;
+        if (Manager.get().getState() == Manager.TRAINING) {
+            liveHealth = -1;
+        } else {
+            float result = 0;
+            for (float f : impulses)
+                result += f;
+            liveHealth -= result * (1 - protection);
+        }
 
     }
 
-    public static String getName() {
-        return name;
+    public float getAngleLeftEngine() {
+        return leftEngine.getAngle();
+    }
+
+    public float getAngleRightEngine() {
+        return rightEngine.getAngle();
+    }
+
+    public void pushCommand(Command command) {
+
+    }
+
+    public Command popCommand() {
+        return null;
+    }
+
+    public void clearCommand() {
+
+    }
+
+    public void addChaosInMovement() {
+        //System.out.println("chaos!!!");
+        physicObject.applyForce((Global.random.nextFloat() - 0.5f) * 20f, (Global.random.nextFloat() - 0.5f) * 20f, new Vector2f((Global.random.nextFloat() * width), (Global.random.nextFloat() * height)));
+        //physicObject.setAngle(((Global.random.nextFloat() - 0.5f) * 3.14159f) / 3f);
+        //physicObject.setSpeed(new Vector2f(Global.random.nextInt(100) - 50f, Global.random.nextInt(100) - 50f));
+        //physicObject.setAngularVelocity((Global.random.nextFloat() - 0.5f) * 2f);
     }
 }
