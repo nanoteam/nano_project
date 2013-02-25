@@ -16,26 +16,19 @@ public final class InputToAction {
     public final static byte MOUSE = 1;
     public final static byte CONTROLLER = 2;
 
-    private boolean complete = false;
-
-    //action - command
     public final static int left = 100;
     public final static int right = 101;
     public final static int up = 102;
     public final static int down = 103;
 
-    public final static int move = 130;
-    public final static int fire = 131;
+    public final static int firePrimary = 131;
+    public final static int fireAlternative = 132;
 
-    public final static int comboChoiseFirst = 140;
-    public final static int comboChoiseSecond = 141;
-    public final static int comboChoiseStop = 142;
+    public final static int specialAction = 6;
 
-    // low level action
+    //public final static int spec2 = 7;
 
-    public final static int spec1 = 6;
-    public final static int spec2 = 7;
-
+    /*
     public final static int leftEngineOn = 50;
     public final static int rightEngineOn = 51;
 
@@ -45,11 +38,18 @@ public final class InputToAction {
     public final static int rightEngineLeft = 42;
     public final static int rightEngineRight = 43;
 
+    public final static int comboChoiseFirst = 140;
+    public final static int comboChoiseSecond = 141;
+    public final static int comboChoiseStop = 142;
+    */
+
     //menu
     public final static int menu = 200;
     public final static int zoomIn = 201;
     public final static int zoomOut = 202;
     public final static int zoomCenter = 203;
+
+    private boolean complete = false;
 
     // list for storage name of commands (action_name : action code)
     private final HashMap<String, LightInteger> nameToAction = new HashMap<String, LightInteger>();
@@ -69,7 +69,7 @@ public final class InputToAction {
         nameToAction.put("Right", new LightInteger(right));
         nameToAction.put("Up", new LightInteger(up));
         nameToAction.put("Down", new LightInteger(down));
-
+        /*
         nameToAction.put("LeftEngineOn", new LightInteger(leftEngineOn));
         nameToAction.put("RightEngineOn", new LightInteger(rightEngineOn));
 
@@ -81,7 +81,7 @@ public final class InputToAction {
         nameToAction.put("LeftEngineOn", new LightInteger(leftEngineOn));
         nameToAction.put("RightEngineOn", new LightInteger(rightEngineOn));
 
-        nameToAction.put("Spec1", new LightInteger(spec1));
+
         nameToAction.put("Spec2", new LightInteger(spec2));
 
         nameToAction.put("Move", new LightInteger(move));
@@ -89,7 +89,12 @@ public final class InputToAction {
 
         nameToAction.put("ComboChoiseFirst", new LightInteger(comboChoiseFirst));
         nameToAction.put("ComboChoiseSecond", new LightInteger(comboChoiseSecond));
-        nameToAction.put("ComboChoiseStop", new LightInteger(comboChoiseStop));
+        nameToAction.put("ComboChoiseStop", new LightInteger(comboChoiseStop));*/
+
+        nameToAction.put("SpecialAction", new LightInteger(specialAction));
+
+        nameToAction.put("FirePrimary", new LightInteger(firePrimary));
+        nameToAction.put("FireAlternative", new LightInteger(fireAlternative));
 
         nameToAction.put("Menu", new LightInteger(menu));
         nameToAction.put("ZoomIn", new LightInteger(zoomIn));
@@ -176,6 +181,7 @@ public final class InputToAction {
         if (!complete) {
             new Exception("InputToAction:getActionByDevice - not init!");
         }
+
         LightInteger key = new LightInteger(code);
         switch (device) {
             case KEYBOARD: {

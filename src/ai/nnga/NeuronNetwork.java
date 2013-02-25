@@ -1,8 +1,9 @@
 package ai.nnga;
 
-class NeuronNetwork extends Object{
+class NeuronNetwork extends Object {
     private static float T_CONST = 1f;
     private float w[][][];
+
     public void init(int box[], float[] wInput) {
         w = new float[box.length - 1][][];
         //last layer R neuron - output.
@@ -12,7 +13,6 @@ class NeuronNetwork extends Object{
             }
         }
         int counter = 0;
-
         //layer
         for (int i = 0; i < w.length; i++) {
             //neuron
@@ -31,7 +31,7 @@ class NeuronNetwork extends Object{
         float prevS[] = new float[w[0].length];
 
         for (int i = 0; i < prevS.length; i++) {
-            prevS[i] = (float) (1f / (1f + Math.exp(-input[i] * T_CONST)));
+            prevS[i] = (float) (1f / (1f + Math.exp(-input[i] * T_CONST)))-0.5f;
         }
 
         float nextS[] = null;
@@ -53,7 +53,7 @@ class NeuronNetwork extends Object{
             }
             if (i + 1 != w.length) {
                 for (int z = 0; z < nextS.length; z++) {
-                    nextS[z] = (float) (1f / (1f + Math.exp(-nextS[z] * T_CONST)));
+                    prevS[i] = (float) (1f / (1f + Math.exp(-input[i] * T_CONST)))-0.5f;
                 }
             }
             prevS = nextS;

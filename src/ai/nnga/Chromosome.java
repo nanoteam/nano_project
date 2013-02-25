@@ -3,8 +3,8 @@ package ai.nnga;
 import main.Global;
 
 class Chromosome {
-    public final static float MIN_KOOF = -1;
-    public final static float MAX_KOOF = 1;
+    public final static float MIN_KOOF = -3;
+    public final static float MAX_KOOF = 3;
     //public final static float KOOF_RANDOM = 0.5f;
     public final static int NUMBER_GEN = 48;
     //3+1

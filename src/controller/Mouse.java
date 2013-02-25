@@ -62,9 +62,9 @@ final class Mouse implements Engine {
 
         //0,1,2 button.
         StateMouse stateMouse;
-        for(int i = 0; i<3;i++){
+        for(int i = 0; i<5;i++){
             stateMouse = null;
-            if (org.lwjgl.input.Keyboard.isKeyDown(i)) {
+            if (org.lwjgl.input.Mouse.isButtonDown(i)) {
                 stateMouse = new StateMouse(i, StateMouse.DOWN, new Vector2f(org.lwjgl.input.Mouse.getX(), org.lwjgl.input.Mouse.getY()));
             } else {
                 stateMouse = new StateMouse(i, StateMouse.UP, new Vector2f(org.lwjgl.input.Mouse.getX(), org.lwjgl.input.Mouse.getY()));

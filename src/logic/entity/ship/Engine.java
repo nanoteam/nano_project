@@ -69,8 +69,8 @@ public class Engine extends GameObjectMoving {
 
     @Override
     public void draw() {
-        RenderUtil.drawQaud(position.x, position.y, width, height, angle+fatherObj.getAngle(),
-                (Color) Color.BLUE);
+       /* RenderUtil.drawQaud(position.x, position.y, width, height, angle+fatherObj.getAngle(),
+                (Color) Color.BLUE);   */
     }
 
     @Override
@@ -131,6 +131,10 @@ public class Engine extends GameObjectMoving {
         }
         //level.getPlayer().getControlledObject().doAction(InputToAction.death);
         //Manager.get().touchWall();
+    }
+
+    float getForce(){
+        return 10;
     }
 
 }

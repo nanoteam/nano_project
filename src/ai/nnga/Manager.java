@@ -22,7 +22,7 @@ public class Manager {
     //init gens
     static {
         nnShipFly.init(Training.ARHITUCTURE_NETWORK, new float[]
-                {0.034561828f, 0.10052949f, 1.1510628f, -0.8274355f, -0.10797796f, 0.9450654f, -0.8658619f, 1.0725899f, -0.94281447f, -0.36276585f, -0.27542934f, -0.24756667f, -0.44170082f, -2.796539f, -1.0184939f, -0.90817285f, -0.29211897f, -1.3513252f, -0.28995165f, -2.095533f, -0.94059974f, -0.6902472f, 0.82734936f, -1.5535111f, 0.32556063f, 0.892546f, -0.55046546f, 0.33703983f, -0.10282214f, 0.85381556f, -0.04736781f, -0.79043376f, 1.301129f, 0.80912685f, 0.6368007f, 1.0430369f, -0.6186922f, 1.1637963f, -0.31017295f, 0.20259333f, 0.4718951f, 0.33805808f, 1.6523602f, 0.061925314f, -0.29864308f, -1.1800032f, 0.27489543f, 1.9478247f});
+                {-1.0264574f,0.33840147f,-0.19527513f,-0.8789664f,-1.0069404f,-0.16960841f,-0.5167872f,2.661609f,0.13348156f,-0.5225902f,0.87313765f,-0.2777676f,0.8126172f,1.0269679f,0.09601855f,-1.1273391f,-0.008428797f,0.20543037f,1.0308602f,-0.07095447f,1.0296497f,-1.7841907f,-1.3682791f,-0.5822253f,-1.0097969f,0.6521181f,0.88702697f,-0.10111052f,-0.4433465f,-3.0739493f,0.23103213f,0.5383948f,0.36483037f,-1.1790307f,-0.55947524f,-0.52497673f,-0.53448f,-3.546376f,1.923237f,1.8463033f,0.8770224f,0.6321292f,0.12974143f,-2.9268162f,-0.550135f,-2.17369f,0.65515125f,0.53190774f});
     }
 
     private Manager() {
@@ -56,30 +56,30 @@ public class Manager {
                 int levelChaos = training.getLevelChaos();
                 if (levelChaos == Training.NO_CHAOS) {
                 } else {
-                    if (levelChaos == Training.LOW_CHAOS) {
+                    /*if (levelChaos == Training.LOW_CHAOS) {
                         ((Ship) gameObjectMoving).addChaosInMovement();
-                    }
+                    }       */
                 }
             }
-
-            if (box[0] > 0.8f) {
+            /*
+            if (box[0] > 0.3f) {
                 ((Ship) gameObjectMoving).doAction(InputToAction.leftEngineLeft);
             }
-            if (box[0] < 0.2f) {
+            if (box[0] < -0.3f) {
                 ((Ship) gameObjectMoving).doAction(InputToAction.leftEngineRight);
             }
-            if (box[1] > 0.5f) {
+            if (box[1] > 0f) {
                 ((Ship) gameObjectMoving).doAction(InputToAction.leftEngineOn);
             }
-            if (box[2] > 0.8f) {
+            if (box[2] > 0.3f) {
                 ((Ship) gameObjectMoving).doAction(InputToAction.rightEngineLeft);
             }
-            if (box[2] < 0.2f) {
+            if (box[2] < -0.3f) {
                 ((Ship) gameObjectMoving).doAction(InputToAction.rightEngineRight);
             }
-            if (box[3] > 0.5f) {
+            if (box[3] > 0f) {
                 ((Ship) gameObjectMoving).doAction(InputToAction.rightEngineOn);
-            }
+            }                                                               */
         }
     }
 
@@ -88,19 +88,22 @@ public class Manager {
     }
 
     private float[] getReactionFlyShip(Ship ship) {
+
         float box[] = new float[8];
 
         box[0] = ship.getAngle() / (2f * 3.14159f);
         box[1] = ship.getSpeed().x / 200f;
         box[2] = ship.getSpeed().y / 200f;
-        box[3] = (ship.getPosition().x - 800) / 800f;
-        box[4] = (ship.getPosition().y - 800) / 800f;
+        box[3] = (ship.getPosition().x - 800f) / 800f;
+        box[4] = (ship.getPosition().y - 800f) / 800f;
+
+        /*
         //left engine
         float angleEngine = ship.getAngleLeftEngine() + ship.getAngle();
-        while (angleEngine > 2 * 3.14159f) {
+        while (angleEngine > 2f * 3.14159f) {
             angleEngine = angleEngine - 2f * 3.14159f;
         }
-        while (angleEngine < -2 * 3.14159f) {
+        while (angleEngine < -2f * 3.14159f) {
             angleEngine = angleEngine + 2f * 3.14159f;
         }
         box[5] = angleEngine / (2f * 3.14159f);
@@ -109,12 +112,13 @@ public class Manager {
         while (angleEngine > 2f * 3.14159f) {
             angleEngine = angleEngine - 2f * 3.14159f;
         }
-        while (angleEngine < -2 * 3.14159f) {
+        while (angleEngine < -2f * 3.14159f) {
             angleEngine = angleEngine + 2f * 3.14159f;
         }
         box[6] = angleEngine / (2f * 3.14159f);
         box[7] = ship.getAngularVelocity() / 10f;
-        return box;
+        return box;                                                           */
+        return null;
     }
 
     public void setState(int state) {

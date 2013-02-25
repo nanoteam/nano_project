@@ -18,7 +18,7 @@ public class EmmiterEffects {
 		random = new Random();
 	}
 
-	static public void drawCollision(Vec2[] points, float[] impulses, int type) {
+    public static void drawCollision(Vec2[] points, float[] impulses, int type) {
 		Vector2f speed;
 		Color color = null;
 		int j = 0;

@@ -69,12 +69,10 @@ public class RenderUtil {
     }
 
     public static void drawCircle(float x, float y, float radius, float witdthLine, Color color) {
-        GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
-                color.getBlueByte());
         int numberPointsInCircle = 100;
         Vector2f[] box = new Vector2f[numberPointsInCircle];
         float angle;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < numberPointsInCircle; i++) {
             angle = (float) (2 * Math.PI * i / numberPointsInCircle);
             box[i] = new Vector2f((float) (Math.cos(angle) * radius + x), (float) (Math.sin(angle) * radius + y));
         }
@@ -85,7 +83,6 @@ public class RenderUtil {
             GL11.glVertex2f(box[i].x, box[i].y);
         }
         GL11.glEnd();
-
     }
 
     public static void drawImage(float x, float y, float width, float height, float angle, float zoom, Image image) {

@@ -44,6 +44,7 @@ public class Training {
     static final int NO_CHAOS = 0;
     static final int LOW_CHAOS = 1;
     static final int HIGH_CHAOS = 2;
+
     Training() {
         eliteChromosomeList = new Chromosome[ALL_NUMBER_CROMSONE];
         childChromosomeList = new Chromosome[CHILD_NUMBER_CROMSONE];
@@ -55,12 +56,11 @@ public class Training {
         }
 
         //init cromsone manual
-        childChromosomeList[0] = new Chromosome(new float[][]{{0.034561828f,0.10052949f,1.1510628f,-0.8274355f,-0.10797796f,0.9450654f,-0.8658619f,1.0725899f,-0.94281447f,-0.36276585f,-0.27542934f,-0.24756667f,-0.44170082f,-2.796539f,-1.0184939f,-0.90817285f,-0.29211897f,-1.3513252f,-0.28995165f,-2.095533f,-0.94059974f,-0.6902472f,0.82734936f,-1.5535111f,0.32556063f,0.892546f,-0.55046546f,0.33703983f,-0.10282214f,0.85381556f,-0.04736781f,-0.79043376f,1.301129f,0.80912685f,0.6368007f,1.0430369f,-0.6186922f,1.1637963f,-0.31017295f,0.20259333f,0.4718951f,0.33805808f,1.6523602f,0.061925314f,-0.29864308f,-1.1800032f,0.27489543f,1.9478247f},
-                  {0.053834558f,-0.27571982f,-0.84302044f,-0.23583078f,0.3273043f,0.17912862f,-0.61129344f,1.5149367f,-1.5171484f,0.4979918f,-0.65166235f,-0.46115634f,-0.2749039f,-2.602311f,-0.4052808f,-0.32811582f,-1.1414247f,0.41858053f,-0.26792186f,-1.1207498f,-0.65707177f,0.6612432f,0.44465956f,-0.81730574f,-0.8175189f,0.08763003f,-0.593424f,-0.12770194f,0.11633491f,0.15685382f,-0.31800973f,-0.92779577f,1.2958231f,0.49093458f,0.64216924f,0.72988975f,-0.64547235f,0.19276078f,-0.8760685f,-0.6079672f,0.9931612f,0.33950737f,1.7258855f,0.07680867f,-0.19289458f,-0.7819583f,0.5532616f,0.5611796f}});
-
+        childChromosomeList[0] = new Chromosome(new float[][]{{-1.0264574f,0.33840147f,-0.19527513f,-0.8789664f,-1.0069404f,-0.16960841f,-0.5167872f,2.661609f,0.13348156f,-0.5225902f,0.87313765f,-0.2777676f,0.8126172f,1.0269679f,0.09601855f,-1.1273391f,-0.008428797f,0.20543037f,1.0308602f,-0.07095447f,1.0296497f,-1.7841907f,-1.3682791f,-0.5822253f,-1.0097969f,0.6521181f,0.88702697f,-0.10111052f,-0.4433465f,-3.0739493f,0.23103213f,0.5383948f,0.36483037f,-1.1790307f,-0.55947524f,-0.52497673f,-0.53448f,-3.546376f,1.923237f,1.8463033f,0.8770224f,0.6321292f,0.12974143f,-2.9268162f,-0.550135f,-2.17369f,0.65515125f,0.53190774f},
+                {-0.795827f,-0.855886f,-0.38009596f,-0.09553024f,-1.1961634f,-0.18327153f,-0.7128701f,2.2830117f,1.0202523f,0.0364659f,1.1254996f,0.31883746f,0.8551465f,1.2275025f,-0.721784f,-1.3737466f,-0.9525382f,-0.039253633f,1.2974725f,0.4956053f,0.48922595f,-1.1911857f,-0.96722287f,-0.102942765f,-0.83557206f,0.59231526f,1.4883702f,-0.010710955f,-1.2146884f,-2.5867944f,0.72053874f,1.0850867f,0.43623406f,-0.6500273f,-0.31075823f,0.15135688f,-0.9524455f,-1.4406899f,2.0050898f,2.9505324f,1.3826799f,-1.0247519f,-0.104363486f,-1.8608637f,-0.5874692f,-2.4457614f,-0.1964724f,0.46061084f}});
         neuronNetwork = new NeuronNetwork();
         neuronNetwork.init(ARHITUCTURE_NETWORK, childChromosomeList[counter].getPrimaryGens());
-        stateTest = STATE_TEST_EASY;
+        stateTest = STATE_TEST_MEDIUM;
     }
 
     //
@@ -83,6 +83,16 @@ public class Training {
             koofDxy = 1f - ((dx + dy) / lifeTime) / 2f;
             koofWarningAngle = 1f - ((float) warningAngle / lifeTime);
             koofRotateEngine = 1f - ((float) rotateEngine / (lifeTime + lifeTime));
+             /*
+            if (koofDxy > 0.8f) {
+                koofDxy = 1f;
+            }
+            if (sopriagEngine > 0.8f) {
+                sopriagEngine = 1f;
+            }
+            if (koofRotateEngine > 0.8f) {
+                koofRotateEngine = 1f;
+            }               */
             childChromosomeList[counter].addToComplexMark(stateTest, new float[]{0, timeTest, energoCoasting, sopriagEngine, koofDxy, koofWarningAngle, koofRotateEngine});
         }
         if (Global.realTime) {
@@ -99,14 +109,14 @@ public class Training {
                     //if (timeTest > (float) eliteChromosomeList[0].getComplexMark()[stateTest][1] / 25f) {
                     if (timeTest > 0.1f) {
                         float box[] = childChromosomeList[counter].getComplexMark()[stateTest];
-                        // mainMark, timeFly, energoCoasting, sopriagEngine, koofDxy, koofWarningAngle, koofRotateEngine
-                        box[0] += box[1] + box[1] * (float) Math.sqrt(box[2] * box[3] * box[4] * box[5] * box[6]);
+                        // mainMark, timeFly, energoCoasting, sopriagEngine       , koofDxy, koofWarningAngle, koofRotateEngine
+                        box[0] += box[1] + box[1] * (box[2] * box[3] * box[4] * box[5] * box[6]);
                         numberTestsLeft = 0;
                         stateTest = STATE_TEST_MEDIUM;
                         //System.out.println("test medium");
                     } else {
                         float box[] = childChromosomeList[counter].getComplexMark()[stateTest];
-                        box[0] += box[1] + box[1] * (float) Math.sqrt(box[2] * box[3] * box[4] * box[5] * box[6]) * 2f;
+                        box[0] += box[1] + box[1] * (box[2] * box[3] * box[4] * box[5] * box[6]);
                         //childChromosomeList[counter].addToComplexMark(stateTest, new float[]{timeTest, timeTest, energoCoasting, sopriagEngine, koofDxy, koofWarningAngle, koofRotateEngine});
                         numberTestsLeft = 0;
                         stateTest = STATE_TEST_EASY;
@@ -116,18 +126,18 @@ public class Training {
                     break;
                 }
                 case STATE_TEST_MEDIUM: {
-                    if (timeTest > (float) eliteChromosomeList[0].getComplexMark()[stateTest][1]/10) {
+                    if (timeTest > (float) eliteChromosomeList[0].getComplexMark()[stateTest][1] / 100f) {
                         float box[] = childChromosomeList[counter].getComplexMark()[stateTest];
-                        box[0] += box[1] + box[1] * (float) Math.sqrt(box[2] * box[3] * box[4] * box[5] * box[6]) * 2f;
+                        box[0] += box[1] + box[1] * (box[2] * box[3] * box[4] * box[5] * box[6]);
                         numberTestsLeft = 0;
-                        stateTest = STATE_TEST_EASY;
+                        stateTest = STATE_TEST_MEDIUM;
                         //in future deleted, need patch
                         counter++;
                         neuronNetwork.init(ARHITUCTURE_NETWORK, childChromosomeList[counter].getPrimaryGens());
                     } else {
                         childChromosomeList[counter].addToComplexMark(stateTest, new float[]{timeTest, timeTest, energoCoasting, sopriagEngine, koofDxy, koofWarningAngle, koofRotateEngine});
                         numberTestsLeft = 0;
-                        stateTest = STATE_TEST_EASY;
+                        stateTest = STATE_TEST_MEDIUM;
                         counter++;
                         neuronNetwork.init(ARHITUCTURE_NETWORK, childChromosomeList[counter].getPrimaryGens());
                     }
@@ -148,13 +158,13 @@ public class Training {
             if (generation % 50 == 0) {
                 System.runFinalization();
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 System.gc();
             }
-            if (generation % 50 == 0) {
+            if (generation % 200 == 0) {
                 System.out.println("\n");
 
                 for (int i = 0; i < 3; i++) {
@@ -189,8 +199,8 @@ public class Training {
     private void sortingCromsonListByMark(Chromosome[] cromsoneList) {
         for (int k = cromsoneList.length - 1; k >= 0; k--) {
             for (int i = 0; i < k; i++) {
-                float a1 = (cromsoneList[i].getComplexMark()[0][0] + cromsoneList[i].getComplexMark()[1][0] + cromsoneList[i].getComplexMark()[2][0]);
-                float a2 = (cromsoneList[i + 1].getComplexMark()[0][0] + cromsoneList[i + 1].getComplexMark()[1][0] + cromsoneList[i + 1].getComplexMark()[2][0]);
+                float a1 = (cromsoneList[i].getComplexMark()[0][0] + cromsoneList[i].getComplexMark()[1][0] * 5f + cromsoneList[i].getComplexMark()[2][0]);
+                float a2 = (cromsoneList[i + 1].getComplexMark()[0][0] + cromsoneList[i + 1].getComplexMark()[1][0] * 5f + cromsoneList[i + 1].getComplexMark()[2][0]);
                 if (a1 < a2) {
                     Chromosome cromsone = new Chromosome(cromsoneList[i + 1]);
                     cromsoneList[i + 1] = null;
@@ -266,9 +276,8 @@ public class Training {
             nextTest();
         }
 
-        if (stateTest == STATE_TEST_MEDIUM){
-
-                if (lifeTime%200==0){
+        if (stateTest == STATE_TEST_MEDIUM) {
+            if (lifeTime % 200 == 0 && lifeTime > 199) {
                 //System.out.println("@");
                 levelOfChaos = LOW_CHAOS;
             }
@@ -288,32 +297,32 @@ public class Training {
         //rules with output
 
         //left engine
-        if (activity[0] > 0.8f) {
+        if (activity[0] > 0.3f) {
             rotateEngine++;
         }
-        if (activity[0] < 0.2f) {
+        if (activity[0] < -0.3f) {
             rotateEngine++;
         }
-        if (activity[1] > 0.5f) {
+        if (activity[1] > 0f) {
             leftEngineActivity++;
         }
         //right engine
-        if (activity[2] > 0.8f) {
+        if (activity[2] > 0.3f) {
             rotateEngine++;
         }
-        if (activity[2] < 0.2f) {
+        if (activity[2] < -0.3f) {
             rotateEngine++;
         }
-        if (activity[3] > 0.5f) {
+        if (activity[3] > 0f) {
             rightEngineActivity++;
         }
         return activity;
     }
+
     public int getLevelChaos() {
-        if (levelOfChaos==NO_CHAOS){
+        if (levelOfChaos == NO_CHAOS) {
             return levelOfChaos;
-        }
-        else{
+        } else {
             int lol = levelOfChaos;
             levelOfChaos = NO_CHAOS;
             return lol;

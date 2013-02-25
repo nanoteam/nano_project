@@ -30,12 +30,12 @@ public class PhysicObject {
     }
 
     public Vector2f getSpeed() {
-        return new Vector2f(body.m_linearVelocity.x * 30,
-                body.getLinearVelocity().y * 30);
+        return new Vector2f(body.m_linearVelocity.x * 30f,
+                body.getLinearVelocity().y * 30f);
     }
 
     public void setSpeed(Vector2f newSpeed) {
-        body.setLinearVelocity(new Vec2(newSpeed.x / 30, newSpeed.y / 30));
+        body.setLinearVelocity(new Vec2(newSpeed.x / 30f, newSpeed.y / 30f));
     }
 
     public void setAngularVelocity(float w) {
@@ -47,12 +47,12 @@ public class PhysicObject {
     }
 
     public Vector2f getPosition() {
-        return new Vector2f(body.getPosition().x * 30,
-                body.getPosition().y * 30);
+        return new Vector2f(body.getPosition().x * 30f,
+                body.getPosition().y * 30f);
     }
 
     public void setPosition(Vector2f newPosition) {
-        body.setTransform(new Vec2(newPosition.x / 30, newPosition.y / 30),
+        body.setTransform(new Vec2(newPosition.x / 30f, newPosition.y / 30f),
                 body.getAngle());
     }
 
@@ -74,7 +74,7 @@ public class PhysicObject {
 
     public void applyForce(float forceX, float forceY, Vector2f point) {
         Vec2 force = new Vec2(forceX, forceY);
-        Vec2 pointOfForce = new Vec2(point.x / 30, point.x / 30);
+        Vec2 pointOfForce = new Vec2(point.x / 30f, point.x / 30f);
         body.applyForce(force, pointOfForce);
     }
 
@@ -90,11 +90,11 @@ public class PhysicObject {
                                           Vector2f position, float radius, Material material) {
 
         BodyDef objectDef = new BodyDef();
-        objectDef.position.set(new Vec2(position.x / 30, position.y / 30));
+        objectDef.position.set(new Vec2(position.x / 30f, position.y / 30f));
         objectDef.type = BodyType.DYNAMIC;
 
         CircleShape objectShape = new CircleShape();
-        objectShape.m_radius = radius / 30;
+        objectShape.m_radius = radius / 30f;
 
         Body body = gameObject.getLevel().getWorld().createBody(objectDef);
         body.m_userData = gameObject;
@@ -116,7 +116,7 @@ public class PhysicObject {
         objectDef.type = BodyType.DYNAMIC;
 
         PolygonShape objectShape = new PolygonShape();
-        objectShape.setAsBox(width / 30 / 2, height / 30 / 2);
+        objectShape.setAsBox(width / 30f / 2f, height / 30f / 2f);
 
         Body body = gameObject.getLevel().getWorld().createBody(objectDef);
 

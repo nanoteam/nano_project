@@ -38,10 +38,12 @@ public class Logic implements Engine {
 		// add some objects which created while foreach is going
 		level.deleteNotDeletedObjects();
 		level.addNotAddedObjects();
-
+        // ai code - GA
+        /*
         if(level.getPlayer().getControlledObject()==null){
             level.restartShip();
         }
+        */
 
 	}
 

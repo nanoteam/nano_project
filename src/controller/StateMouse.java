@@ -3,6 +3,7 @@ package controller;
 import org.lwjgl.util.vector.Vector2f;
 
 public class StateMouse {
+    //button code
     public static final int DOWN_PRESSED = 0;
     public static final int DOWN = 1;
     public static final int UP = 2;

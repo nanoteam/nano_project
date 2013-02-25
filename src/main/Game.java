@@ -8,7 +8,6 @@
 package main;
 
 import ai.AI;
-import ai.nnga.Manager;
 import controller.Controller;
 import controller.InputToAction;
 import controller.StateKeyboard;
@@ -61,8 +60,8 @@ public class Game {
         this.player = new Player();
         level = new Level(this);
 
-        level.testLevelStudyAI();
-        //level.testInitLevel();
+        //level.testLevelStudyAI();
+        level.testInitLevel();
 
         this.client = client;
         // this code is WTF, but I think, thats it is not important. code work)
@@ -137,8 +136,6 @@ public class Game {
     }
 
     public void sendStatesInput(List<StateKeyboard> eventsKeyboard, List<StateMouse> eventsMouses) {
-        byte moving = 0;
-        byte firing = 0;
         //keyboard event
         //System.out.println(eventsKeyboard);
 
@@ -146,6 +143,12 @@ public class Game {
             for (StateKeyboard stateKeyboard : eventsKeyboard) {
                 if (stateKeyboard.state == StateKeyboard.DOWN || stateKeyboard.state == StateKeyboard.DOWN_PRESSED) {
                     switch (inputToAction.getActionByDevice(stateKeyboard.keyCode, InputToAction.KEYBOARD)) {
+                        case InputToAction.up: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.up);
+                            break;
+                        }
+
                         case InputToAction.left: {
                             level.getPlayer().getControlledObject()
                                     .doAction(InputToAction.left);
@@ -162,7 +165,19 @@ public class Game {
                                     .doAction(InputToAction.down);
                             break;
                         }
+                        case InputToAction.firePrimary: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.firePrimary);
+                            break;
+                        }
 
+                        case InputToAction.fireAlternative: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.fireAlternative);
+                            break;
+                        }
+
+                        /*
                         case InputToAction.leftEngineLeft: {
                             level.getPlayer().getControlledObject()
                                     .doAction(InputToAction.leftEngineLeft);
@@ -197,7 +212,7 @@ public class Game {
                                     .doAction(InputToAction.rightEngineOn);
                             break;
                         }
-
+                        */
 
                         case InputToAction.zoomIn: {
                             render.setZoom((float) (render.getZoom() + 0.05));
@@ -207,36 +222,16 @@ public class Game {
                             render.setZoom((float) (render.getZoom() - 0.05));
                             break;
                         }
-
-
-
-
                     }
                 }
 
                 if (stateKeyboard.state == StateKeyboard.DOWN_PRESSED) {
                     switch (inputToAction.getActionByDevice(stateKeyboard.keyCode, InputToAction.KEYBOARD)) {
 
-                        case InputToAction.up: {
-                            /*level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.up);*/
-                            Global.realTime = !Global.realTime;
-                            break;
-                        }
 
-                        case InputToAction.fire: {
-                            //firing++;
-                            //System.out.println("fire");
-
-                            //Manager.get().changeMarkCurrentChromosome(Chromosome.DIFF_MARK);
-                            break;
-                        }
-
-                        case InputToAction.move: {
-                            //moving++;
-                            //System.out.println("move");
-
-                            //Manager.get().changeMarkCurrentChromosome(-Chromosome.DIFF_MARK);
+                        case InputToAction.specialAction: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.specialAction);
                             break;
                         }
 
@@ -257,69 +252,33 @@ public class Game {
                         }
 
                     }
-
                 }
             }
         }
+
         //mouse event
         if (eventsMouses != null && (!eventsMouses.isEmpty())) {
             for (StateMouse stateMouse : eventsMouses) {
-                if (stateMouse.rolickEvent) {
-
-                }
                 if (!stateMouse.rolickEvent) {
-                    if (stateMouse.buttonCode == StateKeyboard.DOWN || stateMouse.stateButton == StateKeyboard.DOWN_PRESSED) {
+                    if (stateMouse.stateButton == StateMouse.DOWN || stateMouse.stateButton == StateMouse.DOWN_PRESSED) {
                         switch (inputToAction.getActionByDevice(stateMouse.buttonCode, InputToAction.MOUSE)) {
-                            /* case InputToAction.comboChoiseFirst: {
-                       Manager.get().changeMarkCurrentCromsone(+Chromosome.DIFF_MARK);
-                       //System.out.println("left");
-                       break;
-                   }
-                   case InputToAction.comboChoiseSecond: {
-                       Manager.get().changeMarkCurrentCromsone(-Chromosome.DIFF_MARK);
-                       //System.out.println("right");
-                       break;
-                   }         */
-
-
-                            /*
-//                            case InputToAction.comboChoiseFirst: {
-//                                if (firing!=0){
-//                                    //player.get
-//                                    firing = 0;
-//                                }
-//                                if (moving!=0){
-//
-//                                    moving = 0;
-//                                }
-//                                break;
-//                            }
-//                            case InputToAction.comboChoiseSecond: {
-//                                if (firing!=0){
-//
-//                                    firing = 0;
-//                                }
-//                                if (moving!=0){
-//
-//                                    moving = 0;
-//                                }
-//                                break;
-//                            }
-//                            case InputToAction.comboChoiseStop: {
-//                                if (firing!=0){
-//
-//                                    firing = 0;
-//                                }
-//                                if (moving!=0){
-//
-//                                    moving = 0;
-//                                }
-//                                break;
-//                            }*/
-
+                            case InputToAction.firePrimary: {
+                                level.getPlayer().getControlledObject()
+                                        .doAction(InputToAction.firePrimary);
+                                break;
+                            }
+                            case InputToAction.fireAlternative: {
+                                level.getPlayer().getControlledObject()
+                                        .doAction(InputToAction.fireAlternative);
+                                break;
+                            }
 
                         }
                     }
+                }
+
+                if (stateMouse.rolickEvent) {
+
                 }
             }
         }

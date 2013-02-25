@@ -16,10 +16,11 @@ import org.lwjgl.util.vector.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import logic.entity.Asteroid;
 
 public class Level {
     private static int defaultWidth = 1600;
-    private static int defaultHeight = 1600;
+    private static int defaultHeight = 900;
     private int widthLevel;
     private int heightLevel;
     private Game game;
@@ -70,6 +71,8 @@ public class Level {
         return gameObjectsToDelete;
     }
 
+    /*
+    //for study GA
     public void restartShip() {
         Object obj = game.getPlayer().getControlledObject();
         obj = null;
@@ -78,10 +81,15 @@ public class Level {
         gameObjectsToAdd.add(ship);
 
     }
+    */
 
     // this is method for running game in test mode
     public void testInitLevel() {
         Ship ship = new Ship(this, 200, 200);
+
+        gameObjects.add(ship);
+        game.getPlayer().setControlledObject(ship);
+
         ///Ship ship2 = new Ship(this, 500f, 500f);
         //Bot bot = new Bot(ship2);
         //gameObjects.add(ship2);
@@ -117,7 +125,7 @@ public class Level {
            .getPosition());
            world.createJoint(join);
            } */
-        /*gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
+        gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(550f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(600f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(650f, 300f)));
@@ -125,7 +133,7 @@ public class Level {
         gameObjects.add(new Asteroid(this, new Vector2f(750f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(800f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(850f, 300f)));
-        */
+        
 
 
         //gameObjects.add(new AeroDynTest(this));
@@ -150,7 +158,7 @@ public class Level {
 //				new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));     */
     }
 
-    public void testLevelStudyAI() {
+    /*public void testLevelStudyAI() {
         Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight);
         gameObjects.add(leftWall);
         Wall upWall = new Wall(this, defaultWidth / 2, defaultHeight - 5,
@@ -163,7 +171,7 @@ public class Level {
         gameObjects.add(downWall);
 
         restartShip();
-    }
+    }    */
 
     public Player getPlayer() {
         return game.getPlayer();
