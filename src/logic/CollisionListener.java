@@ -104,7 +104,6 @@ public class CollisionListener implements ContactListener {
                 }
             }
             if (nameA.equals("RubberBall") || nameB.equals("RubberBall")) {
-                System.out.println("!");
                 if (nameA.equals("Ship")) {
                     ((Ship) bodyA).damage(50);
                 } else {

@@ -2,13 +2,17 @@ package logic.entity.ship;
 
 import logic.entity.ArsenalGameObject;
 import logic.entity.GameObjectMoving;
-import logic.entity.ammo.ClusterBomb;
-import logic.entity.ammo.PlazmaBall;
 import logic.entity.ammo.RubberBall;
+import logic.entity.ammo.WarHead;
+import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import render.RenderUtil;
+import resourses.configuration.SheetParse;
 import util.MathUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Weapon extends ArsenalGameObject {
     private final static int LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON = 5;
@@ -18,42 +22,31 @@ public class Weapon extends ArsenalGameObject {
     private int reloadingTimerPrimary = 0;
     private int reloadingTimerAlternative = 0;
     private int reloadTime;
-    //K = (mass * speed^2) / 2 or (mv^2)/2 , K - kinetic energy
-    //for shot shell speed = sqrt(2*K/m)
-    private float K;
 
-    public Weapon(GameObjectMoving gameObject, int width, int height,
-                  float randomizeFirePrimary, float randomizeFireAlternative, int reloadTimePrimary, int reloadTimeAlternative, float K) {
-        // this way or draw throw draw-method of ship
+    private Color color;
+    //for storage object from parser
+    private static Map<String, Weapon> libraryWeapon = new HashMap<String, Weapon>();
+
+    private Weapon() {
+    }
+
+    public void addToGameObject(GameObjectMoving gameObject) {
         this.position = gameObject.getPosition();
         this.fatherObj = gameObject;
         this.level = gameObject.getLevel();
-        this.width = width;
-        this.height = height;
-
-        this.randomizeFirePrimary = randomizeFirePrimary;
-        this.randomizeFireAlternative = randomizeFireAlternative;
-        this.reloadTimePrimary = reloadTimePrimary;
-        this.reloadTimeAlternative = reloadTimeAlternative;
-
-        this.K = K;
-
-        onShootPrimary = false;
-        onShootAlternative = false;
     }
 
     @Override
     public void update() {
         //primary weapon
         if (onShootPrimary) {
-            System.out.println("primary");
             //id relaod complited
             if (reloadingTimerPrimary < 0) {
                 //create shoot
 
                 Vector2f sheel_position = new Vector2f(position.x +
                         MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle), position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle));
-                float shell_speed = (float) Math.sqrt(2 * K / RubberBall.STANDART_MASS);
+                float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / RubberBall.STANDART_MASS);
 
                 Vector2f shell_speed_vector =
                         new Vector2f(
@@ -68,21 +61,20 @@ public class Weapon extends ArsenalGameObject {
         }
         //alternative weapon
         if (onShootAlternative) {
-            System.out.println("alternative");
             //id relaod complited
             if (reloadingTimerAlternative < 0) {
                 //create shoot
 
                 Vector2f sheel_position = new Vector2f(position.x +
                         MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle), position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle));
-                float shell_speed = (float) Math.sqrt(2 * K / (ClusterBomb.STANDART_MASS));
+                float shell_speed = (float) Math.sqrt(2 * kineticEnergyAlternative / (WarHead.STANDART_MASS));
 
                 Vector2f shell_speed_vector =
                         new Vector2f(
                                 (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
                                 (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                ClusterBomb clusterBomb = new ClusterBomb(sheel_position, shell_speed_vector, 8,level);
-                level.getNotAddedGameObjects().add(clusterBomb);
+                WarHead warHead = new WarHead(sheel_position, shell_speed_vector, 8, level);
+                level.getNotAddedGameObjects().add(warHead);
                 //action for game logic
                 onShootAlternative = false;
                 reloadingTimerAlternative = reloadTimeAlternative;
@@ -140,7 +132,167 @@ public class Weapon extends ArsenalGameObject {
 
     }
 
+    //true if good
+    //false if bad
+    public static void addWeaponToLibrary(SheetParse config) {
+
+        SheetParse mainConfig = config.findSheetParseByName("Weapon");
+        Weapon weapon = new Weapon();
+
+        if (mainConfig.findSheetParseByName("AdditionalName") != null) {
+            weapon.additionalName = mainConfig.findSheetParseByName("AdditionalName").getValue();
+        } else {
+            weapon.additionalName = "unknow";
+        }
+
+        if (mainConfig.findSheetParseByName("Mass") != null) {
+            weapon.mass = Integer.parseInt(mainConfig.findSheetParseByName("Mass").getValue());
+        } else {
+            weapon.mass = 10;
+        }
+
+        if (mainConfig.findSheetParseByName("Width") != null) {
+            weapon.width = Integer.parseInt(mainConfig.findSheetParseByName("Width").getValue());
+        } else {
+            weapon.width = 20;
+        }
+
+        if (mainConfig.findSheetParseByName("Height") != null) {
+            weapon.height = Integer.parseInt(mainConfig.findSheetParseByName("Height").getValue());
+        } else {
+            weapon.height = 5;
+        }
+
+        if (mainConfig.findSheetParseByName("RandomizeFirePrimary") != null) {
+            weapon.randomizeFirePrimary = Float.parseFloat(mainConfig.findSheetParseByName("RandomizeFirePrimary").getValue());
+        } else {
+            weapon.randomizeFirePrimary = 0.5f;
+        }
+
+        if (mainConfig.findSheetParseByName("RandomizeFireAlternative") != null) {
+            weapon.randomizeFireAlternative = Float.parseFloat(mainConfig.findSheetParseByName("RandomizeFireAlternative").getValue());
+        } else {
+            weapon.randomizeFireAlternative = 0.3f;
+        }
+
+        if (mainConfig.findSheetParseByName("ReloadTimePrimary") != null) {
+            weapon.reloadTimePrimary = Integer.parseInt(mainConfig.findSheetParseByName("ReloadTimePrimary").getValue());
+        } else {
+            weapon.reloadTimePrimary = 3000;
+        }
+
+        if (mainConfig.findSheetParseByName("ReloadTimeAlternative") != null) {
+            weapon.reloadTimeAlternative = Integer.parseInt(mainConfig.findSheetParseByName("ReloadTimeAlternative").getValue());
+        } else {
+            weapon.reloadTimeAlternative = 3000;
+        }
+
+        if (mainConfig.findSheetParseByName("KineticEnergyPrimary") != null) {
+            weapon.kineticEnergyPrimary = Float.parseFloat(mainConfig.findSheetParseByName("KineticEnergyPrimary").getValue());
+        } else {
+            weapon.kineticEnergyPrimary = 1000000f;
+        }
+
+        if (mainConfig.findSheetParseByName("KineticEnergyAlternative") != null) {
+            weapon.kineticEnergyAlternative = Float.parseFloat(mainConfig.findSheetParseByName("KineticEnergyAlternative").getValue());
+        } else {
+            weapon.kineticEnergyAlternative = 1000000f;
+        }
+
+
+        if (mainConfig.findSheetParseByName("EnergyCoastPrimary") != null) {
+            weapon.energyCoastPrimary = Float.parseFloat(mainConfig.findSheetParseByName("EnergyCoastPrimary").getValue());
+        } else {
+            weapon.energyCoastPrimary = 100f;
+        }
+
+        if (mainConfig.findSheetParseByName("EnergyCoastAlternative") != null) {
+            weapon.energyCoastAlternative = Float.parseFloat(mainConfig.findSheetParseByName("EnergyCoastAlternative").getValue());
+        } else {
+            weapon.energyCoastAlternative = 100f;
+        }
+
+        if (mainConfig.findSheetParseByName("Color") != null) {
+
+
+            /*String color = mainConfig.findSheetParseByName("Color").getValue();
+            switch (color) {
+                case "Red" : {
+                    break;
+                }
+                case "Blue" : {
+                    break;
+                }
+                case "Yellow" :{
+                    break;
+                }
+                case "Green" :{
+                    break;
+                }
+                case "Pink" :{
+                    break;
+                }
+                case "Grey" :{
+                    break;
+                }
+
+              */
+
+            weapon.color = (Color) Color.RED;
+        } else {
+            weapon.color = (Color) Color.RED;
+        }
+
+        if (!(libraryWeapon.containsKey(weapon.additionalName))) {
+            libraryWeapon.put(weapon.additionalName, weapon);
+        }
+    }
+
+    public static Weapon getWeapon(GameObjectMoving gameObjectMoving, String nameWeapon) {
+        //get random weapon
+        if (nameWeapon.equals("any")) {
+
+            //calculate random weapon from list,
+            int randomWeapon = Global.random.nextInt(libraryWeapon.size());
+            //get name for get obj Weapon
+            nameWeapon = new String((String) libraryWeapon.keySet().toArray()[randomWeapon]);
+
+        }
+        //get etalon example from library
+        Weapon weapon = (Weapon) libraryWeapon.get(nameWeapon);
+        // cloning etalon
+        Weapon cloneWeapon = Weapon(weapon);
+        //adding GameObjectMoving
+        cloneWeapon.addToGameObject(gameObjectMoving);
+        return cloneWeapon;
+    }
+
+    //copy all field nead
+    private static Weapon Weapon(Weapon targetWeapon) {
+        Weapon cloneWeapon = new Weapon();
+
+        cloneWeapon.width = targetWeapon.width;
+        cloneWeapon.height = targetWeapon.height;
+
+        cloneWeapon.kineticEnergyPrimary = targetWeapon.kineticEnergyPrimary;
+        cloneWeapon.kineticEnergyAlternative = targetWeapon.kineticEnergyAlternative;
+        cloneWeapon.mass = targetWeapon.mass;
+        cloneWeapon.energyCoastPrimary = targetWeapon.energyCoastPrimary;
+        cloneWeapon.energyCoastAlternative = targetWeapon.energyCoastAlternative;
+
+        cloneWeapon.reloadTimePrimary = targetWeapon.reloadTimePrimary;
+        cloneWeapon.reloadTimeAlternative = targetWeapon.reloadTimeAlternative;
+
+        cloneWeapon.randomizeFirePrimary = targetWeapon.randomizeFirePrimary;
+        cloneWeapon.randomizeFireAlternative = targetWeapon.randomizeFireAlternative;
+
+        cloneWeapon.color = new Color(targetWeapon.color);
+        cloneWeapon.additionalName = new String(targetWeapon.additionalName);
+
+        return cloneWeapon;
+    }
 }
+
 
 /*
         //this is not trivial math task!!!

@@ -35,7 +35,7 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
 
     /*private static Image image;*/
     static {
-        name = "Ship";
+        className = "Ship";
     }
 
     public Ship(Level level, float x, float y) {
@@ -49,8 +49,7 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
                 Material.Metal);
 
         mainEngine = new Engine(this, new Vector2f(position.x, position.y));
-
-        mainWeapon = new Weapon(this, 30, 5,0,0.2f,1,50,1000000);
+        mainWeapon = Weapon.getWeapon(this,"any");
         level.getGameObjects().add(mainWeapon);
     }
 

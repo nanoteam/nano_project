@@ -17,7 +17,8 @@ abstract public class GameObject {
     // unique name for class, uses by Resourses manager
     // by this name creater pair Class RubberBall - config file RubberBall.ini,
     // RubberBall.jpg
-    protected  static String name = "unknown";
+    protected static String className = "unknown";
+    protected String additionalName = "unknown";
     protected Vector2f position;
     protected boolean live = true;
     protected RenderObject renderObject;
@@ -62,7 +63,7 @@ abstract public class GameObject {
         return level;
     }
 
-    public static String getName() {
-        return name;
+    public static String getClassName() {
+        return className;
     }
 }

@@ -1,7 +1,6 @@
 package logic.entity.ammo;
 
 import logic.Level;
-import logic.entity.Explosion;
 import logic.entity.GameObjectMoving;
 import logic.entity.Particle;
 import main.Global;
@@ -12,7 +11,8 @@ import physic.Material;
 import physic.PhysicObject;
 import render.RenderUtil;
 
-public class ClusterBomb extends GameObjectMoving {
+//can be part of complex ammo.
+public class WarHead extends GameObjectMoving {
     //not uses now
     private static final float maxSpeed = 100500;
     private int lifeTime;
@@ -22,29 +22,24 @@ public class ClusterBomb extends GameObjectMoving {
     private static Image image;
 
     private final int numberCharges;
-//    /private final GameObjectMoving classCharges;
+    //private final GameObjectMoving classCharges;
 
-    public static final float STANDART_MASS = 100;
+    public static final float STANDART_MASS = 20;
 
     static {
-        className = "RubberBall";
+        className = "WarHead";
     }
 
     public static String getName() {
-        return RubberBall.className;
+        return className;
     }
-    /*
-    public RubberBall(Vector2f pos, Level level){
-        this.position = new Vector2f(pos.x, pos.y);
-        this.level = level;
-    } */
 
-    public ClusterBomb(Vector2f pos, Vector2f speed, int numberCharges, Level level) {
+    public WarHead(Vector2f pos, Vector2f speed, int numberCharges, Level level) {
         this.position = new Vector2f(pos.x, pos.y);
         this.speed = speed;
         this.size = 5f;
-        this.lifeTime = 200 + Global.random.nextInt(50);
-        this.color = new Color(Color.DKGREY);
+        this.lifeTime = 70 + Global.random.nextInt(10);
+        this.color = new Color(Color.ORANGE);
         this.level = level;
         radius = 10;
         this.numberCharges = numberCharges;
@@ -65,32 +60,16 @@ public class ClusterBomb extends GameObjectMoving {
            * 100f + speed.y), 1, 60, (Color) Color.YELLOW)); }
            */
 
-
-        level.getNotAddedGameObjects().add(
-                new Particle(
-                        new Vector2f(position),
-                        new Vector2f((Global.random.nextFloat() - 0.5f) * 100f + speed.x, (Global.random.nextFloat() - 0.5f)* 100f + speed.y),
-                        1, 60, (Color) Color.GREY));
-
-
         lifeTime--;
         if (lifeTime < 0) {
             live = false;
             physicObject.getBody().setActive(false);
-            /*
-                * level.getNotAddedGameObjects().add( new PlazmaBall(new
-                * Vector2f(position), (float) (random .nextInt(360)), 0, level));
-                *
-                * level.getNotAddedGameObjects().add( new PlazmaBall(new
-                * Vector2f(position), (float) (random .nextInt(360)), 0, level));
-                */
-            /*
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 10; i++) {
                 level.getNotAddedGameObjects()
-                        .add(new RubberBall(new Vector2f(position), new Vector2f(
-                                (Global.random.nextFloat() - 0.5f) * 25f + speed.x,
-                                (Global.random.nextFloat() - 0.5f) * 25f + speed.y),level));
-            } */
+                        .add(new Particle(new Vector2f(position), new Vector2f(
+                                (Global.random.nextFloat() - 0.5f) * 150f,
+                                (Global.random.nextFloat() - 0.5f) * 150f), 4, Global.random.nextInt(30) + 20, (Color) Color.ORANGE));
+            }
         }
     }
 
@@ -102,10 +81,8 @@ public class ClusterBomb extends GameObjectMoving {
 
     @Override
     public void draw() {
-        // RenderUtil.drawImage(position.x, position.y,width,
-        // height,angle,0.5f,image );
         RenderUtil
-                .drawCircle(position.x, position.y, radius, radius , color);
+                .drawCircle(position.x, position.y, radius, radius, color);
     }
 
     @Override
@@ -121,8 +98,7 @@ public class ClusterBomb extends GameObjectMoving {
     @Override
     public void destroy() {
         physicObject.destroy();
-        level.getNotAddedGameObjects().add(
-                new Explosion(level, position, 30, 3));
-
+        //level.getNotAddedGameObjects().add(new Explosion(level, position, 30, 3));
     }
+
 }

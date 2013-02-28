@@ -25,11 +25,11 @@ public class RubberBall extends GameObjectMoving {
     public static final float STANDART_MASS = 10;
 
     static {
-        name = "RubberBall";
+        className = "RubberBall";
     }
 
     public static String getName() {
-        return RubberBall.name;
+        return RubberBall.className;
     }
     /*
     public RubberBall(Vector2f pos, Level level){
@@ -92,8 +92,8 @@ public class RubberBall extends GameObjectMoving {
             for (int i = 0; i < 10; i++) {
                 level.getNotAddedGameObjects()
                         .add(new Particle(new Vector2f(position), new Vector2f(
-                                (Global.random.nextFloat() - 0.5f) * 25f + speed.x,
-                                (Global.random.nextFloat() - 0.5f) * 25f + speed.y),
+                                (Global.random.nextFloat() - 0.5f) * 25f,
+                                (Global.random.nextFloat() - 0.5f) * 25f),
                                 3, 30 + Global.random.nextInt(20), (Color) Color.GREEN));
             }
         }

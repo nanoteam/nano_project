@@ -1,6 +1,5 @@
 package ai.nnga;
 
-import controller.InputToAction;
 import logic.entity.GameObjectMoving;
 import logic.entity.ship.Ship;
 import main.Global;
@@ -44,7 +43,7 @@ public class Manager {
     private Training training;
 
     public void getReaction(GameObjectMoving gameObjectMoving) {
-        if (gameObjectMoving.getName().equals(Ship.getName())) {
+        if (gameObjectMoving.getClassName().equals(Ship.getClassName())) {
             //get need information
             float box[] = getReactionFlyShip((Ship) gameObjectMoving);
 
