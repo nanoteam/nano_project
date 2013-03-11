@@ -53,7 +53,7 @@ public class Asteroid extends GameObjectMoving {
 	@Override
 	public void draw() {
 
-		RenderUtil.drawCircle(position.x, position.y, radius, 4,
+		RenderUtil.drawCircle(position, radius, 4,
 				(Color) Color.RED);
 	}
 

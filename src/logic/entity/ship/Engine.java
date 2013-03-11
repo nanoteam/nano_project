@@ -29,8 +29,7 @@ public class Engine extends GameObjectMoving {
         this.fatherObj = fatherObj;
         this.position = position;
         level = fatherObj.getLevel();
-        physicObject = PhysicObject.createBox(this, position, width, height,
-                Material.Metal);
+        physicObject = PhysicObject.createBox(this, position, width, height,0,Material.Metal);
         physicObject.getBody().setAngularDamping(50);
         liveHealth = 100;
         live = true;

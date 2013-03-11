@@ -28,6 +28,10 @@ public abstract class ArsenalGameObject extends GameObjectMoving {
     protected float energyCoastPrimary;
     protected float energyCoastAlternative;
 
+    //number particle per shoot
+    protected int countAmmoPrimaryPerShoot;
+    protected int countAmmoAlternativePerShoot;
+
     //K = (mass * speed^2) / 2 or (mv^2)/2 , K - kinetic energy
     //for shot shell speed = sqrt(2*K/m)
     protected float kineticEnergyPrimary;
@@ -35,6 +39,10 @@ public abstract class ArsenalGameObject extends GameObjectMoving {
 
 	// delta of ship's position and this object's position
 	protected Vector2f relativePosition;
+
+    //name of used ammo
+    protected String nameAmmoPrimary;
+    protected String nameAmmoAlternative;
 
 	abstract public boolean firePrimary();
 	abstract public boolean fireAlternative();

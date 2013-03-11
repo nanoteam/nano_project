@@ -1,9 +1,6 @@
 package logic;
 
-import logic.entity.EmmiterEffects;
-import logic.entity.GameObject;
-import logic.entity.Player;
-import logic.entity.Wall;
+import logic.entity.*;
 import logic.entity.ship.Ship;
 import main.Game;
 import org.jbox2d.callbacks.QueryCallback;
@@ -16,7 +13,6 @@ import org.lwjgl.util.vector.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import logic.entity.Asteroid;
 
 public class Level {
     private static int defaultWidth = 1600;
@@ -94,15 +90,15 @@ public class Level {
         //Bot bot = new Bot(ship2);
         //gameObjects.add(ship2);
         //gameObjects.add(bot);
-        Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight);
+        Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight, 0);
         gameObjects.add(leftWall);
         Wall upWall = new Wall(this, defaultWidth / 2, defaultHeight - 5,
-                defaultWidth, 10);
+                defaultWidth, 10, 0);
         gameObjects.add(upWall);
         Wall righWall = new Wall(this, defaultWidth - 5, defaultHeight / 2, 10,
-                defaultHeight);
+                defaultHeight, 0);
         gameObjects.add(righWall);
-        Wall downWall = new Wall(this, defaultWidth / 2, 5, defaultWidth, 10);
+        Wall downWall = new Wall(this, defaultWidth / 2, 5, defaultWidth, 10, 0);
         gameObjects.add(downWall);
 
 
@@ -133,7 +129,6 @@ public class Level {
         gameObjects.add(new Asteroid(this, new Vector2f(750f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(800f, 300f)));
         gameObjects.add(new Asteroid(this, new Vector2f(850f, 300f)));
-        
 
 
         //gameObjects.add(new AeroDynTest(this));
@@ -222,5 +217,9 @@ public class Level {
 
     public Vector2f getMousePosition() {
         return game.getPositionMouse();
+    }
+
+    public float getAngleBetweenShipAndCursor() {
+        return game.getAngleBetweenShipAndCursor();
     }
 }

@@ -47,9 +47,8 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
         liveHealth = 10000000;
         physicObject = PhysicObject.createBall(this, position, radiusBody,
                 Material.Metal);
-
         mainEngine = new Engine(this, new Vector2f(position.x, position.y));
-        mainWeapon = Weapon.getWeapon(this,"any");
+        mainWeapon = Weapon.getWeapon(this, "any");
         level.getGameObjects().add(mainWeapon);
     }
 
@@ -80,8 +79,8 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
                 physicObject.applyForce(0, mainEngine.getForce(), position);
             } else {
                 if (!down) {
-                    if (speed.y<0){
-                        physicObject.applyForce(0, mainEngine.getForce()/1.5f, position);
+                    if (speed.y < 0) {
+                        physicObject.applyForce(0, mainEngine.getForce() / 1.5f, position);
                     }
                 }
             }
@@ -112,8 +111,9 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
     public void draw() {
         /*RenderUtil.drawQaud(position.x, position.y, width, height, angle,
     (Color) Color.GREY);   */
-        RenderUtil.drawCircle(position.x, position.y, 25, 6, (Color) Color.RED);
+        RenderUtil.drawCircle(position, 25, 6, (Color) Color.RED);
 
+        RenderUtil.drawPlot(new Vector2f(800, 450), 5, (Color) Color.RED);
         //RenderUtil.drawImage(position.x, position.y, width, height,angle,1,image);
     }
 

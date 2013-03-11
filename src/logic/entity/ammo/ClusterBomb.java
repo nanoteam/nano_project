@@ -105,7 +105,7 @@ public class ClusterBomb extends GameObjectMoving {
         // RenderUtil.drawImage(position.x, position.y,width,
         // height,angle,0.5f,image );
         RenderUtil
-                .drawCircle(position.x, position.y, radius, radius , color);
+                .drawCircle(position, radius, radius , color);
     }
 
     @Override

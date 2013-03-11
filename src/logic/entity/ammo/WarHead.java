@@ -82,7 +82,7 @@ public class WarHead extends GameObjectMoving {
     @Override
     public void draw() {
         RenderUtil
-                .drawCircle(position.x, position.y, radius, radius, color);
+                .drawCircle(position, radius, radius, color);
     }
 
     @Override

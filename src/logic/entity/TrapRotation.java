@@ -39,8 +39,7 @@ public class TrapRotation extends GameObjectMoving {
 		this.lenght = 200f;
 		this.angle = 0f;
 		this.speed = 0;
-        physicObject = PhysicObject.createBox(this, position, lenght, lenght,
-                Material.Stone);
+        //physicObject = PhysicObject.createBox(this, position, lenght, lenght,Material.Stone);
         physicObject.getBody().setFixedRotation(true);
         physicObject.getBody().setAngularVelocity(1f);
 	}

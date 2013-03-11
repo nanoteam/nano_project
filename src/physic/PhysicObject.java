@@ -42,7 +42,7 @@ public class PhysicObject {
         body.setAngularVelocity(w);
     }
 
-    public float getAngularVelocity(){
+    public float getAngularVelocity() {
         return body.getAngularVelocity();
     }
 
@@ -109,14 +109,15 @@ public class PhysicObject {
     }
 
     public static PhysicObject createBox(GameObject gameObject,
-                                         Vector2f position, float width, float height, Material material) {
+                                         Vector2f position, float width, float height, float angle, Material material) {
 
         BodyDef objectDef = new BodyDef();
         objectDef.position.set(new Vec2(position.x / 30f, position.y / 30f));
         objectDef.type = BodyType.DYNAMIC;
-
+        objectDef.angle = angle;
         PolygonShape objectShape = new PolygonShape();
         objectShape.setAsBox(width / 30f / 2f, height / 30f / 2f);
+        //objectShape.setAsBox(width / 30f / 2f, height / 30f / 2f, new Vec2(position.x / 30f, position.y / 30f), angle);
 
         Body body = gameObject.getLevel().getWorld().createBody(objectDef);
 

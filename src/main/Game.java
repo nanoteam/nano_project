@@ -287,4 +287,17 @@ public class Game {
     public Vector2f getPositionMouse() {
         return controller.getMousePosition();
     }
+
+    public float getAngleBetweenShipAndCursor() {
+        if (render.getStateViewPort() == Render.VIEWPORT_ON_PLAYER) {
+            return (float) (Math.PI + Math.atan2(Global.RESOLUTION_Y / 2 - controller.getMousePosition().y, Global.RESOLUTION_X / 2
+                    - controller.getMousePosition().x));
+        }
+
+        if (render.getStateViewPort() == Render.VIEWPORT_GLOBAL_WORLD) {
+            return (float) (Math.PI + Math.atan2(player.getControlledObject().getPosition().y - controller.getMousePosition().y, player.getControlledObject().getPosition().x
+                    - controller.getMousePosition().x));
+        }
+        return 0;
+    }
 }

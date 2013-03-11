@@ -41,7 +41,6 @@ public class RubberBall extends GameObjectMoving {
         this.position = new Vector2f(pos.x, pos.y);
         this.speed = speed;
 
-
         this.size = 5f;
         this.lifeTime = 500 + Global.random.nextInt(100);
 
@@ -51,8 +50,7 @@ public class RubberBall extends GameObjectMoving {
         width = 10f;
         height = 10f;
 
-        physicObject = PhysicObject.createBox(this, position, width, height,
-                Material.Metal);
+        //physicObject = PhysicObject.createBox(this, position, width, height,Material.Metal);
         physicObject.setSpeed(speed);
 
         // delete, when complite ersourses manager \/
@@ -110,9 +108,9 @@ public class RubberBall extends GameObjectMoving {
 
         // RenderUtil.drawImage(position.x, position.y,width,
         // height,angle,0.5f,image );
-
+        /*
         RenderUtil
-                .drawQaud(position.x, position.y, width, height, angle, color);
+                .drawQaud(position.x, position.y, width, height, angle, color);     */
     }
 
     @Override

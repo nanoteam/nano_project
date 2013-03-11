@@ -50,31 +50,30 @@ public class RenderUtil {
         GL11.glEnd();
     }
 
-    public static void drawQaud(float x, float y, float width, float height,
+    public static void drawQaud(Vector2f position, float width, float height,
                                 float angle, Color color) {
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
                 color.getBlueByte());
-        GL11.glVertex2f(x + MathUtil.newXTurn(-width / 2, height / 2, angle), y
+        GL11.glVertex2f(position.x + MathUtil.newXTurn(-width / 2, height / 2, angle), position.y
                 + MathUtil.newYTurn(-width / 2, height / 2, angle));
-        GL11.glVertex2f(x + MathUtil.newXTurn(width / 2, height / 2, angle), y
+        GL11.glVertex2f(position.x + MathUtil.newXTurn(width / 2, height / 2, angle), position.y
                 + MathUtil.newYTurn(width / 2, height / 2, angle));
-        GL11.glVertex2f(x + MathUtil.newXTurn(width / 2, -height / 2, angle), y
+        GL11.glVertex2f(position.x + MathUtil.newXTurn(width / 2, -height / 2, angle), position.y
                 + MathUtil.newYTurn(width / 2, -height / 2, angle));
-        GL11.glVertex2f(x + MathUtil.newXTurn(-width / 2, -height / 2, angle),
-                y + MathUtil.newYTurn(-width / 2, -height / 2, angle));
-
+        GL11.glVertex2f(position.x + MathUtil.newXTurn(-width / 2, -height / 2, angle),
+                position.y + MathUtil.newYTurn(-width / 2, -height / 2, angle));
         GL11.glEnd();
 
     }
 
-    public static void drawCircle(float x, float y, float radius, float witdthLine, Color color) {
+    public static void drawCircle(Vector2f position, float radius, float witdthLine, Color color) {
         int numberPointsInCircle = 100;
         Vector2f[] box = new Vector2f[numberPointsInCircle];
         float angle;
         for (int i = 0; i < numberPointsInCircle; i++) {
             angle = (float) (2 * Math.PI * i / numberPointsInCircle);
-            box[i] = new Vector2f((float) (Math.cos(angle) * radius + x), (float) (Math.sin(angle) * radius + y));
+            box[i] = new Vector2f((float) (Math.cos(angle) * radius + position.x), (float) (Math.sin(angle) * radius + position.y));
         }
         GL11.glBegin(GL11.GL_LINE_LOOP);
         GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
@@ -86,7 +85,7 @@ public class RenderUtil {
     }
 
     public static void drawImage(float x, float y, float width, float height, float angle, float zoom, Image image) {
-        GL11.glColor4ub((byte)255,(byte)255,(byte)255,(byte)(image.getAlpha()*255f));
+        GL11.glColor4ub((byte) 255, (byte) 255, (byte) 255, (byte) (image.getAlpha() * 255f));
         float actual_width, actual_height;
         actual_width = image.getTexture().getWidth();
         actual_height = image.getTexture().getHeight();

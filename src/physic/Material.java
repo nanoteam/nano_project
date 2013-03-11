@@ -1,7 +1,9 @@
 package physic;
 
 public enum Material {
-	Metal(0.5f, 0.5f, 0.3f), Wood(0.3f, 0.7f, 0.03f), Stone(10f, 0.7f, 0.7f);
+
+
+	Metal(0.5f, 0.5f, 0.3f), Wood(0.3f, 0.7f, 0.03f), Stone(10f, 0.7f, 0.7f), Rubber(0.3f,0.5f,0.9f);
 
 	float density; // plotnost'
 	float friction; // trenie
