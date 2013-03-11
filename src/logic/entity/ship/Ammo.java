@@ -9,6 +9,7 @@ import physic.Material;
 import physic.PhysicObject;
 import render.RenderUtil;
 import resourses.configuration.SheetParse;
+import util.MathUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,6 +74,9 @@ public class Ammo extends GameObjectMoving {
     @Override
     public void draw() {
         RenderUtil.drawCircle(new Vector2f(position), radius, 3, color);
+        RenderUtil.drawLine(
+                new Vector2f(position.x + MathUtil.newXTurn(radius, 0, angle), position.y + MathUtil.newYTurn(radius, 0, angle)),
+                new Vector2f(position.x + MathUtil.newXTurn(-radius, 0, angle), position.y + MathUtil.newYTurn(-radius, 0, angle)), 5, color);
     }
 
     @Override

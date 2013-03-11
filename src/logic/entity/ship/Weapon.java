@@ -455,35 +455,59 @@ public class Weapon extends ArsenalGameObject {
         }
 
 
-        if (mainConfig.findSheetParseByName("Color") != null) {
-
-
-            /*String color = mainConfig.findSheetParseByName("Color").getValue();
-            switch (color) {
-                case "Red" : {
-                    break;
+        SheetParse colorParse = mainConfig.findSheetParseByName("Color");
+        //thera are color config in file
+        if (colorParse != null) {
+            //if color consistf of r,g,b
+            if (colorParse.isComplex()) {
+                int r, g, b;
+                if (colorParse.findSheetParseByName("Red") != null) {
+                    r = Integer.parseInt(mainConfig.findSheetParseByName("Red").getValue());
+                } else {
+                    r = (byte) 255;
                 }
-                case "Blue" : {
-                    break;
+                if (colorParse.findSheetParseByName("Green") != null) {
+                    g = Integer.parseInt(mainConfig.findSheetParseByName("Green").getValue());
+                } else {
+                    g = (byte) 255;
                 }
-                case "Yellow" :{
-                    break;
+                if (colorParse.findSheetParseByName("Blue") != null) {
+                    b = Integer.parseInt(mainConfig.findSheetParseByName("Blue").getValue());
+                } else {
+                    b = (byte) 255;
                 }
-                case "Green" :{
-                    break;
+                weapon.color = new Color(r, g, b);
+            }
+            //if have color by name like "red", "black"
+            //todo add and test work this function
+            else {
+                String color = mainConfig.findSheetParseByName("Color").getValue();
+                /*switch (color) {
+                    case "Red": {
+                        ammo.color = (Color) Color.RED;
+                        break;
+                    }
+                    case "Blue": {
+                        break;
+                    }
+                    case "Yellow": {
+                        break;
+                    }
+                    case "Green": {
+                        break;
+                    }
+                    case "Pink": {
+                        break;
+                    }
+                    case "Grey": {
+                        break;
+                    }
                 }
-                case "Pink" :{
-                    break;
-                }
-                case "Grey" :{
-                    break;
-                }
-
-              */
-
-            weapon.color = (Color) Color.RED;
-        } else {
-            weapon.color = (Color) Color.RED;
+            }else{
+                ammo.color = (Color) Color.GREEN;
+            }     */
+                weapon.color = (Color) Color.RED;
+            }
         }
 
         if (!(libraryWeapon.containsKey(weapon.additionalName))) {

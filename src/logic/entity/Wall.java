@@ -13,6 +13,7 @@ public class Wall extends GameObjectMoving {
     float wallRestitution;
     float angle;
 
+    //by one point and angle
     public Wall(Level level, float x, float y, float width, float height, float angle) {
         this.level = level;
         this.position = new Vector2f(x, y);
@@ -23,6 +24,19 @@ public class Wall extends GameObjectMoving {
         physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood);
         physicObject.getBody().setType(BodyType.STATIC);
     }
+
+    //by two point
+    public Wall(float x1, float y1, float x2, float y2, float height, Level level) {
+        this.level = level;
+        this.position = new Vector2f((x1 + x2) / 2f, (y1 + y2) / 2f);
+        this.width = (float) (Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)));
+        this.height = height;
+        this.angle = (float) (Math.atan2(y2 - y1, x2 - x1));
+        wallRestitution = 0;
+        physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood);
+        physicObject.getBody().setType(BodyType.STATIC);
+    }
+
 
     @Override
     public void update() {

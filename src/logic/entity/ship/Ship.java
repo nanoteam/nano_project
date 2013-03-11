@@ -11,6 +11,7 @@ import org.lwjgl.util.vector.Vector2f;
 import physic.Material;
 import physic.PhysicObject;
 import render.RenderUtil;
+import util.MathUtil;
 
 public class Ship extends GameObjectMoving implements ControlledEntity {
     private float width, height;
@@ -47,6 +48,8 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
         liveHealth = 10000000;
         physicObject = PhysicObject.createBall(this, position, radiusBody,
                 Material.Metal);
+        physicObject.setAngularDamping(0.1f);
+        physicObject.setLinearDamping(0.01f);
         mainEngine = new Engine(this, new Vector2f(position.x, position.y));
         mainWeapon = Weapon.getWeapon(this, "any");
         level.getGameObjects().add(mainWeapon);
@@ -111,9 +114,7 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
     public void draw() {
         /*RenderUtil.drawQaud(position.x, position.y, width, height, angle,
     (Color) Color.GREY);   */
-        RenderUtil.drawCircle(position, 25, 6, (Color) Color.RED);
-
-        RenderUtil.drawPlot(new Vector2f(800, 450), 5, (Color) Color.RED);
+        RenderUtil.drawCircle(position, radiusBody, 6, (Color) Color.RED);
         //RenderUtil.drawImage(position.x, position.y, width, height,angle,1,image);
     }
 

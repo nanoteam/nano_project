@@ -86,6 +86,12 @@ public class PhysicObject {
         // PhysicObject as argument
     }
 
+    public void setAngularDamping(float angularDamping){
+        body.setAngularDamping(angularDamping);
+    }
+    public void setLinearDamping(float linearDamping){
+        body.setLinearDamping(linearDamping);
+    }
     public static PhysicObject createBall(GameObject gameObject,
                                           Vector2f position, float radius, Material material) {
 

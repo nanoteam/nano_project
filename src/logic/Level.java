@@ -90,17 +90,45 @@ public class Level {
         //Bot bot = new Bot(ship2);
         //gameObjects.add(ship2);
         //gameObjects.add(bot);
-        Wall leftWall = new Wall(this, 5, defaultHeight / 2, 10, defaultHeight, 0);
+
+        //border
+        Wall leftWall = new Wall(0, 0, 0, 1800,10,this);
         gameObjects.add(leftWall);
-        Wall upWall = new Wall(this, defaultWidth / 2, defaultHeight - 5,
-                defaultWidth, 10, 0);
+
+        Wall upWall = new Wall(0,1800,3200,1800,10,this);
         gameObjects.add(upWall);
-        Wall righWall = new Wall(this, defaultWidth - 5, defaultHeight / 2, 10,
-                defaultHeight, 0);
+
+        Wall righWall = new Wall(3200,1800, 3200,0,10,this);
         gameObjects.add(righWall);
-        Wall downWall = new Wall(this, defaultWidth / 2, 5, defaultWidth, 10, 0);
+
+        Wall downWall = new Wall(3200,0,0,0,10,this);
         gameObjects.add(downWall);
 
+
+        //level
+        gameObjects.add(new Wall(226,886,372,1269,20,this));
+        gameObjects.add(new Wall(259,1476,652,1617,20,this));
+        gameObjects.add(new Wall(1096,1748,1430,1612,20,this));
+        gameObjects.add(new Wall(1609,1503,1861,1239,20,this));
+        gameObjects.add(new Wall(1380,1309,1133,1231,20,this));
+        gameObjects.add(new Wall(992,1166,851,954,20,this));
+        gameObjects.add(new Wall(798,770,906,549,20,this));
+        gameObjects.add(new Wall(1085,408,1360,413,20,this));
+        gameObjects.add(new Wall(1392,619,1312,795,20,this));
+
+        gameObjects.add(new Wall(1340,901,1546,1010,20,this));
+        gameObjects.add(new Wall(1675,994,1793,899,20,this));
+        gameObjects.add(new Wall(1607,571,1823,687,20,this));
+        gameObjects.add(new Wall(1924,808,1947,1075,20,this));
+        gameObjects.add(new Wall(2035,138,2277,397,20,this));
+        gameObjects.add(new Wall(2375,564,2556,836,20,this));
+        gameObjects.add(new Wall(2662,1068,2755,1362,20,this));
+        gameObjects.add(new Wall(2579,75,2798,292,20,this));
+        gameObjects.add(new Wall(2843,559,3022,858,20,this));
+
+        gameObjects.add(new Wall(2994,1244,3032,1569,20,this));
+        gameObjects.add(new Wall(2362,1234,2493,1420,20,this));
+        gameObjects.add(new Wall(1619,125,1416,345,20,this));
 
         // gameObjects.add(new Wall(this, 700, 100, 20, 200));
         //gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
