@@ -22,7 +22,7 @@ public final class ConfigsLibrary {
         //some main game files parse on start ConfigsLibrary
         getConfig(pathToSetting);
 
-
+        //dir weapon
         File dirWeapons = new File(pathToWeaponFolder);
         File[] fileWeapon = dirWeapons.listFiles();
 
@@ -33,6 +33,7 @@ public final class ConfigsLibrary {
             Weapon.addWeaponToLibrary(getConfig(fileWeapon[i].getAbsolutePath()));
         }
 
+        //dir ammo
         File dirAmmo = new File(pathToAmmoFolder);
         File[] fileAmmo = dirAmmo.listFiles();
 

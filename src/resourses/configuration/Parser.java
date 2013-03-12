@@ -10,11 +10,12 @@ import java.util.StringTokenizer;
 
 //static class like procedure
 class Parser {
-	private Parser(){
-		
-	}
+    private Parser() {
+
+    }
+
     public static SheetParse startParser(String pathToFile) {
-    	StringTokenizer tokenizer;
+        StringTokenizer tokenizer;
         // init all for reading file line by line
         BufferedReader bufferedReader;
         File file;
@@ -30,27 +31,29 @@ class Parser {
         int stateParserDepth = 0;
         SheetParse currentSheetParse = null;
         ArrayDeque<SheetParse> stackSheets = new ArrayDeque<SheetParse>();
+        //help add last line to parserSheet
+        boolean lastLine = false;
         while (onRun) {
-
+            if (lastLine) {
+                onRun = false;
+                System.out.println("Parser: reading file" +
+                        file.getAbsolutePath().toString() + " complite");
+                continue;
+            }
             try {
                 line = bufferedReader.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            // if file reading finished
+            // if this line last
             try {
                 if (!bufferedReader.ready()) {
-                    onRun = false;
-                    System.out.println("Parser: reading file" +
-                            file.getAbsolutePath().toString() + " complite");
-                    continue;
+                    lastLine = true;
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             // if epmty
             if (line == null) {
                 continue;
@@ -119,6 +122,15 @@ class Parser {
             // if there is one pair name:value
             // continue filling SheetParse
             if (line.contains("=")) {
+                // <------
+                // closed open session SheetParse
+                // depthLine=>0!
+                if (depthLine < stateParserDepth) {
+                    for (int i = 0; i < stateParserDepth - depthLine; i++) {
+                        currentSheetParse = stackSheets.pop();
+                    }
+                    stateParserDepth = depthLine;
+                }
                 if (depthLine == stateParserDepth) {
                     tokenizer = new StringTokenizer(line.trim());
                     String name = tokenizer.nextToken();
@@ -142,22 +154,13 @@ class Parser {
                                     + file.getAbsolutePath());
                     continue;
                 }
-                // <------
-                // closed open session SheetParse
-                // depthLine=>0!
-                if (depthLine < stateParserDepth) {
-                    for (int i = 0; i < stateParserDepth - depthLine; i++) {
-                        currentSheetParse = stackSheets.pop();
-                    }
-                    stateParserDepth = depthLine;
-                    continue;
-                }
             }
         }
         //currentSheetParse.getHead();  - output, but this is link on obj
         return new SheetParse(currentSheetParse.getHead());
 
     }
+
     private static int getNumberFirstTabs(String line) {
         int allDepth = line.indexOf(line.trim().charAt(0));
         int realDepth = 0;

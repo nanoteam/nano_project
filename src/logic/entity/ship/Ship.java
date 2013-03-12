@@ -162,51 +162,6 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
                 speciality = true;
                 break;
             }
-
-
-            /*
-            case InputToAction.left: {
-                leftEngineOn = true;
-                break;
-            }
-            case InputToAction.right: {
-                rightEngineOn = true;
-                break;
-            }
-            case InputToAction.down: {
-                allEngineActive = true;
-                break;
-            }
-
-            case InputToAction.leftEngineLeft: {
-                turnLeftEnginesLeft = true;
-                break;
-            }
-
-            case InputToAction.leftEngineRight: {
-                turnLeftEnginesRight = true;
-                break;
-            }
-            case InputToAction.rightEngineLeft: {
-                turnRightEnginesLeft = true;
-                break;
-            }
-
-            case InputToAction.rightEngineRight: {
-                turnRightEnginesRight = true;
-                break;
-            }
-
-            case InputToAction.leftEngineOn: {
-                leftEngineOn = true;
-                break;
-            }
-
-            case InputToAction.rightEngineOn: {
-                rightEngineOn = true;
-                break;
-            }
-            */
         }
     }
 

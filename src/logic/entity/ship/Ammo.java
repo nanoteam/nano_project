@@ -31,6 +31,7 @@ public class Ammo extends GameObjectMoving {
     private float airResistant;
     private boolean haveTimer = false;
     private boolean haveImpulseDetonator = false;
+    private boolean haveForceTraction = false;
     //private boolean haveTimer = false;
 
     //warhead
@@ -69,6 +70,11 @@ public class Ammo extends GameObjectMoving {
     public void move() {
         position = physicObject.getPosition();
         angle = physicObject.getAngle();
+        if (haveForceTraction) {
+            float forceX = (float) (Math.cos(angle) * forceTraction);
+            float forceY = (float) (Math.sin(angle) * forceTraction);
+            physicObject.applyForce(forceX, forceY, new Vector2f(position));
+        }
     }
 
     @Override
@@ -112,7 +118,7 @@ public class Ammo extends GameObjectMoving {
                 Vector2f speedParticleVector = new Vector2f((float) (Math.cos(angle) * speedRandom + speedFatherShell.x),
                         (float) (Math.sin(angle) * speedRandom + speedFatherShell.y));
                 //magic constant for disable collise between particle
-                level.getNotAddedGameObjects().add(Ammo.getAmmo(new Vector2f(position.x + Global.random.nextInt(10) - 5, position.y + Global.random.nextInt(10) - 5), speedParticleVector, level, ammoWarHead));
+                level.getNotAddedGameObjects().add(Ammo.getAmmo(new Vector2f(position.x + Global.random.nextInt((int) radius), position.y + Global.random.nextInt((int) radius)), speedParticleVector, level, ammoWarHead));
                 //level.getNotAddedGameObjects().add(new Particle(new Vector2f(position), speedParticleVector, 5, 300, color));
             }
         }
@@ -137,7 +143,7 @@ public class Ammo extends GameObjectMoving {
         if (mainConfig.findSheetParseByName("Radius") != null) {
             ammo.radius = Float.parseFloat(mainConfig.findSheetParseByName("Radius").getValue());
         } else {
-            ammo.radius = 5;
+            ammo.radius = 50;
             System.out.println("Ammo !parse default! Radius");
         }
         //this is etalon obj, and not need to create pbj in phus world
@@ -177,6 +183,9 @@ public class Ammo extends GameObjectMoving {
 
         if (mainConfig.findSheetParseByName("ForceTraction") != null) {
             ammo.forceTraction = Float.parseFloat(mainConfig.findSheetParseByName("ForceTraction").getValue());
+            if (ammo.forceTraction > 0) {
+                ammo.haveForceTraction = true;
+            }
         } else {
             ammo.forceTraction = -1;
             System.out.println("Ammo !parse default! ForceTraction");
@@ -298,9 +307,10 @@ public class Ammo extends GameObjectMoving {
         cloneAmmo.forceTraction = targetAmmo.forceTraction;
         cloneAmmo.impulseToDestruction = targetAmmo.impulseToDestruction;
         cloneAmmo.impulseToDetonate = targetAmmo.impulseToDetonate;
-        cloneAmmo.timeToDetonate = targetAmmo.timeToDetonate;
+        cloneAmmo.timeToDetonate = (targetAmmo.timeToDetonate) + Global.random.nextInt((int) (targetAmmo.timeToDetonate / 10f));
         cloneAmmo.airResistant = targetAmmo.airResistant;
         cloneAmmo.haveTimer = targetAmmo.haveTimer;
+        cloneAmmo.haveForceTraction = targetAmmo.haveForceTraction;
         cloneAmmo.haveImpulseDetonator = targetAmmo.haveImpulseDetonator;
         cloneAmmo.color = targetAmmo.color;
         cloneAmmo.haveWarHead = targetAmmo.haveWarHead;
