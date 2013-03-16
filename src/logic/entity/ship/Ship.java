@@ -47,7 +47,7 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
         height = 40f;            */
         liveHealth = 10000000;
         physicObject = PhysicObject.createBall(this, position, radiusBody,
-                Material.Metal);
+                Material.Metal,PhysicObject.DINAMIC);
         physicObject.setAngularDamping(0.1f);
         physicObject.setLinearDamping(0.01f);
         mainEngine = new Engine(this, new Vector2f(position.x, position.y));

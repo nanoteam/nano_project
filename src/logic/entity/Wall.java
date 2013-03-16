@@ -21,7 +21,7 @@ public class Wall extends GameObjectMoving {
         this.width = width;
         this.angle = angle;
         wallRestitution = 0;
-        physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood);
+        physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood,PhysicObject.DINAMIC);
         physicObject.getBody().setType(BodyType.STATIC);
     }
 
@@ -33,7 +33,7 @@ public class Wall extends GameObjectMoving {
         this.height = height;
         this.angle = (float) (Math.atan2(y2 - y1, x2 - x1));
         wallRestitution = 0;
-        physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood);
+        physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood,PhysicObject.DINAMIC);
         physicObject.getBody().setType(BodyType.STATIC);
     }
 

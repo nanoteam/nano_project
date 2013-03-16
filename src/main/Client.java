@@ -18,8 +18,6 @@ public final class Client {
 
     private Game game;
 
-    private MainMenu mainMenu;
-
     private Sound sound;
 
     private Render render;
@@ -117,10 +115,6 @@ public final class Client {
 
     Controller getController() {
         return controller;
-    }
-
-    MainMenu getMainMenu() {
-        return mainMenu;
     }
     
     AI getAI(){

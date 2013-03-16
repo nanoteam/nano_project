@@ -17,21 +17,24 @@ public class Sound implements Engine {
 	private Level level;
 
 	@Override
-	public void tick() {
+	public void tick() {  /*
 		List<GameObject> gameObjects = level.getGameObjects();
 		for (GameObject gameObject : gameObjects) {
             gameObject.playSound();
-		}
+		}                   */
 	}
 
 	
 	public Sound() {
 		// Start up the sound system
+
+        /*
 		try {
 			AL.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	public Level getLevel(){

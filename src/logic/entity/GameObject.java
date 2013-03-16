@@ -10,7 +10,6 @@ package logic.entity;
 
 import logic.Level;
 import org.lwjgl.util.vector.Vector2f;
-import render.RenderObject;
 
 //TODO add modificator visiable to protected code to field and method
 abstract public class GameObject {
@@ -21,7 +20,6 @@ abstract public class GameObject {
     protected String additionalName = "unknown";
     protected Vector2f position;
     protected boolean live = true;
-    protected RenderObject renderObject;
     protected Level level;
     protected float liveHealth;
     public final long id;

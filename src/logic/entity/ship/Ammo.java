@@ -290,7 +290,7 @@ public class Ammo extends GameObjectMoving {
         Ammo cloneAmmo = Ammo(ammo);
         //adding info actual game
         cloneAmmo.level = level;
-        cloneAmmo.physicObject = PhysicObject.createBall(cloneAmmo, position, cloneAmmo.radius, cloneAmmo.material);
+        cloneAmmo.physicObject = PhysicObject.createBall(cloneAmmo, position, cloneAmmo.radius, cloneAmmo.material,PhysicObject.DINAMIC);
         cloneAmmo.physicObject.setPosition(position);
         cloneAmmo.position = position;
         cloneAmmo.physicObject.setSpeed(speed);

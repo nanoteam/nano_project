@@ -130,6 +130,8 @@ public class Level {
         gameObjects.add(new Wall(2362,1234,2493,1420,20,this));
         gameObjects.add(new Wall(1619,125,1416,345,20,this));
 
+        gameObjects.add(new Polygon(this,new Vector2f(300,300)));
+
         // gameObjects.add(new Wall(this, 700, 100, 20, 200));
         //gameObjects.add(new JumpWall(this, 900, 40, 200, 40));
 

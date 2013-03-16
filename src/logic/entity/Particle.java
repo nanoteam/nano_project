@@ -54,7 +54,6 @@ public class Particle extends GameObjectMoving {
         speed = null;
         physicObject = null;
         position = null;
-        renderObject = null;
 	}
 
 	public Color getColor() {

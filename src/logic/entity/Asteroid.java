@@ -32,8 +32,10 @@ public class Asteroid extends GameObjectMoving {
         this.speed = new Vector2f((float) MAX_SPEED
                 - Global.random.nextInt(MAX_SPEED * 2), (float) MAX_SPEED
                 - Global.random.nextInt(MAX_SPEED * 2));
+
         this.physicObject = PhysicObject.createBall(this, position, radius,
-                Material.Stone);
+                Material.Stone,PhysicObject.DINAMIC);
+
         physicObject.setSpeed(speed);
 	}
 

@@ -19,7 +19,7 @@ public class Partic extends GameObjectMoving {
 		this.liveHealth = 100;
 
         physicObject = PhysicObject
-                .createBall(this, position, 2, Material.Wood);
+                .createBall(this, position, 2, Material.Wood,PhysicObject.DINAMIC);
 	}
 
 	@Override

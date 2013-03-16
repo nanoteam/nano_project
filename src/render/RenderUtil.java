@@ -34,19 +34,22 @@ public class RenderUtil {
         GL11.glColor3d(1, 1, 1);
     }
 
-    public static void drawPolyLineSmooth(List<Vector2f> positions,
-                                          float widthLine, Color color) {
+    public static void drawPolyLineSmooth(Vector2f position, List<Vector2f> positions,
+                                          float widthLine, float angle, Color color) {
         if (positions.size() < 1) {
             return;
         }
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glLineWidth(widthLine);
-        GL11.glBegin(GL11.GL_LINE_STRIP);
+        GL11.glBegin(GL11.GL_LINE_LOOP);
         GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
                 color.getBlueByte());
+
         for (int i = 0; i < positions.size(); i++) {
-            GL11.glVertex2f(positions.get(i).x, positions.get(i).y);
+            GL11.glVertex2f(position.x + MathUtil.newXTurn(positions.get(i).x,positions.get(i).y, angle), position.y + MathUtil.newYTurn(positions.get(i).x,positions.get(i).y, angle));
         }
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GL11.glDisable(GL11.GL_LINE_STRIP);
         GL11.glEnd();
     }
 
