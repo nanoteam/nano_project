@@ -19,6 +19,8 @@ class Parser {
         // init all for reading file line by line
         BufferedReader bufferedReader;
         File file;
+
+        int numberLine = 0;
         try {
             file = new File(pathToFile);
             bufferedReader = new BufferedReader(new FileReader(file));
@@ -31,9 +33,11 @@ class Parser {
         int stateParserDepth = 0;
         SheetParse currentSheetParse = null;
         ArrayDeque<SheetParse> stackSheets = new ArrayDeque<SheetParse>();
+        System.out.println("Start reading file" + file.getAbsolutePath());
         //help add last line to parserSheet
         boolean lastLine = false;
         while (onRun) {
+            numberLine++;
             if (lastLine) {
                 onRun = false;
                 System.out.println("Parser: reading file" +
@@ -45,6 +49,7 @@ class Parser {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             // if this line last
             try {
                 if (!bufferedReader.ready()) {
@@ -72,7 +77,6 @@ class Parser {
 
             // error. there are one or zero sign "="
             if (line.indexOf("=") != line.lastIndexOf("=")) {
-
                 continue;
             }
 
@@ -84,7 +88,7 @@ class Parser {
                 if (depthLine > stateParserDepth) {
                     new Exception(
                             "Parser:startParser - error structure of document"
-                                    + file.getAbsolutePath());
+                                    + file.getAbsolutePath() + "line is " + numberLine);
                     continue;
                 }
                 // <------
@@ -135,13 +139,22 @@ class Parser {
                     tokenizer = new StringTokenizer(line.trim());
                     String name = tokenizer.nextToken();
                     // nextToken() x2 becouse ("name" "=" "value")
-                    String value = tokenizer.nextToken();
+
+                    //if line with text == x =
+                    String value;
+                    try {
+                        value = tokenizer.nextToken();
+                    } catch (Exception e) {
+                        new Exception(
+                                "Parser:startParser - error structure of document"
+                                        + file.getAbsolutePath() + "line is " + numberLine);
+                    }
                     value = tokenizer.nextToken();
 
                     if (currentSheetParse == null) {
                         new Exception(
                                 "Parser:startParser - error structure of document"
-                                        + file.getAbsolutePath());
+                                        + file.getAbsolutePath() + "line is " + numberLine);
                     } else {
                         currentSheetParse.addNewChildPair(name, value);
                     }
@@ -151,7 +164,7 @@ class Parser {
                 if (depthLine > stateParserDepth) {
                     new Exception(
                             "Parser:startParser - error structure of document"
-                                    + file.getAbsolutePath());
+                                    + file.getAbsolutePath() + "line is " + numberLine);
                     continue;
                 }
             }

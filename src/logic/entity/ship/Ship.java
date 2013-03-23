@@ -5,15 +5,14 @@ import ai.nnga.Manager;
 import controller.InputToAction;
 import logic.Level;
 import logic.entity.ArsenalGameObject;
-import logic.entity.GameObjectMoving;
+import logic.entity.GamePhysicObject;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import physic.Material;
 import physic.PhysicObject;
 import render.RenderUtil;
-import util.MathUtil;
 
-public class Ship extends GameObjectMoving implements ControlledEntity {
+public class Ship extends GamePhysicObject implements ControlledEntity {
     private float width, height;
     private float radiusBody = 25;
     private float protection = 0.1f;
@@ -47,7 +46,7 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
         height = 40f;            */
         liveHealth = 10000000;
         physicObject = PhysicObject.createBall(this, position, radiusBody,
-                Material.Metal,PhysicObject.DINAMIC);
+                Material.Metal,PhysicObject.DINAMIC,level.getWorld());
         physicObject.setAngularDamping(0.1f);
         physicObject.setLinearDamping(0.01f);
         mainEngine = new Engine(this, new Vector2f(position.x, position.y));
@@ -188,7 +187,7 @@ public class Ship extends GameObjectMoving implements ControlledEntity {
 
         level.getPlayer().setControlledObject(null);
         physicObject.destroy();
-        //EmmiterEffects.drawBoom(position);
+        //EmitterEffects.drawBoom(position);
         /*level.getNotAddedGameObjects().add(
                 new Explosion(level, position, 60, 1)); */
     }

@@ -22,7 +22,7 @@ public class Render implements Engine {
     public static final int VIEWPORT_GLOBAL_WORLD = 0;
     public static final int VIEWPORT_ON_PLAYER = 1;
     private int stateViewPort = 0;
-    private float zoom = 1;
+    private static float zoom = 1;
 
     private float left, right, top, bottom;
 
@@ -117,7 +117,7 @@ public class Render implements Engine {
         Display.update();
     }
 
-    public float getZoom() {
+    public static float getZoom() {
         return zoom;
     }
 

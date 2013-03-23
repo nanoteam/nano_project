@@ -36,11 +36,9 @@ public class SheetParse extends Object {
         return parent.getHead();
     }
 
-    // find obj SheetParse with current name
-
+    //find something in all SheetParse
     public SheetParse findSheetParseByName(String name) {
-        SheetParse sheetParse = this.getHead();
-        return sheetParse.findSheetParse(name, sheetParse);
+        return findSheetParse(name, this);
     }
 
     private SheetParse findSheetParse(String name, SheetParse sheetParse) {

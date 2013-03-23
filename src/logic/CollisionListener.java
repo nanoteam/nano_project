@@ -1,6 +1,5 @@
 package logic;
 
-import logic.entity.EmmiterEffects;
 import logic.entity.TrapRotation;
 import logic.entity.ship.Engine;
 import logic.entity.ship.Ship;
@@ -76,7 +75,7 @@ public class CollisionListener implements ContactListener {
         if (nameA.equals("Ship") || nameB.equals("Ship")) {
             // will be added 'else's in future for more optimization
             if (nameA.equals("Ship") && nameB.equals("Ship")) {
-                EmmiterEffects.drawCollision(points, impulses,
+                level.getEmitterEffects().drawCollision(points, impulses,
                         CollisionListener.SHIP_WITH_SHIP);
 
                 // TODO damage method in super class
@@ -93,8 +92,7 @@ public class CollisionListener implements ContactListener {
                 if (maxF < 1f)
                     return;
 
-                EmmiterEffects.drawCollision(points, impulses,
-                        SHIP_WITH_WALL);
+                level.getEmitterEffects().drawCollision(points, impulses, SHIP_WITH_WALL);
 
                 if (nameA.equals("Ship")) {
                     ((Ship) bodyA).damage(impulses);

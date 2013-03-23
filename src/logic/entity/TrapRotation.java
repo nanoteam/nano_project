@@ -2,26 +2,16 @@ package logic.entity;
 
 import logic.Level;
 
-import org.jbox2d.collision.shapes.MassData;
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.joints.Joint;
-import org.jbox2d.dynamics.joints.JointDef;
-import org.jbox2d.dynamics.joints.MouseJointDef;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
-import org.jbox2d.dynamics.joints.WeldJointDef;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
-import physic.Material;
-import physic.PhysicObject;
 import render.RenderUtil;
 
-public class TrapRotation extends GameObjectMoving {
+public class TrapRotation extends GamePhysicObject {
 
 	private static final int TRAP_TIME = 60;
 

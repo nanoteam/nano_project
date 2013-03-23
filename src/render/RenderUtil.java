@@ -10,7 +10,8 @@ import java.util.List;
 
 public class RenderUtil {
     public static void drawPlot(Vector2f position, float size, Color color) {
-        GL11.glPointSize(size);
+        float sizeResult = size * Render.getZoom();
+        GL11.glPointSize(sizeResult);
         GL11.glBegin(GL11.GL_POINTS);
         GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
                 color.getBlueByte());
@@ -21,7 +22,8 @@ public class RenderUtil {
     public static void drawLine(Vector2f positionBegin, Vector2f positionEnd,
                                 float width, Color color) {
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glLineWidth(width);
+        float widthResult = width * Render.getZoom();
+        GL11.glLineWidth(widthResult);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
                 color.getBlueByte());
@@ -40,7 +42,8 @@ public class RenderUtil {
             return;
         }
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glLineWidth(widthLine);
+        float widthResult = widthLine * Render.getZoom();
+        GL11.glLineWidth(widthResult);
         GL11.glBegin(GL11.GL_LINE_LOOP);
         GL11.glColor3ub(color.getRedByte(), color.getGreenByte(),
                 color.getBlueByte());

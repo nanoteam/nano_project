@@ -70,7 +70,7 @@ public class Explosion extends GameObject {
 
 	@Override
 	public void draw() {
-		EmmiterEffects.drawBoom(position);
+        level.getEmitterEffects().drawBoom(position);
 	}
 
 	@Override

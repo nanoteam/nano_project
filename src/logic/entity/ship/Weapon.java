@@ -1,9 +1,9 @@
 package logic.entity.ship;
 
 import logic.entity.ArsenalGameObject;
-import logic.entity.GameObjectMoving;
-import logic.entity.ammo.RubberBall;
-import logic.entity.ammo.WarHead;
+import logic.entity.GamePhysicObject;
+import logic.entity.entityInterface.IsClonable;
+import logic.entity.entityInterface.MorfingCreation;
 import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
@@ -14,7 +14,7 @@ import util.MathUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Weapon extends ArsenalGameObject {
+public class Weapon extends ArsenalGameObject implements IsClonable {
     private final static int LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON = 5;
     private int width;
     private int height;
@@ -39,8 +39,10 @@ public class Weapon extends ArsenalGameObject {
 
                 Vector2f shell_position = new Vector2f(position.x +
                         MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle), position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle));
-                float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / RubberBall.STANDART_MASS);
+                float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / 100f);
                 Ammo ammo;
+
+
                 //optimization - style
 
                 {
@@ -193,7 +195,7 @@ public class Weapon extends ArsenalGameObject {
                 Ammo ammo;
                 Vector2f shell_position = new Vector2f(position.x +
                         MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle), position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle));
-                float shell_speed = (float) Math.sqrt(2 * kineticEnergyAlternative / (WarHead.STANDART_MASS));
+                float shell_speed = (float) Math.sqrt(2 * kineticEnergyAlternative / (100f));
                 {
                     switch (countAmmoAlternativePerShoot) {
                         case 1: {
@@ -541,7 +543,7 @@ public class Weapon extends ArsenalGameObject {
         }
     }
 
-    public static Weapon getWeapon(GameObjectMoving gameObjectMoving, String nameWeapon) {
+    public static Weapon getWeapon(GamePhysicObject gamePhysicObject, String nameWeapon) {
         //get random weapon
         if (nameWeapon.equals("any")) {
             //calculate random weapon from list,
@@ -552,43 +554,43 @@ public class Weapon extends ArsenalGameObject {
         //get etalon example from library
         Weapon weapon = (Weapon) libraryWeapon.get(nameWeapon);
         // cloning etalon
-        Weapon cloneWeapon = Weapon(weapon);
-        //adding GameObjectMoving
-        cloneWeapon.addToGameObject(gameObjectMoving);
+        Weapon cloneWeapon = weapon.clone();
+        //adding GamePhysicObject
+        cloneWeapon.addToGameObject(gamePhysicObject);
         return cloneWeapon;
     }
 
     //copy all field nead
-    private static Weapon Weapon(Weapon targetWeapon) {
+    public Weapon clone() {
         Weapon cloneWeapon = new Weapon();
 
-        cloneWeapon.width = targetWeapon.width;
-        cloneWeapon.height = targetWeapon.height;
+        cloneWeapon.width = width;
+        cloneWeapon.height = height;
 
-        cloneWeapon.kineticEnergyPrimary = targetWeapon.kineticEnergyPrimary;
-        cloneWeapon.kineticEnergyAlternative = targetWeapon.kineticEnergyAlternative;
-        cloneWeapon.mass = targetWeapon.mass;
-        cloneWeapon.energyCoastPrimary = targetWeapon.energyCoastPrimary;
-        cloneWeapon.energyCoastAlternative = targetWeapon.energyCoastAlternative;
+        cloneWeapon.kineticEnergyPrimary = kineticEnergyPrimary;
+        cloneWeapon.kineticEnergyAlternative = kineticEnergyAlternative;
+        cloneWeapon.mass = mass;
+        cloneWeapon.energyCoastPrimary = energyCoastPrimary;
+        cloneWeapon.energyCoastAlternative = energyCoastAlternative;
 
-        cloneWeapon.reloadTimePrimary = targetWeapon.reloadTimePrimary;
-        cloneWeapon.reloadTimeAlternative = targetWeapon.reloadTimeAlternative;
+        cloneWeapon.reloadTimePrimary = reloadTimePrimary;
+        cloneWeapon.reloadTimeAlternative = reloadTimeAlternative;
 
-        cloneWeapon.randomizeFirePrimary = targetWeapon.randomizeFirePrimary;
-        cloneWeapon.randomizeFireAlternative = targetWeapon.randomizeFireAlternative;
+        cloneWeapon.randomizeFirePrimary = randomizeFirePrimary;
+        cloneWeapon.randomizeFireAlternative = randomizeFireAlternative;
 
-        cloneWeapon.color = new Color(targetWeapon.color);
-        cloneWeapon.additionalName = new String(targetWeapon.additionalName);
-        cloneWeapon.nameAmmoPrimary = new String(targetWeapon.nameAmmoPrimary);
-        cloneWeapon.nameAmmoAlternative = new String(targetWeapon.nameAmmoAlternative);
+        cloneWeapon.color = new Color(color);
+        cloneWeapon.additionalName = new String(additionalName);
+        cloneWeapon.nameAmmoPrimary = new String(nameAmmoPrimary);
+        cloneWeapon.nameAmmoAlternative = new String(nameAmmoAlternative);
 
-        cloneWeapon.countAmmoAlternativePerShoot = targetWeapon.countAmmoAlternativePerShoot;
-        cloneWeapon.countAmmoPrimaryPerShoot = targetWeapon.countAmmoPrimaryPerShoot;
+        cloneWeapon.countAmmoAlternativePerShoot = countAmmoAlternativePerShoot;
+        cloneWeapon.countAmmoPrimaryPerShoot = countAmmoPrimaryPerShoot;
 
         return cloneWeapon;
     }
 
-    public void addToGameObject(GameObjectMoving gameObject) {
+    public void addToGameObject(GamePhysicObject gameObject) {
         this.position = gameObject.getPosition();
         this.fatherObj = gameObject;
         this.level = gameObject.getLevel();

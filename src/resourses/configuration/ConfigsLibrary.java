@@ -3,6 +3,7 @@ package resourses.configuration;
 
 import logic.entity.ship.Ammo;
 import logic.entity.ship.Weapon;
+import logic.Level;
 
 import java.io.File;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ public final class ConfigsLibrary {
     public static final String pathToSetting = "res/settings.ini";
     public static final String pathToWeaponFolder = "res/weapon";
     public static final String pathToAmmoFolder = "res/ammo";
+    public static final String pathToLevelFolder = "res/level";
 
     private ConfigsLibrary() {
         mapConfigurations = new HashMap<String, SheetParse>();
@@ -43,6 +45,19 @@ public final class ConfigsLibrary {
             }
             Ammo.addAmmoToLibrary(getConfig(fileAmmo[i].getAbsolutePath()));
         }
+
+        //dir level
+        File dirLevel = new File(pathToLevelFolder);
+        File[] fileLevel = dirLevel.listFiles();
+
+        for (int i = 0; i < fileLevel.length; i++) {
+            if (fileLevel[i].isDirectory()){
+                continue;
+            }
+            Level.addLevelToLibrary(getConfig(fileLevel[i].getAbsolutePath()));
+        }
+
+
     }
 
     public static ConfigsLibrary get() {
@@ -64,8 +79,7 @@ public final class ConfigsLibrary {
                 return parse;
             } catch (Exception e) {
                 //some action
-                System.out.println("ConfigsLibrary:parseFile");
-                System.out.println("Error in " + pathToFile);
+                System.out.println("Error in ConfigsLibrary:parseFile" + pathToFile);
                 return null;
             }
         }

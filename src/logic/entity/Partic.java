@@ -10,7 +10,7 @@ import physic.PhysicObject;
 
 import render.RenderUtil;
 
-public class Partic extends GameObjectMoving {
+public class Partic extends GamePhysicObject {
 
 	public Partic(Level level, Vector2f pos, Vector2f speed) {
 		this.level = level;
@@ -19,7 +19,7 @@ public class Partic extends GameObjectMoving {
 		this.liveHealth = 100;
 
         physicObject = PhysicObject
-                .createBall(this, position, 2, Material.Wood,PhysicObject.DINAMIC);
+                .createBall(this, position, 2, Material.Wood,PhysicObject.DINAMIC,level.getWorld());
 	}
 
 	@Override

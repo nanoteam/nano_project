@@ -1,7 +1,9 @@
 package logic.entity.ship;
 
 import logic.Level;
-import logic.entity.GameObjectMoving;
+import logic.entity.GamePhysicObject;
+import logic.entity.entityInterface.IsClonable;
+import logic.entity.entityInterface.MorfingCreation;
 import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
@@ -14,11 +16,11 @@ import util.MathUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Ammo extends GameObjectMoving {
-    // temp
-    private float radius;
+public class Ammo extends GamePhysicObject implements IsClonable {
+
     private static Map<String, Ammo> libraryAmmo = new HashMap<String, Ammo>();
 
+    private float radius;
     // <0 == never.
     private float timeToDetonate;
     // <0 == never
@@ -29,21 +31,17 @@ public class Ammo extends GameObjectMoving {
     private float forceTraction;
     // <0 - nothing
     private float airResistant;
+
     private boolean haveTimer = false;
     private boolean haveImpulseDetonator = false;
     private boolean haveForceTraction = false;
-    //private boolean haveTimer = false;
 
-    //warhead
     private boolean haveWarHead = false;
-
     private String ammoWarHead;
     private int countParticle;
     private int speedParticle;
 
     private Color color;
-    //for physic obj:
-
     private Material material;
 
     private Ammo() {
@@ -82,7 +80,8 @@ public class Ammo extends GameObjectMoving {
         RenderUtil.drawCircle(new Vector2f(position), radius, 3, color);
         RenderUtil.drawLine(
                 new Vector2f(position.x + MathUtil.newXTurn(radius, 0, angle), position.y + MathUtil.newYTurn(radius, 0, angle)),
-                new Vector2f(position.x + MathUtil.newXTurn(-radius, 0, angle), position.y + MathUtil.newYTurn(-radius, 0, angle)), 5, color);
+                new Vector2f(position.x, position.y), 5, color);
+        //  new Vector2f(position.x + MathUtil.newXTurn(-radius, 0, angle), position.y + MathUtil.newYTurn(-radius, 0, angle)), 5, color);
     }
 
     @Override
@@ -287,10 +286,10 @@ public class Ammo extends GameObjectMoving {
         //get etalon example from library
         Ammo ammo = (Ammo) libraryAmmo.get(nameAmmo);
         // cloning etalon
-        Ammo cloneAmmo = Ammo(ammo);
+        Ammo cloneAmmo = ammo.clone();
         //adding info actual game
         cloneAmmo.level = level;
-        cloneAmmo.physicObject = PhysicObject.createBall(cloneAmmo, position, cloneAmmo.radius, cloneAmmo.material,PhysicObject.DINAMIC);
+        cloneAmmo.physicObject = PhysicObject.createBall(cloneAmmo, position, cloneAmmo.radius, cloneAmmo.material, PhysicObject.DINAMIC,level.getWorld());
         cloneAmmo.physicObject.setPosition(position);
         cloneAmmo.position = position;
         cloneAmmo.physicObject.setSpeed(speed);
@@ -299,24 +298,24 @@ public class Ammo extends GameObjectMoving {
 
     //copy all field nead
     //copy constructor
-    private static Ammo Ammo(Ammo targetAmmo) {
+    public Ammo clone() {
         Ammo cloneAmmo = new Ammo();
-        cloneAmmo.additionalName = new String(targetAmmo.additionalName);
-        cloneAmmo.radius = targetAmmo.radius;
-        cloneAmmo.material = targetAmmo.material;
-        cloneAmmo.forceTraction = targetAmmo.forceTraction;
-        cloneAmmo.impulseToDestruction = targetAmmo.impulseToDestruction;
-        cloneAmmo.impulseToDetonate = targetAmmo.impulseToDetonate;
-        cloneAmmo.timeToDetonate = (targetAmmo.timeToDetonate) + Global.random.nextInt((int) (targetAmmo.timeToDetonate / 10f));
-        cloneAmmo.airResistant = targetAmmo.airResistant;
-        cloneAmmo.haveTimer = targetAmmo.haveTimer;
-        cloneAmmo.haveForceTraction = targetAmmo.haveForceTraction;
-        cloneAmmo.haveImpulseDetonator = targetAmmo.haveImpulseDetonator;
-        cloneAmmo.color = targetAmmo.color;
-        cloneAmmo.haveWarHead = targetAmmo.haveWarHead;
-        cloneAmmo.ammoWarHead = targetAmmo.ammoWarHead;
-        cloneAmmo.countParticle = targetAmmo.countParticle;
-        cloneAmmo.speedParticle = targetAmmo.speedParticle;
+        cloneAmmo.additionalName = new String(additionalName);
+        cloneAmmo.radius = radius;
+        cloneAmmo.material = material;
+        cloneAmmo.forceTraction = forceTraction;
+        cloneAmmo.impulseToDestruction = impulseToDestruction;
+        cloneAmmo.impulseToDetonate = impulseToDetonate;
+        cloneAmmo.timeToDetonate = (timeToDetonate) + Global.random.nextInt((int) (timeToDetonate / 10f));
+        cloneAmmo.airResistant = airResistant;
+        cloneAmmo.haveTimer = haveTimer;
+        cloneAmmo.haveForceTraction = haveForceTraction;
+        cloneAmmo.haveImpulseDetonator = haveImpulseDetonator;
+        cloneAmmo.color = color;
+        cloneAmmo.haveWarHead = haveWarHead;
+        cloneAmmo.ammoWarHead = ammoWarHead;
+        cloneAmmo.countParticle = countParticle;
+        cloneAmmo.speedParticle = speedParticle;
         return cloneAmmo;
     }
 }

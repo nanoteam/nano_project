@@ -9,10 +9,10 @@ import org.lwjgl.util.vector.Vector2f;
  * 
  */
 
-public abstract class ArsenalGameObject extends GameObjectMoving {
+public abstract class ArsenalGameObject extends GamePhysicObject {
 
 	// the arsenalObject is situated on fatherObj
-	protected GameObjectMoving fatherObj;
+	protected GamePhysicObject fatherObj;
 	// is shooting
 	protected boolean onShootPrimary = false;
 	protected boolean onShootAlternative = false;

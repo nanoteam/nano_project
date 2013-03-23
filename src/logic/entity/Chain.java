@@ -6,8 +6,6 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
-import physic.Material;
-import physic.PhysicObject;
 import render.RenderUtil;
 
 import java.util.ArrayList;
@@ -115,7 +113,7 @@ public class Chain extends GameObject {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    class ChainLink extends GameObjectMoving {
+    class ChainLink extends GamePhysicObject {
         private float lenght;
         private float width = 10;
         private float angle;

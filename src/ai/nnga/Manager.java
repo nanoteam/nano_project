@@ -1,6 +1,6 @@
 package ai.nnga;
 
-import logic.entity.GameObjectMoving;
+import logic.entity.GamePhysicObject;
 import logic.entity.ship.Ship;
 import main.Global;
 
@@ -42,10 +42,10 @@ public class Manager {
 
     private Training training;
 
-    public void getReaction(GameObjectMoving gameObjectMoving) {
-        if (gameObjectMoving.getClassName().equals(Ship.getClassName())) {
+    public void getReaction(GamePhysicObject gamePhysicObject) {
+        if (gamePhysicObject.getClassName().equals(Ship.getClassName())) {
             //get need information
-            float box[] = getReactionFlyShip((Ship) gameObjectMoving);
+            float box[] = getReactionFlyShip((Ship) gamePhysicObject);
 
             if (state == WORKING) {
                 box = nnShipFly.getActivity(box);
@@ -56,28 +56,28 @@ public class Manager {
                 if (levelChaos == Training.NO_CHAOS) {
                 } else {
                     /*if (levelChaos == Training.LOW_CHAOS) {
-                        ((Ship) gameObjectMoving).addChaosInMovement();
+                        ((Ship) gamePhysicObject).addChaosInMovement();
                     }       */
                 }
             }
             /*
             if (box[0] > 0.3f) {
-                ((Ship) gameObjectMoving).doAction(InputToAction.leftEngineLeft);
+                ((Ship) gamePhysicObject).doAction(InputToAction.leftEngineLeft);
             }
             if (box[0] < -0.3f) {
-                ((Ship) gameObjectMoving).doAction(InputToAction.leftEngineRight);
+                ((Ship) gamePhysicObject).doAction(InputToAction.leftEngineRight);
             }
             if (box[1] > 0f) {
-                ((Ship) gameObjectMoving).doAction(InputToAction.leftEngineOn);
+                ((Ship) gamePhysicObject).doAction(InputToAction.leftEngineOn);
             }
             if (box[2] > 0.3f) {
-                ((Ship) gameObjectMoving).doAction(InputToAction.rightEngineLeft);
+                ((Ship) gamePhysicObject).doAction(InputToAction.rightEngineLeft);
             }
             if (box[2] < -0.3f) {
-                ((Ship) gameObjectMoving).doAction(InputToAction.rightEngineRight);
+                ((Ship) gamePhysicObject).doAction(InputToAction.rightEngineRight);
             }
             if (box[3] > 0f) {
-                ((Ship) gameObjectMoving).doAction(InputToAction.rightEngineOn);
+                ((Ship) gamePhysicObject).doAction(InputToAction.rightEngineOn);
             }                                                               */
         }
     }

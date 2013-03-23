@@ -12,10 +12,7 @@ import logic.entity.GameObject;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.dynamics.*;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.List;
@@ -25,10 +22,10 @@ public class PhysicObject {
     private Material material;
     private GameObject gameObject;
 
+    public static final int UNKNOW = -1;
     public static final int DINAMIC = 0;
     public static final int KINEMATIC = 1;
     public static final int STATIC = 2;
-
 
     private PhysicObject(GameObject gameObject, Body body, Material material) {
         this.body = body;
@@ -101,29 +98,27 @@ public class PhysicObject {
         body.setLinearDamping(linearDamping);
     }
 
-    public static PhysicObject createBall(GameObject gameObject,
-                                          Vector2f position, float radius, Material material, int typeObject) {
+    public static PhysicObject createBall(GameObject gameObject, Vector2f position, float radius, Material material, int typeBody, World world) {
 
         BodyDef objectDef = new BodyDef();
         objectDef.position.set(new Vec2(position.x / 30f, position.y / 30f));
 
-        if (typeObject == DINAMIC) {
+        if (typeBody == DINAMIC) {
             objectDef.type = BodyType.DYNAMIC;
         } else {
-            if (typeObject == KINEMATIC) {
+            if (typeBody == KINEMATIC) {
                 objectDef.type = BodyType.KINEMATIC;
             } else {
-                if (typeObject == STATIC) {
+                if (typeBody == STATIC) {
                     objectDef.type = BodyType.STATIC;
                 }
             }
         }
 
-
         CircleShape objectShape = new CircleShape();
         objectShape.m_radius = radius / 30f;
 
-        Body body = gameObject.getLevel().getWorld().createBody(objectDef);
+        Body body = world.createBody(objectDef);
         body.m_userData = gameObject;
 
         FixtureDef objectFixture = new FixtureDef();
@@ -136,31 +131,27 @@ public class PhysicObject {
     }
 
     public static PhysicObject createBox(GameObject gameObject,
-                                         Vector2f position, float width, float height, float angle, Material material, int typeObject) {
+                                         Vector2f position, float width, float height, float angle, Material material, int typeBody, World world) {
 
         BodyDef objectDef = new BodyDef();
         objectDef.position.set(new Vec2(position.x / 30f, position.y / 30f));
-        if (typeObject == DINAMIC) {
+        if (typeBody == DINAMIC) {
             objectDef.type = BodyType.DYNAMIC;
         } else {
-            if (typeObject == KINEMATIC) {
+            if (typeBody == KINEMATIC) {
                 objectDef.type = BodyType.KINEMATIC;
             } else {
-                if (typeObject == STATIC) {
+                if (typeBody == STATIC) {
                     objectDef.type = BodyType.STATIC;
                 }
             }
         }
         objectDef.angle = angle;
         PolygonShape objectShape = new PolygonShape();
-
         objectShape.setAsBox(width / 30f / 2f, height / 30f / 2f);
         //objectShape.setAsBox(width / 30f / 2f, height / 30f / 2f, new Vec2(position.x / 30f, position.y / 30f), angle);
-
-        Body body = gameObject.getLevel().getWorld().createBody(objectDef);
-
+        Body body = world.createBody(objectDef);
         body.m_userData = gameObject;
-
         FixtureDef objectFixture = new FixtureDef();
         objectFixture.friction = material.friction;
         objectFixture.density = material.density;
@@ -170,17 +161,17 @@ public class PhysicObject {
         return new PhysicObject(gameObject, body, material);
     }
 
-    public static PhysicObject createPolygon(GameObject gameObject, Vector2f position, List<Vector2f> vertex, float angle, Material material, int typeObject) {
+    public static PhysicObject createPolygon(GameObject gameObject, Vector2f position, List<Vector2f> vertex, float angle, Material material, int typeBody, World world) {
 
         BodyDef objectDef = new BodyDef();
         objectDef.position.set(new Vec2(position.x / 30f, position.y / 30f));
-        if (typeObject == DINAMIC) {
+        if (typeBody == DINAMIC) {
             objectDef.type = BodyType.DYNAMIC;
         } else {
-            if (typeObject == KINEMATIC) {
+            if (typeBody == KINEMATIC) {
                 objectDef.type = BodyType.KINEMATIC;
             } else {
-                if (typeObject == STATIC) {
+                if (typeBody == STATIC) {
                     objectDef.type = BodyType.STATIC;
                 }
             }
@@ -193,9 +184,8 @@ public class PhysicObject {
         }
         objectShape.set(vec2List, vertex.size());
         //objectShape.setAsBox(width / 30f / 2f, height / 30f / 2f, new Vec2(position.x / 30f, position.y / 30f), angle);
-
-        Body body = gameObject.getLevel().getWorld().createBody(objectDef);
-
+        Body body = world.createBody(objectDef);
+        body.setTransform(objectDef.position,angle);
         body.m_userData = gameObject;
         FixtureDef objectFixture = new FixtureDef();
         objectFixture.friction = material.friction;
@@ -205,6 +195,4 @@ public class PhysicObject {
         body.createFixture(objectFixture);
         return new PhysicObject(gameObject, body, material);
     }
-
-
 }

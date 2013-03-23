@@ -1,14 +1,6 @@
 package logic.entity;
 
-import java.util.Random;
-
 import main.Global;
-import org.jbox2d.collision.shapes.MassData;
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -19,7 +11,7 @@ import render.RenderUtil;
 
 import logic.Level;
 
-public class Asteroid extends GameObjectMoving {
+public class Asteroid extends GamePhysicObject {
 
 	private float radius;
 	private int MAX_SPEED = 50;
@@ -34,7 +26,7 @@ public class Asteroid extends GameObjectMoving {
                 - Global.random.nextInt(MAX_SPEED * 2));
 
         this.physicObject = PhysicObject.createBall(this, position, radius,
-                Material.Stone,PhysicObject.DINAMIC);
+                Material.Stone,PhysicObject.DINAMIC,level.getWorld());
 
         physicObject.setSpeed(speed);
 	}
@@ -48,8 +40,7 @@ public class Asteroid extends GameObjectMoving {
 	public void move() {
 		position = physicObject.getPosition();
 		angle = physicObject.getAngle();
-		physicObject.applyForce(0,
-				-level.getGravity() * physicObject.getMass(), position);
+		physicObject.applyForce(-level.getGravity().x * physicObject.getMass(), -level.getGravity().y * physicObject.getMass(), position);
 	}
 
 	@Override

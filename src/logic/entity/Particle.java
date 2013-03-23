@@ -4,7 +4,7 @@ import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import render.RenderUtil;
 
-public class Particle extends GameObjectMoving {
+public class Particle extends GamePhysicObject {
 	private Color color;
 	private int lifeTime;
 	private float size;

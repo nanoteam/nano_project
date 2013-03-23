@@ -1,19 +1,16 @@
 package logic.entity.ship;
 
 import ai.nnga.Manager;
-import logic.entity.EmmiterEffects;
-import logic.entity.GameObjectMoving;
+import logic.entity.GamePhysicObject;
 import main.Global;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
-import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import physic.Material;
 import physic.PhysicObject;
-import render.RenderUtil;
 
-public class Engine extends GameObjectMoving {
+public class Engine extends GamePhysicObject {
 
     private final static float SPEED_PARTICLE_FROM_ENGINE = 200f;
     private final static float SPEED_PARTICLE_KOOF_RANDOM = 20f;
@@ -29,7 +26,7 @@ public class Engine extends GameObjectMoving {
         this.fatherObj = fatherObj;
         this.position = position;
         level = fatherObj.getLevel();
-        physicObject = PhysicObject.createBox(this, position, width, height,0,Material.Metal,PhysicObject.DINAMIC);
+        physicObject = PhysicObject.createBox(this, position, width, height,0,Material.Metal,PhysicObject.DINAMIC,level.getWorld());
         physicObject.getBody().setAngularDamping(50);
         liveHealth = 100;
         live = true;
@@ -99,7 +96,7 @@ public class Engine extends GameObjectMoving {
         // Vec2 pointOfForce = new Vec2(position.x / 30f, position.y / 30f);
         physicObject.applyForce(forceX, forceY, position);
         if (Global.realTime){
-            EmmiterEffects.drawParticlesFromEngine(position, angle+fatherObj.getAngle());
+            level.getEmitterEffects().drawParticlesFromEngine(position, angle + fatherObj.getAngle());
         }
     }
 

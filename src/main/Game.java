@@ -58,7 +58,7 @@ public class Game {
     // TODO add mechanizm creating level with parametrs from Client
     public Game(Client client) {
         this.player = new Player();
-        level = new Level(this);
+        level = Level.getLevel(this,"any");
 
         //level.testLevelStudyAI();
         level.testInitLevel();
@@ -176,43 +176,6 @@ public class Game {
                                     .doAction(InputToAction.fireAlternative);
                             break;
                         }
-
-                        /*
-                        case InputToAction.leftEngineLeft: {
-                            level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.leftEngineLeft);
-                            break;
-                        }
-
-                        case InputToAction.leftEngineRight: {
-                            level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.leftEngineRight);
-                            break;
-                        }
-                        case InputToAction.rightEngineLeft: {
-                            level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.leftEngineLeft);
-                            break;
-                        }
-
-                        case InputToAction.rightEngineRight: {
-                            level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.leftEngineRight);
-                            break;
-                        }
-
-                        case InputToAction.leftEngineOn: {
-                            level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.leftEngineOn);
-                            break;
-                        }
-
-                        case InputToAction.rightEngineOn: {
-                            level.getPlayer().getControlledObject()
-                                    .doAction(InputToAction.rightEngineOn);
-                            break;
-                        }
-                        */
 
                         case InputToAction.zoomIn: {
                             render.setZoom((float) (render.getZoom() + 0.05));
