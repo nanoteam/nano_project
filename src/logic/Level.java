@@ -72,11 +72,6 @@ public class Level {
 
     // this is method for running game in test mode
     public void testInitLevel() {
-        Ship ship = new Ship(this, 200, 200);
-
-        gameObjects.add(ship);
-        game.getPlayer().setControlledObject(ship);
-
         ///Ship ship2 = new Ship(this, 500f, 500f);
         //Bot bot = new Bot(ship2);
         //gameObjects.add(ship2);
@@ -96,43 +91,43 @@ public class Level {
         Wall downWall = new Wall(3200, 0, 0, 0, 10, this);
         gameObjects.add(downWall);
 
-         /*
-        //level
-        gameObjects.add(new Wall(226, 886, 372, 1269, 20, this));
-        gameObjects.add(new Wall(259, 1476, 652, 1617, 20, this));
-        gameObjects.add(new Wall(1096, 1748, 1430, 1612, 20, this));
-        gameObjects.add(new Wall(1609, 1503, 1861, 1239, 20, this));
-        gameObjects.add(new Wall(1380, 1309, 1133, 1231, 20, this));
-        gameObjects.add(new Wall(992, 1166, 851, 954, 20, this));
-        gameObjects.add(new Wall(798, 770, 906, 549, 20, this));
-        gameObjects.add(new Wall(1085, 408, 1360, 413, 20, this));
-        gameObjects.add(new Wall(1392, 619, 1312, 795, 20, this));
+        /*
+       //level
+       gameObjects.add(new Wall(226, 886, 372, 1269, 20, this));
+       gameObjects.add(new Wall(259, 1476, 652, 1617, 20, this));
+       gameObjects.add(new Wall(1096, 1748, 1430, 1612, 20, this));
+       gameObjects.add(new Wall(1609, 1503, 1861, 1239, 20, this));
+       gameObjects.add(new Wall(1380, 1309, 1133, 1231, 20, this));
+       gameObjects.add(new Wall(992, 1166, 851, 954, 20, this));
+       gameObjects.add(new Wall(798, 770, 906, 549, 20, this));
+       gameObjects.add(new Wall(1085, 408, 1360, 413, 20, this));
+       gameObjects.add(new Wall(1392, 619, 1312, 795, 20, this));
 
-        gameObjects.add(new Wall(1340, 901, 1546, 1010, 20, this));
-        gameObjects.add(new Wall(1675, 994, 1793, 899, 20, this));
-        gameObjects.add(new Wall(1607, 571, 1823, 687, 20, this));
-        gameObjects.add(new Wall(1924, 808, 1947, 1075, 20, this));
-        gameObjects.add(new Wall(2035, 138, 2277, 397, 20, this));
-        gameObjects.add(new Wall(2375, 564, 2556, 836, 20, this));
-        gameObjects.add(new Wall(2662, 1068, 2755, 1362, 20, this));
-        gameObjects.add(new Wall(2579, 75, 2798, 292, 20, this));
-        gameObjects.add(new Wall(2843, 559, 3022, 858, 20, this));
+       gameObjects.add(new Wall(1340, 901, 1546, 1010, 20, this));
+       gameObjects.add(new Wall(1675, 994, 1793, 899, 20, this));
+       gameObjects.add(new Wall(1607, 571, 1823, 687, 20, this));
+       gameObjects.add(new Wall(1924, 808, 1947, 1075, 20, this));
+       gameObjects.add(new Wall(2035, 138, 2277, 397, 20, this));
+       gameObjects.add(new Wall(2375, 564, 2556, 836, 20, this));
+       gameObjects.add(new Wall(2662, 1068, 2755, 1362, 20, this));
+       gameObjects.add(new Wall(2579, 75, 2798, 292, 20, this));
+       gameObjects.add(new Wall(2843, 559, 3022, 858, 20, this));
 
-        gameObjects.add(new Wall(2994, 1244, 3032, 1569, 20, this));
-        gameObjects.add(new Wall(2362, 1234, 2493, 1420, 20, this));
-        gameObjects.add(new Wall(1619, 125, 1416, 345, 20, this));
+       gameObjects.add(new Wall(2994, 1244, 3032, 1569, 20, this));
+       gameObjects.add(new Wall(2362, 1234, 2493, 1420, 20, this));
+       gameObjects.add(new Wall(1619, 125, 1416, 345, 20, this));
 
 
-        gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
-        gameObjects.add(new Asteroid(this, new Vector2f(550f, 300f)));
-        gameObjects.add(new Asteroid(this, new Vector2f(600f, 300f)));
-        gameObjects.add(new Asteroid(this, new Vector2f(650f, 300f)));
-        gameObjects.add(new Asteroid(this, new Vector2f(700f, 300f)));
-        gameObjects.add(new Asteroid(this, new Vector2f(750f, 300f)));
-        gameObjects.add(new Asteroid(this, new Vector2f(800f, 300f)));
-        gameObjects.add(new Asteroid(this, new Vector2f(850f, 300f)));
+       gameObjects.add(new Asteroid(this, new Vector2f(400f, 300f)));
+       gameObjects.add(new Asteroid(this, new Vector2f(550f, 300f)));
+       gameObjects.add(new Asteroid(this, new Vector2f(600f, 300f)));
+       gameObjects.add(new Asteroid(this, new Vector2f(650f, 300f)));
+       gameObjects.add(new Asteroid(this, new Vector2f(700f, 300f)));
+       gameObjects.add(new Asteroid(this, new Vector2f(750f, 300f)));
+       gameObjects.add(new Asteroid(this, new Vector2f(800f, 300f)));
+       gameObjects.add(new Asteroid(this, new Vector2f(850f, 300f)));
 
-         */
+        */
         //gameObjects.add(new Polygon(this, new Vector2f(300, 300)));
 
         // gameObjects.add(new Wall(this, 700, 100, 20, 200));
@@ -507,6 +502,95 @@ public class Level {
                     Circle circle = new Circle(circlePosition, radius, angle, typeObject, color);
                     level.gameObjects.add(circle);
 
+                    continue;
+                }
+
+                //asteroid
+                if (sheetParseLevelObject.getName().equals("Asteroid")) {
+                    //basic position
+                    if (sheetParseLevelObject.findSheetParseByName("x") != null) {
+                        x = Integer.parseInt(sheetParseLevelObject.findSheetParseByName("x").getValue());
+                    } else {
+                        continue;
+                    }
+                    if (sheetParseLevelObject.findSheetParseByName("y") != null) {
+                        y = Integer.parseInt(sheetParseLevelObject.findSheetParseByName("y").getValue());
+                    } else {
+                        continue;
+                    }
+
+                    Vector2f circlePosition = new Vector2f(x, y);
+
+                    float angle;
+
+                    if (sheetParseLevelObject.findSheetParseByName("Angle") != null) {
+                        angle = Float.parseFloat(sheetParseLevelObject.findSheetParseByName("Angle").getValue());
+                    } else {
+                        continue;
+                    }
+
+                    float radius;
+                    if (sheetParseLevelObject.findSheetParseByName("Radius") != null) {
+                        radius = Float.parseFloat(sheetParseLevelObject.findSheetParseByName("Radius").getValue());
+                    } else {
+                        continue;
+                    }
+
+                    int typeObject = PhysicObject.DINAMIC;
+
+                    SheetParse colorParse = sheetParseLevelObject.findSheetParseByName("Color");
+                    Color color = null;
+                    //thera are color config in file
+                    if (colorParse != null) {
+                        //if color consistf of r,g,b
+                        if (colorParse.isComplex()) {
+                            int r, g, b;
+                            if (colorParse.findSheetParseByName("Red") != null) {
+                                r = Integer.parseInt(colorParse.findSheetParseByName("Red").getValue());
+                            } else {
+                                r = (byte) 255;
+                            }
+                            if (colorParse.findSheetParseByName("Green") != null) {
+                                g = Integer.parseInt(colorParse.findSheetParseByName("Green").getValue());
+                            } else {
+                                g = (byte) 255;
+                            }
+                            if (colorParse.findSheetParseByName("Blue") != null) {
+                                b = Integer.parseInt(colorParse.findSheetParseByName("Blue").getValue());
+                            } else {
+                                b = (byte) 255;
+                            }
+                            color = new Color(r, g, b);
+                        } else {
+                            //todo
+                        }
+                    } else {
+                        color = (Color) Color.BLUE;
+                    }
+
+                    Asteroid asteroid = new Asteroid(circlePosition, radius, angle, typeObject, color);
+                    level.gameObjects.add(asteroid);
+
+                    continue;
+                }
+                //ship
+                if (sheetParseLevelObject.getName().equals("ShipPlayer1")) {
+                    //basic position
+                    if (sheetParseLevelObject.findSheetParseByName("x") != null) {
+                        x = Integer.parseInt(sheetParseLevelObject.findSheetParseByName("x").getValue());
+                    } else {
+                        System.out.println("Ship !parse default! x");
+                        x = 0;
+                    }
+                    if (sheetParseLevelObject.findSheetParseByName("y") != null) {
+                        y = Integer.parseInt(sheetParseLevelObject.findSheetParseByName("y").getValue());
+                    } else {
+                        System.out.println("Ship !parse default! y");
+                        y = 0;
+                    }
+                    Vector2f shipPosition = new Vector2f(x, y);
+                    Ship ship = new Ship(shipPosition);
+                    level.gameObjects.add(ship);
                     continue;
                 }
                 /*

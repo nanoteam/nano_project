@@ -11,9 +11,9 @@ import render.RenderUtil;
 
 public class Circle extends GamePhysicObject implements IsClonable, MorfingCreation {
 
-    private float radius;
-    private Color color;
-    private int typeBody = PhysicObject.UNKNOW;
+    protected float radius;
+    protected Color color;
+    protected int typeBody = PhysicObject.UNKNOW;
 
     //two phase creation
     public Circle(Vector2f position, float radius, float angle, int typeObject, Color color) {
@@ -26,14 +26,9 @@ public class Circle extends GamePhysicObject implements IsClonable, MorfingCreat
 
     //easy creation
     public Circle(Vector2f position, float radius, float angle, int typeObject, Color color, Level level) {
-        this.position = position;
-        this.radius = radius;
-        this.angle = angle;
-        this.typeBody = typeObject;
-        this.color = color;
+        this(position, radius, angle, typeObject, color);
         initInPhysicWorld(level);
     }
-
 
     private Circle() {
 

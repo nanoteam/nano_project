@@ -3,7 +3,6 @@ package logic.entity.ship;
 import logic.Level;
 import logic.entity.GamePhysicObject;
 import logic.entity.entityInterface.IsClonable;
-import logic.entity.entityInterface.MorfingCreation;
 import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
@@ -145,6 +144,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
             ammo.radius = 50;
             System.out.println("Ammo !parse default! Radius");
         }
+
         //this is etalon obj, and not need to create pbj in phus world
         if (mainConfig.findSheetParseByName("Material") != null) {
             ammo.material = Material.valueOf(mainConfig.findSheetParseByName("Material").getValue());
@@ -289,7 +289,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
         Ammo cloneAmmo = ammo.clone();
         //adding info actual game
         cloneAmmo.level = level;
-        cloneAmmo.physicObject = PhysicObject.createBall(cloneAmmo, position, cloneAmmo.radius, cloneAmmo.material, PhysicObject.DINAMIC,level.getWorld());
+        cloneAmmo.physicObject = PhysicObject.createBall(cloneAmmo, position, cloneAmmo.radius, cloneAmmo.material, PhysicObject.DINAMIC, level.getWorld());
         cloneAmmo.physicObject.setPosition(position);
         cloneAmmo.position = position;
         cloneAmmo.physicObject.setSpeed(speed);

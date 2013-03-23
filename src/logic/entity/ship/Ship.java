@@ -6,13 +6,15 @@ import controller.InputToAction;
 import logic.Level;
 import logic.entity.ArsenalGameObject;
 import logic.entity.GamePhysicObject;
+import logic.entity.entityInterface.IsClonable;
+import logic.entity.entityInterface.MorfingCreation;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import physic.Material;
 import physic.PhysicObject;
 import render.RenderUtil;
 
-public class Ship extends GamePhysicObject implements ControlledEntity {
+public class Ship extends GamePhysicObject implements ControlledEntity, MorfingCreation,IsClonable{
     private float width, height;
     private float radiusBody = 25;
     private float protection = 0.1f;
@@ -38,22 +40,37 @@ public class Ship extends GamePhysicObject implements ControlledEntity {
         className = "Ship";
     }
 
-    public Ship(Level level, float x, float y) {
+    public Ship(Vector2f position) {
+        this.position = new Vector2f(position);
+    }
+
+    public Ship(Level level, Vector2f position) {
+        this(position);
+        initInPhysicWorld(level);
+    }
+
+    private Ship(){
+
+    }
+
+    public void initInPhysicWorld(Level level) {
         this.level = level;
-        position = new Vector2f(x, y);
-        speed = new Vector2f(0, 0);
-        /*width = 100f;
-        height = 40f;            */
+        this.speed = new Vector2f(0,0);
         liveHealth = 10000000;
         physicObject = PhysicObject.createBall(this, position, radiusBody,
-                Material.Metal,PhysicObject.DINAMIC,level.getWorld());
+                Material.Metal, PhysicObject.DINAMIC, level.getWorld());
         physicObject.setAngularDamping(0.1f);
         physicObject.setLinearDamping(0.01f);
         mainEngine = new Engine(this, new Vector2f(position.x, position.y));
         mainWeapon = Weapon.getWeapon(this, "any");
-        level.getGameObjects().add(mainWeapon);
+        level.getNotAddedGameObjects().add(mainWeapon);
+        level.getPlayer().setControlledObject(this);
     }
-
+    public Ship clone(){
+        Ship ship = new Ship();
+        ship.position = new Vector2f(this.position.x,this.position.y);
+        return ship;
+    }
 
     @Override
     public void update() {
@@ -205,6 +222,7 @@ public class Ship extends GamePhysicObject implements ControlledEntity {
                 result += f;
             liveHealth -= result * (1 - protection);
         }
-
     }
+
+
 }

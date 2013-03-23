@@ -3,7 +3,6 @@ package logic.entity.ship;
 import logic.entity.ArsenalGameObject;
 import logic.entity.GamePhysicObject;
 import logic.entity.entityInterface.IsClonable;
-import logic.entity.entityInterface.MorfingCreation;
 import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
@@ -39,149 +38,21 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
 
                 Vector2f shell_position = new Vector2f(position.x +
                         MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle), position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle));
-                float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / 100f);
                 Ammo ammo;
-
-
-                //optimization - style
-
-                {
-                    switch (countAmmoPrimaryPerShoot) {
-                        case 1: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        case 2: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        case 3: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        case 4: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        case 5: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        default: {
-                            for (int i = 0; i < countAmmoPrimaryPerShoot; i++) {
-                                Vector2f shell_speed_vector =
-                                        new Vector2f(
-                                                (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                                (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                                ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoPrimary);
-                                ammo.getPhysicObject().setAngle(angle);
-                                level.getNotAddedGameObjects().add(ammo);
-                            }
-
-                        }
-                    }
-
+                for (int i = 0; i < countAmmoPrimaryPerShoot; i++) {
+                    //hack new Vector2f(0,0) - Artiom
+                    ammo = Ammo.getAmmo(shell_position, new Vector2f(0,0), level, nameAmmoPrimary);
+                    float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / ammo.getPhysicObject().getMass());
+                    Vector2f shell_speed_vector =
+                            new Vector2f(
+                                    (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
+                                    (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
+                    ammo.getPhysicObject().setSpeed(shell_speed_vector);
+                    ammo.getPhysicObject().setAngle(angle);
+                    level.getNotAddedGameObjects().add(ammo);
                 }
+
+
                 //RubberBall rubberBall = new RubberBall(shell_position, shell_speed_vector, level);
                 //action for game logic
                 reloadingTimerPrimary = reloadTimePrimary;
@@ -192,145 +63,23 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
             //id relaod complited
             if (reloadingTimerAlternative < 0) {
                 //create shoot
-                Ammo ammo;
+
                 Vector2f shell_position = new Vector2f(position.x +
                         MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle), position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle));
-                float shell_speed = (float) Math.sqrt(2 * kineticEnergyAlternative / (100f));
-                {
-                    switch (countAmmoAlternativePerShoot) {
-                        case 1: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        case 2: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        case 3: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        case 4: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        case 5: {
-                            Vector2f shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            shell_speed_vector =
-                                    new Vector2f(
-                                            (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                            (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                            ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                            ammo.getPhysicObject().setAngle(angle);
-                            level.getNotAddedGameObjects().add(ammo);
-                            break;
-                        }
-                        default: {
-                            for (int i = 0; i < countAmmoPrimaryPerShoot; i++) {
-                                Vector2f shell_speed_vector =
-                                        new Vector2f(
-                                                (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                                (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                                ammo = Ammo.getAmmo(shell_position, shell_speed_vector, level, nameAmmoAlternative);
-                                ammo.getPhysicObject().setAngle(angle);
-                                level.getNotAddedGameObjects().add(ammo);
-                            }
-                        }
-                    }
+                Ammo ammo;
+                for (int i = 0; i < countAmmoAlternativePerShoot; i++) {
+                    //hack new Vector2f(0,0) - Artiom
+                    ammo = Ammo.getAmmo(shell_position, new Vector2f(0,0), level, nameAmmoAlternative);
+                    float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / ammo.getPhysicObject().getMass());
+                    Vector2f shell_speed_vector =
+                            new Vector2f(
+                                    (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
+                                    (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
+                    ammo.getPhysicObject().setSpeed(shell_speed_vector);
+                    ammo.getPhysicObject().setAngle(angle);
+                    level.getNotAddedGameObjects().add(ammo);
                 }
+                //RubberBall rubberBall = new RubberBall(shell_position, shell_speed_vector, level);
                 //action for game logic
                 reloadingTimerAlternative = reloadTimeAlternative;
             }
