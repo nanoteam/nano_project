@@ -13,8 +13,9 @@ import org.lwjgl.util.vector.Vector2f;
 import physic.Material;
 import physic.PhysicObject;
 import render.RenderUtil;
+import util.MathUtil;
 
-public class Ship extends GamePhysicObject implements ControlledEntity, MorfingCreation,IsClonable{
+public class Ship extends GamePhysicObject implements ControlledEntity, MorfingCreation, IsClonable {
     private float width, height;
     private float radiusBody = 25;
     private float protection = 0.1f;
@@ -49,26 +50,27 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
         initInPhysicWorld(level);
     }
 
-    private Ship(){
+    private Ship() {
 
     }
 
     public void initInPhysicWorld(Level level) {
         this.level = level;
-        this.speed = new Vector2f(0,0);
+        this.speed = new Vector2f(0, 0);
         liveHealth = 10000000;
         physicObject = PhysicObject.createBall(this, position, radiusBody,
                 Material.Metal, PhysicObject.DINAMIC, level.getWorld());
-        physicObject.setAngularDamping(0.1f);
+        physicObject.setAngularDamping(0.5f);
         physicObject.setLinearDamping(0.01f);
         mainEngine = new Engine(this, new Vector2f(position.x, position.y));
         mainWeapon = Weapon.getWeapon(this, "any");
         level.getNotAddedGameObjects().add(mainWeapon);
         level.getPlayer().setControlledObject(this);
     }
-    public Ship clone(){
+
+    public Ship clone() {
         Ship ship = new Ship();
-        ship.position = new Vector2f(this.position.x,this.position.y);
+        ship.position = new Vector2f(this.position.x, this.position.y);
         return ship;
     }
 
@@ -131,6 +133,11 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
         /*RenderUtil.drawQaud(position.x, position.y, width, height, angle,
     (Color) Color.GREY);   */
         RenderUtil.drawCircle(position, radiusBody, 6, (Color) Color.RED);
+
+        /*
+        RenderUtil.drawLine(
+                new Vector2f(position.x + MathUtil.newXTurn(30, 0, angle), position.y + MathUtil.newYTurn(30, 0, angle)),
+                new Vector2f(position.x, position.y), 5, (Color) Color.WHITE);*/
         //RenderUtil.drawImage(position.x, position.y, width, height,angle,1,image);
     }
 

@@ -78,7 +78,7 @@ public class PhysicObject {
 
     public void applyForce(float forceX, float forceY, Vector2f point) {
         Vec2 force = new Vec2(forceX, forceY);
-        Vec2 pointOfForce = new Vec2(point.x / 30f, point.x / 30f);
+        Vec2 pointOfForce = new Vec2(point.x / 30f, point.y / 30f);
         body.applyForce(force, pointOfForce);
     }
 

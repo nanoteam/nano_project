@@ -71,7 +71,10 @@ public class Ammo extends GamePhysicObject implements IsClonable {
             float forceX = (float) (Math.cos(angle) * forceTraction);
             float forceY = (float) (Math.sin(angle) * forceTraction);
             physicObject.applyForce(forceX, forceY, new Vector2f(position));
+            //apply force more realistic
+            //physicObject.applyForce(forceX, forceY,  new Vector2f(position.x + MathUtil.newXTurn(-radius, 0, angle), position.y + MathUtil.newYTurn(-radius, 0, angle)));
         }
+
     }
 
     @Override
@@ -122,6 +125,10 @@ public class Ammo extends GamePhysicObject implements IsClonable {
         }
         //level.getNotAddedGameObjects().add(new Explosion(level, position, 1, 1));
 
+    }
+
+    public float getRadius(){
+        return radius;
     }
 
     //warning! In case Ammo there are ierarxail seriziable,

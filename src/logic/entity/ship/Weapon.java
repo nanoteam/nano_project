@@ -36,18 +36,20 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
             if (reloadingTimerPrimary < 0) {
                 //create shoot
 
-                Vector2f shell_position = new Vector2f(position.x +
-                        MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle), position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle));
                 Ammo ammo;
                 for (int i = 0; i < countAmmoPrimaryPerShoot; i++) {
                     //hack new Vector2f(0,0) - Artiom
-                    ammo = Ammo.getAmmo(shell_position, new Vector2f(0,0), level, nameAmmoPrimary);
+                    ammo = Ammo.getAmmo(new Vector2f(0, 0), new Vector2f(0, 0), level, nameAmmoPrimary);
                     float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / ammo.getPhysicObject().getMass());
                     Vector2f shell_speed_vector =
                             new Vector2f(
                                     (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
                                     (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
+                    Vector2f shell_position = new Vector2f(position.x +
+                            MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON + ammo.getRadius(), 0, angle),
+                            position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON + ammo.getRadius(), 0, angle));
                     ammo.getPhysicObject().setSpeed(shell_speed_vector);
+                    ammo.getPhysicObject().setPosition(shell_position);
                     ammo.getPhysicObject().setAngle(angle);
                     level.getNotAddedGameObjects().add(ammo);
                 }
@@ -69,7 +71,7 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
                 Ammo ammo;
                 for (int i = 0; i < countAmmoAlternativePerShoot; i++) {
                     //hack new Vector2f(0,0) - Artiom
-                    ammo = Ammo.getAmmo(shell_position, new Vector2f(0,0), level, nameAmmoAlternative);
+                    ammo = Ammo.getAmmo(shell_position, new Vector2f(0, 0), level, nameAmmoAlternative);
                     float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / ammo.getPhysicObject().getMass());
                     Vector2f shell_speed_vector =
                             new Vector2f(
