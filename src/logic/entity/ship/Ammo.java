@@ -30,16 +30,16 @@ public class Ammo extends GamePhysicObject implements IsClonable {
     private float forceTraction;
     // <0 - nothing
     private float airResistant;
-
+    //0.5 - no gravity, 1 - anti gravity, [0..1]
+    private float percentageAntiMass = 0;
     private boolean haveTimer = false;
     private boolean haveImpulseDetonator = false;
     private boolean haveForceTraction = false;
-
     private boolean haveWarHead = false;
+    private boolean haveAntiMass = false;
     private String ammoWarHead;
     private int countParticle;
     private int speedParticle;
-
     private Color color;
     private Material material;
 
@@ -54,7 +54,6 @@ public class Ammo extends GamePhysicObject implements IsClonable {
             if (timeToDetonate < 0) {
                 live = false;
                 physicObject.getBody().setActive(false);
-
             }
         }
         if (haveImpulseDetonator) {
@@ -74,6 +73,11 @@ public class Ammo extends GamePhysicObject implements IsClonable {
             //apply force more realistic
             //physicObject.applyForce(forceX, forceY,  new Vector2f(position.x + MathUtil.newXTurn(-radius, 0, angle), position.y + MathUtil.newYTurn(-radius, 0, angle)));
         }
+
+        if (haveAntiMass) {
+            physicObject.applyForce(-physicObject.getMass() * level.getGravity().x * percentageAntiMass*2, -physicObject.getMass() * level.getGravity().y * percentageAntiMass*2, new Vector2f(position));
+        }
+
 
     }
 
@@ -127,7 +131,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
 
     }
 
-    public float getRadius(){
+    public float getRadius() {
         return radius;
     }
 
@@ -150,6 +154,17 @@ public class Ammo extends GamePhysicObject implements IsClonable {
         } else {
             ammo.radius = 50;
             System.out.println("Ammo !parse default! Radius");
+        }
+
+        if (mainConfig.findSheetParseByName("PercentageAntiMass") != null) {
+            ammo.percentageAntiMass = Float.parseFloat(mainConfig.findSheetParseByName("PercentageAntiMass").getValue());
+            if (ammo.percentageAntiMass > 0) {
+                ammo.haveAntiMass = true;
+            }
+        } else {
+            ammo.percentageAntiMass = 0;
+            ammo.haveAntiMass = false;
+            System.out.println("Ammo !parse default! PercentageAntiMass");
         }
 
         //this is etalon obj, and not need to create pbj in phus world
@@ -311,6 +326,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
         cloneAmmo.radius = radius;
         cloneAmmo.material = material;
         cloneAmmo.forceTraction = forceTraction;
+        cloneAmmo.percentageAntiMass = percentageAntiMass;
         cloneAmmo.impulseToDestruction = impulseToDestruction;
         cloneAmmo.impulseToDetonate = impulseToDetonate;
         cloneAmmo.timeToDetonate = (timeToDetonate) + Global.random.nextInt((int) (timeToDetonate / 10f));
@@ -318,6 +334,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
         cloneAmmo.haveTimer = haveTimer;
         cloneAmmo.haveForceTraction = haveForceTraction;
         cloneAmmo.haveImpulseDetonator = haveImpulseDetonator;
+        cloneAmmo.haveAntiMass = haveAntiMass;
         cloneAmmo.color = color;
         cloneAmmo.haveWarHead = haveWarHead;
         cloneAmmo.ammoWarHead = ammoWarHead;
