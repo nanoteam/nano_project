@@ -185,6 +185,8 @@ public class Game {
                             render.setZoom((float) (render.getZoom() - 0.05));
                             break;
                         }
+
+
                     }
                 }
 

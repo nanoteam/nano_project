@@ -79,18 +79,21 @@ public class Level {
 
 
         //border
-        Wall leftWall = new Wall(0, 0, 0, 1800, 10, this);
+        Wall leftWall = new Wall(0, 0, 0, heightLevel, 10, this);
         gameObjects.add(leftWall);
 
-        Wall upWall = new Wall(0, 1800, 3200, 1800, 10, this);
+        Wall upWall = new Wall(0, heightLevel, widthLevel,heightLevel , 10, this);
         gameObjects.add(upWall);
 
-        Wall righWall = new Wall(3200, 1800, 3200, 0, 10, this);
+        Wall righWall = new Wall(widthLevel, heightLevel, widthLevel, 0, 10, this);
         gameObjects.add(righWall);
 
-        Wall downWall = new Wall(3200, 0, 0, 0, 10, this);
+        Wall downWall = new Wall(widthLevel, 0, 0, 0, 10, this);
         gameObjects.add(downWall);
 
+
+        BlackHole blackHole = new BlackHole(this, new Vector2f(1800, 1800), 400, 3);
+        gameObjects.add(blackHole);
         /*
        //level
        gameObjects.add(new Wall(226, 886, 372, 1269, 20, this));
@@ -311,20 +314,6 @@ public class Level {
             List<SheetParse> listSheetParse = sheetParseLevelObjects.getSheets();
             for (SheetParse sheetParseLevelObject : listSheetParse) {
                 if (sheetParseLevelObject.getName().equals("Polygon")) {
-                    //basic position
-                    if (sheetParseLevelObject.findSheetParseByName("x") != null) {
-                        x = Integer.parseInt(sheetParseLevelObject.findSheetParseByName("x").getValue());
-                    } else {
-                        continue;
-                    }
-                    if (sheetParseLevelObject.findSheetParseByName("y") != null) {
-                        y = Integer.parseInt(sheetParseLevelObject.findSheetParseByName("y").getValue());
-                    } else {
-                        continue;
-                    }
-
-
-                    Vector2f poligonPosition = new Vector2f(x, y);
                     //vertex
                     int numberX = 1;
                     int numberY = 1;
@@ -355,6 +344,21 @@ public class Level {
                     }
                     if ((numberX > 8) || (numberX < 3)) {
                         continue;
+                    }
+
+                    //normalize
+
+                    float Xc = 0, Yc = 0;
+
+                    for (Vector2f vector2f : listVertex) {
+                        Xc += vector2f.x;
+                        Yc += vector2f.y;
+                    }
+                    Xc /= listVertex.size();
+                    Yc /= listVertex.size();
+                    for (Vector2f vector2f : listVertex) {
+                        vector2f.x = vector2f.x - Xc;
+                        vector2f.y = vector2f.y - Yc;
                     }
 
                     float angle;
@@ -415,7 +419,7 @@ public class Level {
                     }
 
 
-                    Polygon polygon = new Polygon(poligonPosition, angle, listVertex, typeObject, color);
+                    Polygon polygon = new Polygon(new Vector2f(Xc, Yc), angle, listVertex, typeObject, color);
                     level.gameObjects.add(polygon);
                     continue;
                 }
