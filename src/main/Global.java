@@ -17,4 +17,6 @@ public class Global {
     public static Random random = new Random();
     public static boolean realTime = true;
     public static boolean studyOn = false;
+    
+    public static boolean shipHaveAllWeapon = true;
 }

@@ -10,8 +10,7 @@ import render.RenderUtil;
 import resourses.configuration.SheetParse;
 import util.MathUtil;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Weapon extends ArsenalGameObject implements IsClonable {
     private final static int LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON = 5;
@@ -310,6 +309,16 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
         cloneWeapon.addToGameObject(gamePhysicObject);
         return cloneWeapon;
     }
+
+    public static List<Weapon> getAllWeapon(GamePhysicObject gamePhysicObject) {
+        Set<String> nameWeapons = libraryWeapon.keySet();
+        List<Weapon> listWeapon = new ArrayList<Weapon>();
+        for (String nameWeapon : nameWeapons) {
+            listWeapon.add(getWeapon(gamePhysicObject,nameWeapon));
+        }
+        return listWeapon;
+    }
+
 
     //copy all field nead
     public Weapon clone() {

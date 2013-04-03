@@ -130,7 +130,7 @@ public class Level {
        gameObjects.add(new Asteroid(this, new Vector2f(800f, 300f)));
        gameObjects.add(new Asteroid(this, new Vector2f(850f, 300f)));
 
-        */
+
         //gameObjects.add(new Polygon(this, new Vector2f(300, 300)));
 
         // gameObjects.add(new Wall(this, 700, 100, 20, 200));

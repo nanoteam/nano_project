@@ -83,7 +83,7 @@ public class CollisionListener implements ContactListener {
                 ((Ship) bodyB).damage(impulses);
 
             }
-            if (nameA.equals("Wall") || nameB.equals("Wall")) {
+            if (nameA.equals("Polygon") || nameB.equals("Polygon")) {
                 // TODO nono, not good
                 float maxF = 0;
                 for (float f : impulses)

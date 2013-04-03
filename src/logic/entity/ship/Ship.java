@@ -4,16 +4,18 @@ import ai.ControlledEntity;
 import ai.nnga.Manager;
 import controller.InputToAction;
 import logic.Level;
-import logic.entity.ArsenalGameObject;
 import logic.entity.GamePhysicObject;
 import logic.entity.entityInterface.IsClonable;
 import logic.entity.entityInterface.MorfingCreation;
+import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
 import physic.Material;
 import physic.PhysicObject;
 import render.RenderUtil;
-import util.MathUtil;
+
+import java.util.ArrayDeque;
+import java.util.LinkedList;
 
 public class Ship extends GamePhysicObject implements ControlledEntity, MorfingCreation, IsClonable {
     private float width, height;
@@ -21,7 +23,7 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
     private float protection = 0.1f;
 
     private Engine mainEngine;
-    private ArsenalGameObject mainWeapon;
+    private LinkedList<Weapon> listWeapon;
 
     private boolean left = false;
     private boolean right = false;
@@ -34,6 +36,8 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
     private boolean speciality = false;
 
     private boolean stateAutopilot = true;
+
+    private int rotateListWeapon = 0;
 
 
     /*private static Image image;*/
@@ -63,8 +67,16 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
         physicObject.setAngularDamping(0.5f);
         physicObject.setLinearDamping(0.01f);
         mainEngine = new Engine(this, new Vector2f(position.x, position.y));
-        mainWeapon = Weapon.getWeapon(this, "any");
-        level.getNotAddedGameObjects().add(mainWeapon);
+        if (Global.shipHaveAllWeapon) {
+            listWeapon = new LinkedList<Weapon>(Weapon.getAllWeapon(this));
+            for (Weapon weapon : listWeapon) {
+                level.getNotAddedGameObjects().add(weapon);
+            }
+        } else {
+            listWeapon = new LinkedList<Weapon>();
+            listWeapon.add(Weapon.getWeapon(this, "any"));
+            level.getNotAddedGameObjects().add(listWeapon.element());
+        }
         level.getPlayer().setControlledObject(this);
     }
 
@@ -76,11 +88,19 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
 
     @Override
     public void update() {
+        if (rotateListWeapon>0){
+            listWeapon.addLast(listWeapon.pollFirst());
+        }
+
+        if (rotateListWeapon<0){
+            listWeapon.addFirst(listWeapon.pollLast());
+        }
+
         if (firePrimary) {
-            mainWeapon.firePrimary();
+            listWeapon.getFirst().firePrimary();
         }
         if (fireAlternative) {
-            mainWeapon.fireAlternative();
+            listWeapon.getFirst().fireAlternative();
         }
         if (speciality) {
 
@@ -147,7 +167,7 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
 
     @Override
     public void toThink() {
-        Manager.get().getReaction(this);
+        //Manager.get().getReaction(this);
     }
 
     @Override
@@ -185,6 +205,14 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
                 speciality = true;
                 break;
             }
+            case InputToAction.previousWeapon: {
+                rotateListWeapon = -1;
+                break;
+            }
+            case InputToAction.nextWeapon: {
+                rotateListWeapon = 1;
+                break;
+            }
         }
     }
 
@@ -200,6 +228,7 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
 
         speciality = false;
 
+        rotateListWeapon = 0;
     }
 
     @Override
@@ -207,8 +236,9 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
         //set live false all component
 
         mainEngine.setLive(false);
-        mainWeapon.setLive(false);
-
+        for (Weapon weapon : listWeapon) {
+            weapon.setLive(false);
+        }
         level.getPlayer().setControlledObject(null);
         physicObject.destroy();
         //EmitterEffects.drawBoom(position);

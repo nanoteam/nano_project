@@ -41,9 +41,6 @@ final class Keyboard implements Engine {
         //check keys, buffered
         org.lwjgl.input.Keyboard.poll();
 
-        //filling output list by events data
-        int count = org.lwjgl.input.Keyboard.getNumKeyboardEvents();
-
         while (org.lwjgl.input.Keyboard.next()) {
             StateKeyboard keyboardEvent = null;
             if (org.lwjgl.input.Keyboard.getEventKeyState()) {

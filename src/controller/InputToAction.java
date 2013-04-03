@@ -26,6 +26,9 @@ public final class InputToAction {
 
     public final static int specialAction = 6;
 
+
+    public final static int previousWeapon = 30;
+    public final static int nextWeapon = 31;
     //public final static int spec2 = 7;
 
     /*
@@ -100,6 +103,9 @@ public final class InputToAction {
         nameToAction.put("ZoomIn", new LightInteger(zoomIn));
         nameToAction.put("ZoomOut", new LightInteger(zoomOut));
         nameToAction.put("ZoomCenter", new LightInteger(zoomCenter));
+
+        nameToAction.put("PreviousWeapon", new LightInteger(previousWeapon));
+        nameToAction.put("NextWeapon", new LightInteger(nextWeapon));
     }
 
     public static InputToAction get() {

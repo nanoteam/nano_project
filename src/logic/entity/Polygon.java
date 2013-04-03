@@ -18,6 +18,9 @@ public class Polygon extends GamePhysicObject implements IsClonable, MorfingCrea
     private Color color;
     private int typeBody = PhysicObject.UNKNOW;
 
+	static {
+		className = "Polygon";
+	}
     //two phase creation
     public Polygon(Vector2f position, float angle, List<Vector2f> vertices, int typeObject, Color color) {
         this.position = position;

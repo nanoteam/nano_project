@@ -58,7 +58,7 @@ public class Game {
     // TODO add mechanizm creating level with parametrs from Client
     public Game(Client client) {
         this.player = new Player();
-        level = Level.getLevel(this,"any");
+        level = Level.getLevel(this, "any");
 
         //level.testLevelStudyAI();
         level.testInitLevel();
@@ -137,8 +137,6 @@ public class Game {
 
     public void sendStatesInput(List<StateKeyboard> eventsKeyboard, List<StateMouse> eventsMouses) {
         //keyboard event
-        //System.out.println(eventsKeyboard);
-
         if (eventsKeyboard != null && (!eventsKeyboard.isEmpty())) {
             for (StateKeyboard stateKeyboard : eventsKeyboard) {
                 if (stateKeyboard.state == StateKeyboard.DOWN || stateKeyboard.state == StateKeyboard.DOWN_PRESSED) {
@@ -197,6 +195,15 @@ public class Game {
                         case InputToAction.specialAction: {
                             level.getPlayer().getControlledObject()
                                     .doAction(InputToAction.specialAction);
+                            break;
+                        }
+                        case InputToAction.nextWeapon: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.nextWeapon);
+                            break;
+                        }case InputToAction.previousWeapon: {
+                            level.getPlayer().getControlledObject()
+                                    .doAction(InputToAction.previousWeapon);
                             break;
                         }
 
