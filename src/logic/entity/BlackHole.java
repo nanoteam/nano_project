@@ -7,6 +7,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
+import physic.PhysicObject;
 import render.RenderUtil;
 
 /**
@@ -30,11 +31,12 @@ public class BlackHole extends GameObject {
     public BlackHole(Level level, Vector2f position, final float distance, final float force) {
         this.level = level;
         this.position = position;
-        this.distance = distance / 30;
+        this.distance = distance / 30f;
         this.force = force;
         this.color = (Color) Color.GREY;
-        impulsePeriod = 20;
-         timeBeforeAction = impulsePeriod;
+        impulsePeriod = 2;
+        timeBeforeAction = impulsePeriod;
+        level.getNotAddedGameObjects().add(new Circle(new Vector2f(position),50,0, PhysicObject.STATIC,(Color)Color.DKGREY,level));
         // this.lifeTime = distance * 30;
 
     }
@@ -50,13 +52,14 @@ public class BlackHole extends GameObject {
     @Override
     public void move() {
 
-     }
+    }
 
     @Override
     public void draw() {
         RenderUtil.drawCircle(position, distance * 30, 4, color);
-        RenderUtil.drawCircle(position, distance * 20, 4, color);
-        RenderUtil.drawCircle(position, distance * 10, 4, color);
+
+        /*RenderUtil.drawCircle(position, distance * 20, 4, color);
+        RenderUtil.drawCircle(position, distance * 10, 4, color);*/
     }
 
     @Override
@@ -64,14 +67,13 @@ public class BlackHole extends GameObject {
 
     }
 
-     @Override
+    @Override
     public void destroy() {
 
     }
 
     @Override
     public void toThink() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void ringRound() {
@@ -85,24 +87,17 @@ public class BlackHole extends GameObject {
             @Override
             public boolean reportFixture(Fixture arg0) {
 
-                Vec2 fixturePosition = arg0.m_body.getWorldCenter();
+                Vec2 fixturePosition = arg0.m_body.getPosition();
 
                 float dx = fixturePosition.x - posit2.x;
                 float dy = fixturePosition.y - posit2.y;
-                float pr = 0.2f;
 
-                // must be refactoring
-                if (dx < pr && dx > 0)
-                    dx = pr;
-                if (dy < pr && dy > 0)
-                    dy = pr;
+                float Fo = - distance*50f / (dx*dx+dy*dy);
 
-                 if (dx > -pr && dx < 0)
-                    dx = -pr;
-                if (dy > -pr && dy < 0)
-                    dy = -pr;
+                float angle = (float) Math.atan2(dy,dx);
 
-                 Vec2 forceVec = new Vec2(-distance / dx, -distance / dy);
+                Vec2 forceVec = new Vec2((float) Math.cos(angle)*Fo, (float) Math.sin(angle)*Fo);
+
                 arg0.m_body.applyForce(forceVec.mul(force), fixturePosition);
 
                 return true;

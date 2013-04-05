@@ -92,7 +92,7 @@ public class Level {
         gameObjects.add(downWall);
 
 
-        BlackHole blackHole = new BlackHole(this, new Vector2f(1800, 1800), 400, 3);
+        BlackHole blackHole = new BlackHole(this, new Vector2f(1800, 1800), 400, 1);
         gameObjects.add(blackHole);
         /*
        //level
