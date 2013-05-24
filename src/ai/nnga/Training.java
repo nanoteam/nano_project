@@ -278,7 +278,6 @@ public class Training {
 
         if (stateTest == STATE_TEST_MEDIUM) {
             if (lifeTime % 200 == 0 && lifeTime > 199) {
-                //System.out.println("@");
                 levelOfChaos = LOW_CHAOS;
             }
         }

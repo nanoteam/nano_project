@@ -92,7 +92,8 @@ public class BlackHole extends GameObject {
                 float dx = fixturePosition.x - posit2.x;
                 float dy = fixturePosition.y - posit2.y;
 
-                float Fo = - distance*50f / (dx*dx+dy*dy);
+                //System.out.println(arg0.m_body.getMass());
+                float Fo = - distance*arg0.m_body.getMass()*100f / (dx*dx+dy*dy);
 
                 float angle = (float) Math.atan2(dy,dx);
 

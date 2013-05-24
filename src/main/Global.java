@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class Global {
     //Graphic
-    public static int RESOLUTION_X = 1600;
-    public static int RESOLUTION_Y = 900;
+    public static int DEFAULT_RESOLUTION_X = 640;
+    public static int DEFAULT_RESOLUTION_Y = 480;
     public static boolean FULLSCREEN = true;
     //fps render
     public static int FPS = 60;
