@@ -10,13 +10,13 @@ public class Global {
     //fps render
     public static int FPS = 60;
     //for jbox2d
-    public static float DT = 1f / (FPS/2f);
+    public static float DT = 1f / (FPS / 2f);
     //working entity by ai and command
     //if false, player send low level action to Entity
-    public static boolean commandOn = true;
+    public static boolean AI_ON = true;
     public static Random random = new Random();
     public static boolean realTime = true;
     public static boolean studyOn = false;
-    
+
     public static boolean shipHaveAllWeapon = true;
 }

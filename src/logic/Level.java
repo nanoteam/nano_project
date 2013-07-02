@@ -82,7 +82,7 @@ public class Level {
         Wall leftWall = new Wall(0, 0, 0, heightLevel, 10, this);
         gameObjects.add(leftWall);
 
-        Wall upWall = new Wall(0, heightLevel, widthLevel,heightLevel , 10, this);
+        Wall upWall = new Wall(0, heightLevel, widthLevel, heightLevel, 10, this);
         gameObjects.add(upWall);
 
         Wall righWall = new Wall(widthLevel, heightLevel, widthLevel, 0, 10, this);
@@ -594,9 +594,32 @@ public class Level {
                     }
                     Vector2f shipPosition = new Vector2f(x, y);
                     Ship ship = new Ship(shipPosition);
+                    ship.setControlledByPlayer(true);
                     level.gameObjects.add(ship);
                     continue;
                 }
+                if (sheetParseLevelObject.getName().equals("Ship")) {
+                    //basic position
+                    if (sheetParseLevelObject.findSheetParseByName("x") != null) {
+                        x = Integer.parseInt(sheetParseLevelObject.findSheetParseByName("x").getValue());
+                    } else {
+                        System
+                                .out.println("Ship !parse default! x");
+                        x = 0;
+                    }
+                    if (sheetParseLevelObject.findSheetParseByName("y") != null) {
+                        y = Integer.parseInt(sheetParseLevelObject.findSheetParseByName("y").getValue());
+                    } else {
+                        System.out.println("Ship !parse default! y");
+                        y = 0;
+                    }
+                    Vector2f shipPosition = new Vector2f(x, y);
+                    Ship ship = new Ship(shipPosition);
+                    level.gameObjects.add(ship);
+                    continue;
+                }
+
+
                 /*
        if (levelObject.getName().equals("Square")) {
 

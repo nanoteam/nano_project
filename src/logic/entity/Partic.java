@@ -16,7 +16,7 @@ public class Partic extends GamePhysicObject {
 		this.level = level;
 		this.position = pos;
 		this.speed = speed;
-		this.liveHealth = 100;
+		this.hp = 100;
 
         physicObject = PhysicObject
                 .createBall(this, position, 2, Material.Wood,PhysicObject.DINAMIC,level.getWorld());
@@ -24,8 +24,8 @@ public class Partic extends GamePhysicObject {
 
 	@Override
 	public void update() {
-		liveHealth--;
-		if (liveHealth < 0)
+		hp--;
+		if (hp < 0)
 			live = false;
 	}
 

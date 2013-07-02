@@ -21,7 +21,8 @@ abstract public class GameObject {
     protected Vector2f position;
     protected boolean live = true;
     protected Level level;
-    protected float liveHealth;
+    protected float maxHP;
+    protected float hp;
     public final long id;
     protected static long idGlobal = 0;
 
@@ -63,5 +64,13 @@ abstract public class GameObject {
 
     public static String getClassName() {
         return className;
+    }
+
+    public float getHp() {
+        return hp;
+    }
+
+    public float getMaxHP() {
+        return maxHP;
     }
 }

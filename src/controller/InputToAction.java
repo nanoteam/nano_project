@@ -29,6 +29,14 @@ public final class InputToAction {
 
     public final static int previousWeapon = 30;
     public final static int nextWeapon = 31;
+
+
+    //not use by player
+
+    public final static int rotateWeaponUp = 40;
+    public final static int rotateWeaponDown = 41;
+
+
     //public final static int spec2 = 7;
 
     /*

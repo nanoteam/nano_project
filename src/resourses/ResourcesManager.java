@@ -39,7 +39,7 @@ public class ResourcesManager {
             return null;
         }
     }
-    public static ResourcesManager geResourcesManager() {
+    public static ResourcesManager get() {
         if (null == resourcesManager) {
             resourcesManager = new ResourcesManager();
             return resourcesManager;

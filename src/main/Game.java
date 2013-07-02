@@ -64,7 +64,6 @@ public class Game {
         level.testInitLevel();
 
         this.client = client;
-        // this code is WTF, but I think, thats it is not important. code work)
         sound = client.getSound();
         render = client.getRender();
         physic = client.getPhysic();
@@ -72,10 +71,10 @@ public class Game {
         controller = client.getController();
         ai = client.getAI();
         // TODO repair this hint with object level and engines to normal code
-        logic.setLevel(level);
-        physic.setLevel(level);
         sound.setLevel(level);
         render.setLevel(level);
+        physic.setLevel(level);
+        logic.setLevel(level);
         ai.setLevel(level);
         inputToAction = client.getInputToAction();
     }

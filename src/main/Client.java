@@ -56,7 +56,7 @@ public final class Client {
         inputToAction = InputToAction.get();
         inputToAction.init(configsLibrary.getConfig(ConfigsLibrary.pathToSetting));
         //must call first, before entity with resources
-        resourcesManager = ResourcesManager.geResourcesManager();
+        resourcesManager = ResourcesManager.get();
         state = MAIN_MENU;
         // menu = new Menu();
         logic = new Logic(this);
@@ -72,9 +72,6 @@ public final class Client {
 
     }
 
-    /**
-     * Do any game-specific cleanup
-     */
     private void cleanup() {
         // TODO: save anything you want to disk here
         physic.cleanUp();
@@ -116,8 +113,8 @@ public final class Client {
     Controller getController() {
         return controller;
     }
-    
-    AI getAI(){
+
+    AI getAI() {
         return ai;
     }
 
@@ -139,6 +136,6 @@ public final class Client {
     // TODO add commands parametrs to start with there
     public static void main(String args[]) {
         Client client = new Client();
-    client.start();
+        client.start();
     }
 }

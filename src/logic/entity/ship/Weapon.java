@@ -1,5 +1,6 @@
 package logic.entity.ship;
 
+import ai.ControlledEntity;
 import logic.entity.ArsenalGameObject;
 import logic.entity.GamePhysicObject;
 import logic.entity.entityInterface.IsClonable;
@@ -96,7 +97,9 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
     public void move() {
         position = fatherObj.getPosition();
         Vector2f vector = level.getMousePosition();
-        angle = level.getAngleBetweenShipAndCursor();
+        if (level.getPlayer().getControlledObject() == fatherObj) {
+            angle = level.getAngleBetweenShipAndCursor();
+        }
     }
 
     @Override
@@ -314,7 +317,7 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
         Set<String> nameWeapons = libraryWeapon.keySet();
         List<Weapon> listWeapon = new ArrayList<Weapon>();
         for (String nameWeapon : nameWeapons) {
-            listWeapon.add(getWeapon(gamePhysicObject,nameWeapon));
+            listWeapon.add(getWeapon(gamePhysicObject, nameWeapon));
         }
         return listWeapon;
     }
@@ -354,6 +357,14 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
         this.position = gameObject.getPosition();
         this.fatherObj = gameObject;
         this.level = gameObject.getLevel();
+    }
+
+    public void rotateLeft() {
+        angle -= 0.1f;
+    }
+
+    public void rotateRight() {
+        angle += 0.1f;
     }
 
 }

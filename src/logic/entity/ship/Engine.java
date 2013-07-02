@@ -28,7 +28,7 @@ public class Engine extends GamePhysicObject {
         level = fatherObj.getLevel();
         physicObject = PhysicObject.createBox(this, position, width, height,0,Material.Metal,PhysicObject.DINAMIC,level.getWorld());
         physicObject.getBody().setAngularDamping(50);
-        liveHealth = 100;
+        hp = 100;
         live = true;
         angle = 0f;
 
@@ -50,7 +50,7 @@ public class Engine extends GamePhysicObject {
 
     @Override
     public void update() {
-        if (liveHealth < 0) {
+        if (hp < 0) {
             live = false;
             fatherObj.startDestroy();
         }
@@ -123,7 +123,7 @@ public class Engine extends GamePhysicObject {
 
     public void damage(float... impulses) {
         if (Manager.get().getState() == Manager.TRAINING) {
-            liveHealth = -1;
+            hp = -1;
         }
         //level.getPlayer().getControlledObject().doAction(InputToAction.death);
         //Manager.get().touchWall();

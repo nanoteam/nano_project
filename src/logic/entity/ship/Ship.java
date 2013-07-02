@@ -1,5 +1,6 @@
 package logic.entity.ship;
 
+import ai.BotShip;
 import ai.ControlledEntity;
 import ai.nnga.Manager;
 import controller.InputToAction;
@@ -14,31 +15,34 @@ import physic.Material;
 import physic.PhysicObject;
 import render.RenderUtil;
 
-import java.util.ArrayDeque;
 import java.util.LinkedList;
 
 public class Ship extends GamePhysicObject implements ControlledEntity, MorfingCreation, IsClonable {
+
+
+    //logic parametrs
     private float width, height;
     private float radiusBody = 25;
     private float protection = 0.1f;
-
+    private Color color;
+    //components
     private Engine mainEngine;
     private LinkedList<Weapon> listWeapon;
+    private int rotateListWeapon = 0;
 
+    //flags for actions
     private boolean left = false;
     private boolean right = false;
     private boolean up = false;
     private boolean down = false;
-
     private boolean firePrimary = false;
     private boolean fireAlternative = false;
-
     private boolean speciality = false;
-
     private boolean stateAutopilot = true;
 
-    private int rotateListWeapon = 0;
+    boolean controlledByPlayer = false;
 
+    private BotShip botShip;
 
     /*private static Image image;*/
     static {
@@ -61,7 +65,8 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
     public void initInPhysicWorld(Level level) {
         this.level = level;
         this.speed = new Vector2f(0, 0);
-        liveHealth = 10000000;
+        color = new Color(Color.RED);
+        maxHP = hp = 10000000;
         physicObject = PhysicObject.createBall(this, position, radiusBody,
                 Material.Metal, PhysicObject.DINAMIC, level.getWorld());
         physicObject.setAngularDamping(0.5f);
@@ -77,22 +82,27 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
             listWeapon.add(Weapon.getWeapon(this, "any"));
             level.getNotAddedGameObjects().add(listWeapon.element());
         }
-        level.getPlayer().setControlledObject(this);
+        if (controlledByPlayer) {
+            level.getPlayer().setControlledObject(this);
+        } else {
+            botShip = new BotShip(this);
+        }
     }
 
     public Ship clone() {
         Ship ship = new Ship();
         ship.position = new Vector2f(this.position.x, this.position.y);
+        ship.controlledByPlayer = controlledByPlayer;
         return ship;
     }
 
     @Override
     public void update() {
-        if (rotateListWeapon>0){
+        if (rotateListWeapon > 0) {
             listWeapon.addLast(listWeapon.pollFirst());
         }
 
-        if (rotateListWeapon<0){
+        if (rotateListWeapon < 0) {
             listWeapon.addFirst(listWeapon.pollLast());
         }
 
@@ -106,7 +116,7 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
 
         }
         clearFlags();
-        if (liveHealth < 0) {
+        if (hp < 0) {
             startDestroy();
         }
     }
@@ -114,7 +124,6 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
     @Override
     public void move() {
         if (stateAutopilot) {
-
             //autopilot
             if (up) {
                 physicObject.applyForce(0, mainEngine.getForce(), position);
@@ -152,7 +161,7 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
     public void draw() {
         /*RenderUtil.drawQaud(position.x, position.y, width, height, angle,
     (Color) Color.GREY);   */
-        RenderUtil.drawCircle(position, radiusBody, 6, (Color) Color.RED);
+        RenderUtil.drawCircle(position, radiusBody, 6, color);
 
         /*
         RenderUtil.drawLine(
@@ -167,6 +176,9 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
 
     @Override
     public void toThink() {
+        if (botShip != null) {
+            botShip.toThink();
+        }
         //Manager.get().getReaction(this);
     }
 
@@ -213,6 +225,14 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
                 rotateListWeapon = 1;
                 break;
             }
+            case InputToAction.rotateWeaponDown: {
+                listWeapon.get(rotateListWeapon).rotateRight();
+                break;
+            }
+            case InputToAction.rotateWeaponUp: {
+                listWeapon.get(rotateListWeapon).rotateLeft();
+                break;
+            }
         }
     }
 
@@ -239,9 +259,11 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
         for (Weapon weapon : listWeapon) {
             weapon.setLive(false);
         }
-        level.getPlayer().setControlledObject(null);
+        if (level.getPlayer().getControlledObject() == this) {
+            level.getPlayer().setControlledObject(null);
+        }
         physicObject.destroy();
-        //EmitterEffects.drawBoom(position);
+        level.getEmitterEffects().drawBoom(position);
         /*level.getNotAddedGameObjects().add(
                 new Explosion(level, position, 60, 1)); */
     }
@@ -252,14 +274,25 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
 
     public void damage(float... impulses) {
         if (Manager.get().getState() == Manager.TRAINING) {
-            liveHealth = -1;
+            hp = -1;
         } else {
             float result = 0;
             for (float f : impulses)
                 result += f;
-            liveHealth -= result * (1 - protection);
+            hp -= result * (1 - protection);
         }
     }
 
+    public boolean isControlledByPlayer() {
+        return controlledByPlayer;
+    }
 
+    public void setControlledByPlayer(boolean controlledByPlayer) {
+        this.controlledByPlayer = controlledByPlayer;
+
+    }
+
+    public float getAngleWeapon() {
+        return listWeapon.get(rotateListWeapon).getAngle();
+    }
 }

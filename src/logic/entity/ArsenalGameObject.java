@@ -1,5 +1,6 @@
 package logic.entity;
 
+import ai.ControlledEntity;
 import org.lwjgl.util.vector.Vector2f;
 
 /**

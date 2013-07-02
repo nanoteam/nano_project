@@ -12,13 +12,12 @@ public class AI implements Engine {
 
     @Override
     public void tick() {
-        
-        /*if (Global.commandOn){
+        if (Global.AI_ON) {
             List<GameObject> gameObjects = level.getGameObjects();
             for (GameObject gameObject : gameObjects) {
                 gameObject.toThink();
             }
-        }   */
+        }
     }
 
     @Override
