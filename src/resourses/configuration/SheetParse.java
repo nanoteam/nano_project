@@ -2,7 +2,7 @@ package resourses.configuration;
 
 import java.util.ArrayList;
 
-public class SheetParse{
+public class SheetParse extends Object {
     private final String name;
     private final String value;
     private final ArrayList<SheetParse> sheets;

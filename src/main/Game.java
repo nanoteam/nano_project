@@ -176,13 +176,15 @@ public class Game {
                         }
 
                         case InputToAction.zoomIn: {
-                            render.setZoom((float) (render.getZoom() + 0.01));
+                            render.setZoom((float) (render.getZoom() + 0.05));
                             break;
                         }
                         case InputToAction.zoomOut: {
-                            render.setZoom((float) (render.getZoom() - 0.01));
+                            render.setZoom((float) (render.getZoom() - 0.05));
                             break;
                         }
+
+
                     }
                 }
 
@@ -260,7 +262,7 @@ public class Game {
 
     public float getAngleBetweenShipAndCursor() {
         if (render.getStateViewPort() == Render.VIEWPORT_ON_PLAYER) {
-            return (float) (Math.PI + Math.atan2(render.getHeight()/ 2 - controller.getMousePosition().y, render.getWidth() / 2
+            return (float) (Math.PI + Math.atan2(Global.RESOLUTION_Y / 2 - controller.getMousePosition().y, Global.RESOLUTION_X / 2
                     - controller.getMousePosition().x));
         }
 

@@ -11,53 +11,21 @@ import main.Global;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 
 
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
-
 public class Render implements Engine {
     private Level level;
     public static final int VIEWPORT_GLOBAL_WORLD = 0;
     public static final int VIEWPORT_ON_PLAYER = 1;
     private int stateViewPort = 0;
     private static float zoom = 1;
-    private float left, right, top, bottom;
-    private int width, height;
 
-    //TODO add avto detecting optimal working set display, 1600x900x32 or 640x480x16 or ...
-    public Render() {
-        stateViewPort = Render.VIEWPORT_ON_PLAYER;
-        try {
-            Display.setFullscreen(Global.FULLSCREEN);
-            if (Global.FULLSCREEN) {
-                Display.create();
-                width = Display.getWidth();
-                height = Display.getHeight();
-            } else {
-                width = Global.DEFAULT_RESOLUTION_X;
-                height = Global.DEFAULT_RESOLUTION_Y;
-                Display.setDisplayMode(new DisplayMode(width,height));
-                Display.create();
-            }
-            // Enable vsync if we can
-            //Display.setVSyncEnabled(true);
-        } catch (LWJGLException e) {
-            e.printStackTrace();
-        }
-        //without this part of code render not working correctly!
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
-        //glMatrixMode(GL_MODELVIEW);
-        //glLoadIdentity();
-        //glViewport(0, 0, Display.getDisplayMode().getWidth(), Display
-        //		.getDisplayMode().getHeight());
-        //glViewport(0, 0,3200,1800);
-        setZoom(1);
-    }
+    private float left, right, top, bottom;
 
     public Level getLevel() {
         return level;
@@ -71,25 +39,25 @@ public class Render implements Engine {
     public void tick() {
         if (stateViewPort == VIEWPORT_ON_PLAYER) {
             Vector2f p = level.getPlayer().getControlledObject().getPosition();
-            float left = -width / 2;
-            float right = width / 2;
-            float bottom = -height / 2;
-            float top = height / 2;
+            float left = -Global.RESOLUTION_X / 2;
+            float right = Global.RESOLUTION_X / 2;
+            float bottom = -Global.RESOLUTION_Y / 2;
+            float top = Global.RESOLUTION_Y / 2;
             //glOrtho(left, right, bottom, top, -1, 1);
-            glViewport(0, 0, width, height);
+            glViewport(0, 0, Global.RESOLUTION_X, Global.RESOLUTION_Y);
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(0, width, 0, height, -1, 1);
+            glOrtho(0, 1600, 0, 900, -1, 1);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             glScalef(zoom, zoom, zoom);
-            glTranslatef((int) (-p.x + width / 2 / zoom), (int) (-p.y + height / 2 / zoom), 0);
+            glTranslatef((int) (-p.x + Global.RESOLUTION_X / 2 / zoom), (int) (-p.y + Global.RESOLUTION_Y / 2 / zoom), 0);
         } else {
             zoom = 1;
             //glViewport(0, 1600, 0, 900);
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(0, width, 0, height, -1, 1);
+            glOrtho(0, Global.RESOLUTION_X, 0, Global.RESOLUTION_Y, -1, 1);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             glScalef(1, 1, 1);
@@ -106,9 +74,44 @@ public class Render implements Engine {
         glPushMatrix();
         List<GameObject> game_objects = level.getGameObjects();
         for (GameObject game_object : game_objects) {
-            game_object.draw();
+           game_object.draw();
         }
         glPopMatrix();
+    }
+
+    //TODO add avto detecting optimal working set display, 1600x900x32 or 640x480x16 or ...
+    public Render() {
+        stateViewPort = Render.VIEWPORT_ON_PLAYER;
+        try {
+            Display.setFullscreen(Global.FULLSCREEN);
+            if (Global.FULLSCREEN) {
+                Display.create();
+            } else {
+                Display.setDisplayMode(new DisplayMode(Global.RESOLUTION_X, Global.RESOLUTION_Y));
+                Display.create();
+            }
+            // Enable vsync if we can
+            //Display.setVSyncEnabled(true);
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        glClearColor(0.0f,0.0f,0.0f,0.0f);
+        //without this part of code render not working correctly!
+        glViewport(0, 0, Display.getDisplayMode().getWidth(), Display
+        		.getDisplayMode().getHeight());
+        glMatrixMode(GL_MODELVIEW);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0.0, Display.getDisplayMode().getWidth(), 0.0, Display
+                .getDisplayMode().getHeight(), -1.0, 1.0);
+        //glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+
+        //glViewport(0, 0,3200,1800);
+        setZoom(1);
     }
 
     @Override
@@ -129,6 +132,7 @@ public class Render implements Engine {
         this.zoom = zoom;
     }
 
+
     public int getStateViewPort() {
         return stateViewPort;
     }
@@ -145,13 +149,5 @@ public class Render implements Engine {
     // TODO move this method in other classs
     public void syncFps(int frameRate) {
         Display.sync(frameRate);
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 }

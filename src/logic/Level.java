@@ -94,6 +94,9 @@ public class Level {
 
         BlackHole blackHole = new BlackHole(this, new Vector2f(1800, 1800), 400, 1);
         gameObjects.add(blackHole);
+
+//        gameObjects.add(new Asteroid(this, new Vector2f(650f, 300f),
+
         /*
        //level
        gameObjects.add(new Wall(226, 886, 372, 1269, 20, this));
