@@ -11,6 +11,7 @@ import main.Global;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+
 import org.lwjgl.util.vector.Vector2f;
 
 
@@ -24,6 +25,7 @@ public class Render implements Engine {
     public static final int VIEWPORT_ON_PLAYER = 1;
     private int stateViewPort = 0;
     private static float zoom = 1;
+
     private float left, right, top, bottom;
     private int width, height;
 
@@ -71,11 +73,16 @@ public class Render implements Engine {
     public void tick() {
         if (stateViewPort == VIEWPORT_ON_PLAYER) {
             Vector2f p = level.getPlayer().getControlledObject().getPosition();
+
+
+
+
             float left = -width / 2;
             float right = width / 2;
             float bottom = -height / 2;
             float top = height / 2;
             //glOrtho(left, right, bottom, top, -1, 1);
+
             glViewport(0, 0, width, height);
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
@@ -89,6 +96,7 @@ public class Render implements Engine {
             //glViewport(0, 1600, 0, 900);
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
+
             glOrtho(0, width, 0, height, -1, 1);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
@@ -111,6 +119,41 @@ public class Render implements Engine {
         glPopMatrix();
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void cleanUp() {
         // Close the window
@@ -128,6 +171,7 @@ public class Render implements Engine {
     public void setZoom(float zoom) {
         this.zoom = zoom;
     }
+
 
     public int getStateViewPort() {
         return stateViewPort;

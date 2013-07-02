@@ -70,7 +70,6 @@ public class Game {
         logic = client.getLogic();
         controller = client.getController();
         ai = client.getAI();
-        // TODO repair this hint with object level and engines to normal code
         sound.setLevel(level);
         render.setLevel(level);
         physic.setLevel(level);

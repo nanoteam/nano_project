@@ -178,7 +178,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
 		//this is etalon obj, and not need to create pbj in phus world
 		if (mainConfig.findSheetParseByName("Material") != null) {
 			ammo.material = Material.valueOf(mainConfig.findSheetParseByName("Material").getValue());
-			//System.out.println(ammo.material.toString());
+			System.out.println(ammo.material.toString());
 			//ammo.physicObject = PhysicObject.createBall(null, null, ammo.radius, ammo.material);
 		} else {
 			//ammo.physicObject = PhysicObject.createBall(null, null, ammo.radius, Material.Metal);

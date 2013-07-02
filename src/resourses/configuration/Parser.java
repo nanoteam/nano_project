@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.Exception;import java.lang.String;import java.lang.System;import java.util.ArrayDeque;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
