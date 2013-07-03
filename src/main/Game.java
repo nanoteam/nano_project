@@ -96,7 +96,7 @@ public class Game {
                 logic.tick();
                 ai.tick();
                 sound.tick();
-                render.tick();
+                    render.tick();
 
                 if (Global.realTime) {
                     render.syncFps(Global.FPS);

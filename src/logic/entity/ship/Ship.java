@@ -5,14 +5,12 @@ import ai.ControlledEntity;
 import ai.nnga.Manager;
 import controller.InputToAction;
 import logic.Level;
-import logic.entity.EmitterEffects;
 import logic.entity.GamePhysicObject;
 import logic.entity.entityInterface.IsClonable;
 import logic.entity.entityInterface.MorfingCreation;
 import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
-import org.newdawn.slick.SlickException;
 import physic.Material;
 import physic.PhysicObject;
 import render.Image;
@@ -21,39 +19,34 @@ import render.RenderUtil;
 import render.Sprite;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.LinkedList;
 
-public class Ship extends GamePhysicObject implements ControlledEntity,
-        MorfingCreation, IsClonable {
+public class Ship extends GamePhysicObject implements ControlledEntity, MorfingCreation, IsClonable {
+    //logic parametrs
     private static float DEFAULT_SHIP_HEALTH = 100;
+    boolean controlledByPlayer = false;
     private float radiusBody = 25;
     private float width = radiusBody * 2;
     private float height = radiusBody * 2;
     private float protection = 0.1f;
     private Image image;
     private Color color;
-
+    //components
     private Engine mainEngine;
     private LinkedList<Weapon> listWeapon;
-
+    private int rotateListWeapon = 0;
+    //flags for actions
     private boolean left = false;
     private boolean right = false;
     private boolean up = false;
     private boolean down = false;
-
-
     private boolean firePrimary = false;
     private boolean fireAlternative = false;
     private boolean speciality = false;
-    private boolean stateAutopilot = false;
-
-    private int rotateListWeapon = 0;
-
+    private boolean stateAutopilot = true;
     private BotShip botShip;
-    private boolean controlledByPlayer;
 
-    /* private static Image image; */
+    /*private static Image image;*/
     static {
         className = "Ship";
     }
@@ -68,11 +61,14 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
     }
 
     private Ship() {
+
+
     }
 
     public void initInPhysicWorld(Level level) {
         this.level = level;
         this.speed = new Vector2f(0, 0);
+        color = new Color(Color.RED);
         hp = DEFAULT_SHIP_HEALTH;
         physicObject = PhysicObject.createBall(this, position, radiusBody,
                 Material.Metal, PhysicObject.DINAMIC, level.getWorld());
@@ -89,9 +85,11 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
             listWeapon.add(Weapon.getWeapon(this, "any"));
             level.getNotAddedGameObjects().add(listWeapon.element());
         }
-        level.getPlayer().setControlledObject(this);
-
-
+        if (controlledByPlayer) {
+            level.getPlayer().setControlledObject(this);
+        } else {
+            botShip = new BotShip(this);
+        }
         image = new Sprite();
         try {
             image.LoadPNG("res/sprite1.png");
@@ -114,11 +112,9 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
         if (rotateListWeapon > 0) {
             listWeapon.addLast(listWeapon.pollFirst());
         }
-
         if (rotateListWeapon < 0) {
             listWeapon.addFirst(listWeapon.pollLast());
         }
-
         if (firePrimary) {
             listWeapon.getFirst().firePrimary();
         }
@@ -126,7 +122,6 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
             listWeapon.getFirst().fireAlternative();
         }
         if (speciality) {
-
         }
         clearFlags();
         if (hp < 0) {
@@ -137,33 +132,28 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
     @Override
     public void move() {
         if (stateAutopilot) {
-
-            // autopilot
+            //autopilot
             if (up) {
                 physicObject.applyForce(0, mainEngine.getForce(), position);
             } else {
                 if (!down) {
                     if (speed.y < 0) {
-                        physicObject.applyForce(0,
-                                mainEngine.getForce() / 1.5f, position);
+                        physicObject.applyForce(0, mainEngine.getForce() / 1.5f, position);
                     }
                 }
             }
         } else {
-            // free falling
+            //free falling
             if (up) {
                 physicObject.applyForce(0, mainEngine.getForce(), position);
             }
         }
-
         if (left) {
             physicObject.applyForce(-mainEngine.getForce() / 4f, 0, position);
         }
-
         if (right) {
             physicObject.applyForce(mainEngine.getForce() / 4f, 0, position);
         }
-
         position = null;
         position = physicObject.getPosition();
         speed = null;
@@ -173,31 +163,23 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
 
     @Override
     public void draw() {
-        /*
-		 * RenderUtil.drawQaud(position.x, position.y, width, height, angle,
-		 * (Color) Color.GREY);
-		 */
-        // RenderUtil.drawCircle(position, radiusBody, 6, (Color) Color.RED);
-
-		/*
-		 * RenderUtil.drawLine( new Vector2f(position.x + MathUtil.newXTurn(30,
-		 * 0, angle), position.y + MathUtil.newYTurn(30, 0, angle)), new
-		 * Vector2f(position.x, position.y), 5, (Color) Color.WHITE);
-		 */
-        //RenderUtil.drawImage(position.x, position.y, width, height, angle, 1,
-        //		image);
+        /*RenderUtil.drawQaud(position.x, position.y, width, height, angle,
+    (Color) Color.GREY);   */
+        //RenderUtil.drawCircle(position, radiusBody, 6, color);
         image.draw(position.x, position.y, width, height, angle);
         RenderTextUtil.getInstance().drawText(position.x - 60, position.y + 30,
                 "SHIP1", org.newdawn.slick.Color.green, 1f);
         RenderUtil.drawLifebar(position.x - 80, position.y + 10, hp
                 / DEFAULT_SHIP_HEALTH, 1);
-
-
+        /*
+        RenderUtil.drawLine(
+                new Vector2f(position.x + MathUtil.newXTurn(30, 0, angle), position.y + MathUtil.newYTurn(30, 0, angle)),
+                new Vector2f(position.x, position.y), 5, (Color) Color.WHITE);*/
+        //RenderUtil.drawImage(position.x, position.y, width, height,angle,1,image);
     }
 
     @Override
     public void playSound() {
-
     }
 
     @Override
@@ -205,6 +187,7 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
         if (botShip != null) {
             botShip.toThink();
         }
+        //Manager.get().getReaction(this);
     }
 
     @Override
@@ -215,35 +198,26 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
                 left = true;
                 break;
             }
-
             case InputToAction.right: {
                 right = true;
                 break;
             }
-
             case InputToAction.down: {
                 down = true;
                 break;
             }
-
             case InputToAction.up: {
                 up = true;
                 break;
             }
-
-
             case InputToAction.firePrimary: {
                 firePrimary = true;
                 break;
             }
-
-
             case InputToAction.fireAlternative: {
                 fireAlternative = true;
                 break;
             }
-
-
             case InputToAction.specialAction: {
                 speciality = true;
                 break;
@@ -257,35 +231,30 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
                 break;
             }
             case InputToAction.rotateWeaponDown: {
-
                 listWeapon.get(rotateListWeapon).rotateRight();
                 break;
             }
             case InputToAction.rotateWeaponUp: {
                 listWeapon.get(rotateListWeapon).rotateLeft();
                 break;
-
             }
         }
     }
-
 
     public void clearFlags() {
         left = false;
         right = false;
         up = false;
         down = false;
-
         firePrimary = false;
         fireAlternative = false;
-
         speciality = false;
         rotateListWeapon = 0;
     }
 
     @Override
     public void destroy() {
-        // set live false all component
+        //set live false all component
         mainEngine.setLive(false);
         for (Weapon weapon : listWeapon) {
             weapon.setLive(false);
@@ -294,11 +263,9 @@ public class Ship extends GamePhysicObject implements ControlledEntity,
             level.getPlayer().setControlledObject(null);
         }
         physicObject.destroy();
-        //.drawBoom(position);
-		/*
-		 * level.getNotAddedGameObjects().add( new Explosion(level, position,
-		 * 60, 1));
-		 */
+        level.getEmitterEffects().drawBoom(position);
+        /*level.getNotAddedGameObjects().add(
+                new Explosion(level, position, 60, 1)); */
     }
 
     void startDestroy() {
