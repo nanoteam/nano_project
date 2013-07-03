@@ -13,17 +13,15 @@ public class BotShip {
     private final static int STATE_MOVE = 0;
     private final static int STATE_ATACK = 1;
     private final static int STATE_RUN_OFF = 2;
-    private int state;
-    private Ship ship;
-
-    private boolean haveCollision;
+    //^2
+    private final static float MAX_DISTANCE_FOR_SCREAM = 600 * 600;
+    private final static float MAX_SPEED = 50f;
     //general
     private static ArrayDeque<Scream> screams = new ArrayDeque<Scream>();
     private static int newScreams = 0;
-
-    //^2
-    private final static float MAX_DISTANCE_FOR_SCREAM = 600 * 600;
-    private final static float MAX_SPEED = 400f;
+    private int state = STATE_MOVE;
+    private Ship ship;
+    private boolean haveCollision;
 
     public BotShip(Ship ship) {
         this.ship = ship;
@@ -71,42 +69,44 @@ public class BotShip {
     }
 
     private void move() {
-        if (ship.getSpeed().lengthSquared() < MAX_SPEED) {
-            //float angleDirection = ship.getAngleWeapon() + (Global.random.nextFloat() * 0.6f - 0.3f);
-            float angleDirection = (float) Math.atan2(ship.getLevel().getPlayer().getControlledObject().getPosition().y - ship.getPosition().y,
-                    ship.getLevel().getPlayer().getControlledObject().getPosition().x - ship.getPosition().x);
+        //if (ship.getSpeed().lengthSquared() < MAX_SPEED) {
+        //float angleDirection = ship.getAngleWeapon() + (Global.random.nextFloat() * 0.6f - 0.3f);
+        float directionX = ship.getPosition().x - ship.getLevel().getPlayer().getControlledObject().getPosition().x;
+        float directionY = ship.getPosition().y - ship.getLevel().getPlayer().getControlledObject().getPosition().y;
 
-            System.out.println("**");
-            System.out.println(angleDirection);
-            if (angleDirection < 0) {
-                angleDirection += 2 * 3.14159f;
+        float distance = directionX * directionX + directionY * directionY;
+        //if distanse between players ship and bot ship > 20 000 (sqrt(100*100+100*100))
+        if (distance > 20000) {
+            //if need go left
+            if ((directionX > 0)) {
+                //and speed x no max, add speed
+                if (ship.getSpeed().x > MAX_SPEED * -1) {
+                    ship.doAction(InputToAction.left);
+                }
+            } else
+            //nead go right
+            {
+                if (ship.getSpeed().x < MAX_SPEED) {
+                    ship.doAction(InputToAction.right);
+                }
             }
-            if (angleDirection > 2 * 3.14159f) {
-                angleDirection -= 2 * 3.14159f;
+            if ((directionY > 0)) {
+                if (ship.getSpeed().y > MAX_SPEED * -1) {
+                    ship.doAction(InputToAction.down);
+                }
+            } else {
+                if (ship.getSpeed().y < MAX_SPEED) {
+                    ship.doAction(InputToAction.up);
+                }
             }
-            System.out.println(angleDirection);
-            System.out.println("**");
-            //1
-            if ((angleDirection < 3.14159f / 3) && (angleDirection > -3.14159f / 3)) {
-                System.out.println("right");
-                ship.doAction(InputToAction.right);
-            }
-            //2
-            if ((angleDirection < 5 * 3.14159f / 6) && (angleDirection > 3.14159f / 6)) {
-                System.out.println("up");
-                ship.doAction(InputToAction.up);
-            }
-            //3
-            if ((angleDirection < 4 * 3.14159f / 3) && (angleDirection > 2 * 3.14159f / 3)) {
-                System.out.println("left");
-                ship.doAction(InputToAction.left);
-            }
-            //4
-            if ((angleDirection < 11 * 3.14159f / 12) && (angleDirection > 7 * 3.14159f / 6)) {
-                System.out.println("down");
-                ship.doAction(InputToAction.down);
-            }
+        } else {
+
         }
+
+
+        //}
+
+
         //rotate
         /*if (Global.random.nextFloat() > 0.005f) {
             if (Global.random.nextFloat() > 0.5f) {

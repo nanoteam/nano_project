@@ -163,18 +163,12 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
 
     @Override
     public void draw() {
-        /*RenderUtil.drawQaud(position.x, position.y, width, height, angle,
-    (Color) Color.GREY);   */
         //RenderUtil.drawCircle(position, radiusBody, 6, color);
         image.draw(position.x, position.y, width, height, angle);
         RenderTextUtil.getInstance().drawText(position.x - 60, position.y + 30,
                 "SHIP1", org.newdawn.slick.Color.green, 1f);
-        RenderUtil.drawLifebar(position.x - 80, position.y + 10, hp
+        RenderUtil.drawLifebar(position.x-15, position.y + 10, hp
                 / DEFAULT_SHIP_HEALTH, 1);
-        /*
-        RenderUtil.drawLine(
-                new Vector2f(position.x + MathUtil.newXTurn(30, 0, angle), position.y + MathUtil.newYTurn(30, 0, angle)),
-                new Vector2f(position.x, position.y), 5, (Color) Color.WHITE);*/
         //RenderUtil.drawImage(position.x, position.y, width, height,angle,1,image);
     }
 

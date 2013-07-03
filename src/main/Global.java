@@ -6,7 +6,7 @@ public class Global {
     //Graphic
     public static int DEFAULT_RESOLUTION_X = 640;
     public static int DEFAULT_RESOLUTION_Y = 480;
-    public static boolean FULLSCREEN = false;
+    public static boolean FULLSCREEN = true;
     //fps render
     public static int FPS = 60;
     //for jbox2d

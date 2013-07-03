@@ -49,7 +49,7 @@ public class MFont {
 				z++;
 				if (z < 256) {
 					sFont[z] = font.getSubImage(j * xi, i * yi, xi, yi);
-					System.out.println(sFont[z].toffsets());
+					//System.out.println(sFont[z].toffsets());
 				}
 			}
 		charWidth = sFont[0].getWidth();
