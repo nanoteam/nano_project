@@ -30,6 +30,8 @@ public class BlackHole extends GameObject {
     private Image image;
     private float angle;
 
+    public static final String CLASS_NAME = "Blackhole";
+    private String additionalName;
 
     // private float lifeTime;
 
@@ -50,6 +52,7 @@ public class BlackHole extends GameObject {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+        additionalName = CLASS_NAME;
 
     }
 
@@ -87,6 +90,16 @@ public class BlackHole extends GameObject {
 
     @Override
     public void toThink() {
+    }
+
+    @Override
+    public String getAdditionalName() {
+        return additionalName;
+    }
+
+    @Override
+    public String getMyClassName() {
+        return CLASS_NAME;
     }
 
     public void ringRound() {

@@ -14,13 +14,12 @@ import java.util.List;
 
 public class Polygon extends GamePhysicObject implements IsClonable, MorfingCreation {
 
+    public static final String CLASS_NAME = "Polygon";
     private List<Vector2f> listVertices = new ArrayList<Vector2f>();
     private Color color;
     private int typeBody = PhysicObject.UNKNOW;
+    private String additionalName;
 
-	static {
-		className = "Polygon";
-	}
     //two phase creation
     public Polygon(Vector2f position, float angle, List<Vector2f> vertices, int typeObject, Color color) {
         this.position = position;
@@ -28,6 +27,8 @@ public class Polygon extends GamePhysicObject implements IsClonable, MorfingCrea
         listVertices = new ArrayList<Vector2f>(vertices);
         this.typeBody = typeObject;
         this.color = color;
+        additionalName = CLASS_NAME;
+
     }
 
     //easy creation
@@ -37,6 +38,7 @@ public class Polygon extends GamePhysicObject implements IsClonable, MorfingCrea
         listVertices = new ArrayList<Vector2f>(vertices);
         this.typeBody = typeObject;
         this.color = color;
+        additionalName = CLASS_NAME;
         initInPhysicWorld(level);
     }
 
@@ -63,13 +65,11 @@ public class Polygon extends GamePhysicObject implements IsClonable, MorfingCrea
         return clonePolygon;
     }
 
-
     @Override
     public void initInPhysicWorld(Level level) {
         this.level = level;
         this.physicObject = PhysicObject.createPolygon(this, position, listVertices, angle, Material.Wood, typeBody, level.getWorld());
     }
-
 
     @Override
     public void update() {
@@ -96,6 +96,16 @@ public class Polygon extends GamePhysicObject implements IsClonable, MorfingCrea
 
     @Override
     public void toThink() {
+    }
+
+    @Override
+    public String getAdditionalName() {
+        return additionalName;
+    }
+
+    @Override
+    public String getMyClassName() {
+        return CLASS_NAME;
     }
 
     @Override

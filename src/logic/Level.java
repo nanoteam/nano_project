@@ -655,7 +655,8 @@ public class Level {
         cloneLevel.game = game;
         cloneLevel.aabb = new AABB(new Vec2(), new Vec2(cloneLevel.widthLevel / 30,
                 cloneLevel.heightLevel / 30));
-        cloneLevel.world = new World(new Vec2(cloneLevel.gravity.x, cloneLevel.gravity.y), false);
+        cloneLevel.world = new World(new Vec2(cloneLevel.gravity.x, cloneLevel.gravity.y));
+        cloneLevel.world.setAllowSleep(true);
         cloneLevel.world.queryAABB(new QueryCallback() {
             @Override
             public boolean reportFixture(Fixture fixture) {

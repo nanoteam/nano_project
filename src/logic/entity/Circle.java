@@ -11,9 +11,11 @@ import render.RenderUtil;
 
 public class Circle extends GamePhysicObject implements IsClonable, MorfingCreation {
 
+    public static final String CLASS_NAME = "Cricle";
     protected float radius;
     protected Color color;
     protected int typeBody = PhysicObject.UNKNOW;
+    private String additionalName;
 
     //two phase creation
     public Circle(Vector2f position, float radius, float angle, int typeObject, Color color) {
@@ -44,13 +46,11 @@ public class Circle extends GamePhysicObject implements IsClonable, MorfingCreat
         return cloneCircle;
     }
 
-
     @Override
     public void initInPhysicWorld(Level level) {
         this.level = level;
         this.physicObject = PhysicObject.createBall(this, position, radius, Material.Wood, typeBody, level.getWorld());
     }
-
 
     @Override
     public void update() {
@@ -76,6 +76,16 @@ public class Circle extends GamePhysicObject implements IsClonable, MorfingCreat
 
     @Override
     public void toThink() {
+    }
+
+    @Override
+    public String getAdditionalName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getMyClassName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

@@ -13,18 +13,16 @@ import org.lwjgl.util.vector.Vector2f;
 
 //TODO add modificator visiable to protected code to field and method
 abstract public class GameObject {
+    protected static long idGlobal = 0;
     // unique name for class, uses by Resourses manager
     // by this name creater pair Class RubberBall - config file RubberBall.ini,
     // RubberBall.jpg
-    protected static String className = "unknown";
-    protected String additionalName = "unknown";
+    public final long id;
     protected Vector2f position;
     protected boolean live = true;
     protected Level level;
     protected float maxHP;
     protected float hp;
-    public final long id;
-    protected static long idGlobal = 0;
 
     public GameObject() {
         id = idGlobal++;
@@ -42,12 +40,12 @@ abstract public class GameObject {
 
     abstract public void toThink();
 
-    public void setLive(boolean live) {
-        this.live = live;
-    }
-
     public boolean isLive() {
         return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
     }
 
     public Vector2f getPosition() {
@@ -62,9 +60,9 @@ abstract public class GameObject {
         return level;
     }
 
-    public static String getClassName() {
-        return className;
-    }
+    abstract public String getAdditionalName();
+
+    abstract public String getMyClassName();
 
     public float getHp() {
         return hp;

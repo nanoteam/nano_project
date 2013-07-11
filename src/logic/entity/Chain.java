@@ -113,6 +113,16 @@ public class Chain extends GameObject {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
+    public String getAdditionalName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getMyClassName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     class ChainLink extends GamePhysicObject {
         private float lenght;
         private float width = 10;
@@ -158,6 +168,16 @@ public class Chain extends GameObject {
         @Override
         public void toThink() {
             //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public String getAdditionalName() {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public String getMyClassName() {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override

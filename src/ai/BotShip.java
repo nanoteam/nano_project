@@ -3,18 +3,18 @@ package ai;
 import controller.InputToAction;
 import logic.entity.ship.Ship;
 import main.Global;
+import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
+import physic.RayCastClosestCallback;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BotShip {
     private final static int STATE_MOVE = 0;
     private final static int STATE_ATACK = 1;
     private final static int STATE_RUN_OFF = 2;
     //^2
-    private final static float MAX_DISTANCE_FOR_SCREAM = 600 * 600;
+    private final static float MAX_DISTANCE_FOR_SCREAM = 600;
     private final static float MAX_SPEED = 50f;
     //general
     private static ArrayDeque<Scream> screams = new ArrayDeque<Scream>();
@@ -31,7 +31,7 @@ public class BotShip {
         switch (state) {
             case STATE_MOVE: {
                 move();
-
+                //screams from prev step handler by there
                 if (screams.size() != 0) {
                     for (Scream scream : screams) {
                         if (scream.getTypeScream() == Scream.SCREAM_ATACK) {
@@ -42,9 +42,15 @@ public class BotShip {
                         }
                     }
                 }
+
+                /*if (new Random().nextFloat() > 0.99f) {
+
+                } */
+
+
                 if (seeEnemy()) {
                     scream();
-                    state = STATE_ATACK;
+                    //state = STATE_ATACK;
                 }
                 break;
             }
@@ -52,7 +58,12 @@ public class BotShip {
                 if (readyToShoot()) {
                     shoot();
                 }
+                if (new Random().nextFloat() > 0.995) {
+                    scream();
+                }
                 //if hp<20% run off
+
+
                 if (ship.getHp() / ship.getMaxHP() < 0.2f) {
                     state = STATE_RUN_OFF;
                 }
@@ -120,6 +131,15 @@ public class BotShip {
     }
 
     private boolean seeEnemy() {
+        RayCastClosestCallback rayCastClosestCallback = new RayCastClosestCallback();
+
+        ship.getLevel().getWorld().raycast(rayCastClosestCallback,
+                ship.getPhysicObject().getBody().getPosition(), Global.convertToVec2(ship.getLevel().getPlayer().getControlledObject().getPosition()));
+
+        if (rayCastClosestCallback.isVisible()) {
+            scream();
+        }
+
         //ship.getPhysicObject().getBody().shouldCollide()
         return false;
     }
@@ -133,8 +153,9 @@ public class BotShip {
     }
 
     private void scream() {
-        screams.push(new Scream(ship.getPosition(), Scream.SCREAM_ATACK, ship.id));
-        newScreams++;
+        ship.getLevel().getEmitterEffects().drawAura(ship.getPosition(), (int) MAX_DISTANCE_FOR_SCREAM, 30, (Color) Color.RED);
+        /*screams.push(new Scream(ship.getPosition(), Scream.SCREAM_ATACK, ship.id));
+        newScreams++;                                                                */
     }
 
     private void clearingScreams() {
@@ -148,4 +169,5 @@ public class BotShip {
     private float distance(Vector2f vector1, Vector2f vector2) {
         return ((vector1.x - vector2.x) * (vector1.x - vector2.x) + (vector1.y - vector2.y) * (vector1.y - vector2.y));
     }
+
 }

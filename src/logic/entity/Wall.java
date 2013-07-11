@@ -9,9 +9,11 @@ import physic.PhysicObject;
 import render.RenderUtil;
 
 public class Wall extends GamePhysicObject {
+    public static final String CLASS_NAME = "Wall";
     float height, width;
     float wallRestitution;
     float angle;
+    private String additionalName;
 
     //by one point and angle
     public Wall(Level level, float x, float y, float width, float height, float angle) {
@@ -21,8 +23,9 @@ public class Wall extends GamePhysicObject {
         this.width = width;
         this.angle = angle;
         wallRestitution = 0;
-        physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood,PhysicObject.DINAMIC,level.getWorld());
+        physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood, PhysicObject.DINAMIC, level.getWorld());
         physicObject.getBody().setType(BodyType.STATIC);
+        additionalName = CLASS_NAME;
     }
 
     //by two point
@@ -33,10 +36,10 @@ public class Wall extends GamePhysicObject {
         this.height = height;
         this.angle = (float) (Math.atan2(y2 - y1, x2 - x1));
         wallRestitution = 0;
-        physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood,PhysicObject.DINAMIC,level.getWorld());
+        physicObject = PhysicObject.createBox(this, position, width, height, angle, Material.Wood, PhysicObject.DINAMIC, level.getWorld());
         physicObject.getBody().setType(BodyType.STATIC);
+        additionalName = CLASS_NAME;
     }
-
 
     @Override
     public void update() {
@@ -62,6 +65,16 @@ public class Wall extends GamePhysicObject {
     @Override
     public void toThink() {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getAdditionalName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getMyClassName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

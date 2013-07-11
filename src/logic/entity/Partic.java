@@ -51,6 +51,16 @@ public class Partic extends GamePhysicObject {
     }
 
     @Override
+    public String getAdditionalName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getMyClassName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
 	public void destroy() {
 		physicObject.destroy();
 

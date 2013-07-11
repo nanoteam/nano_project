@@ -22,8 +22,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class Ship extends GamePhysicObject implements ControlledEntity, MorfingCreation, IsClonable {
+    public static final String CLASS_NAME = "Ship";
     //logic parametrs
     private static float DEFAULT_SHIP_HEALTH = 100;
+    public String additionalName;
     boolean controlledByPlayer = false;
     private float radiusBody = 25;
     private float width = radiusBody * 2;
@@ -45,11 +47,7 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
     private boolean speciality = false;
     private boolean stateAutopilot = true;
     private BotShip botShip;
-
     /*private static Image image;*/
-    static {
-        className = "Ship";
-    }
 
     public Ship(Vector2f position) {
         this.position = new Vector2f(position);
@@ -61,8 +59,6 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
     }
 
     private Ship() {
-
-
     }
 
     public void initInPhysicWorld(Level level) {
@@ -167,7 +163,7 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
         image.draw(position.x, position.y, width, height, angle);
         RenderTextUtil.getInstance().drawText(position.x - 60, position.y + 30,
                 "SHIP1", org.newdawn.slick.Color.green, 1f);
-        RenderUtil.drawLifebar(position.x-15, position.y + 10, hp
+        RenderUtil.drawLifebar(position.x - 15, position.y + 10, hp
                 / DEFAULT_SHIP_HEALTH, 1);
         //RenderUtil.drawImage(position.x, position.y, width, height,angle,1,image);
     }
@@ -182,6 +178,16 @@ public class Ship extends GamePhysicObject implements ControlledEntity, MorfingC
             botShip.toThink();
         }
         //Manager.get().getReaction(this);
+    }
+
+    @Override
+    public String getAdditionalName() {
+        return additionalName;
+    }
+
+    @Override
+    public String getMyClassName() {
+        return CLASS_NAME;
     }
 
     @Override

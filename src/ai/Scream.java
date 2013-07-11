@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 public class Scream {
     public final static int SCREAM_ATACK = 0;
+
     private Vector2f vector2f;
     private int typeScream;
     private long idShip;

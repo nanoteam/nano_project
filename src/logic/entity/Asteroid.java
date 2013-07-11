@@ -14,6 +14,8 @@ public class Asteroid extends GamePhysicObject implements IsClonable, MorfingCre
     protected float radius;
     protected Color color;
     protected int typeBody = PhysicObject.UNKNOW;
+    public static final String CLASS_NAME = "Asteroid";
+    private String additionalName;
 
     //two phase creation
     public Asteroid(Vector2f position, float radius, float angle, int typeObject, Color color) {
@@ -81,6 +83,16 @@ public class Asteroid extends GamePhysicObject implements IsClonable, MorfingCre
 
     @Override
     public void toThink() {
+    }
+
+    @Override
+    public String getAdditionalName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getMyClassName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

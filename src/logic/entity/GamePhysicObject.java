@@ -66,4 +66,6 @@ abstract public class GamePhysicObject extends GameObject {
     protected void initInPhysicWorld(Level level){
 
     }
+
+
 }

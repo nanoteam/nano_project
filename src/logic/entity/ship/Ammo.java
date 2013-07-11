@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class Ammo extends GamePhysicObject implements IsClonable {
 
+    public static final String CLASS_NAME = "Ammo";
     private static Map<String, Ammo> libraryAmmo = new HashMap<String, Ammo>();
     private float radius;
     // <0 == never.
@@ -41,6 +42,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
     private int speedParticle;
     private Color color;
     private Material material;
+    private String additionalName;
 
     private Ammo() {
 
@@ -173,7 +175,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
             else {
                 String color = mainConfig.findSheetParseByName("Color").getValue();
                 /*switch (color) {
-									case "Red": {
+                                    case "Red": {
 										ammo.color = (Color) Color.RED;
 										break;
 									}
@@ -289,6 +291,16 @@ public class Ammo extends GamePhysicObject implements IsClonable {
     @Override
     public void toThink() {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getAdditionalName() {
+        return additionalName;
+    }
+
+    @Override
+    public String getMyClassName() {
+        return CLASS_NAME;
     }
 
     @Override

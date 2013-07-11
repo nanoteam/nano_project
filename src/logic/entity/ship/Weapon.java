@@ -15,123 +15,18 @@ import java.util.*;
 
 public class Weapon extends ArsenalGameObject implements IsClonable {
     private final static int LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON = 5;
+    private static final String CLASS_NAME = "Weapon";
+    //for storage object from parser
+    private static Map<String, Weapon> libraryWeapon = new HashMap<String, Weapon>();
     private int width;
     private int height;
     //if <0 then can shoot
     private int reloadingTimerPrimary = 0;
     private int reloadingTimerAlternative = 0;
-
     private Color color;
-    //for storage object from parser
-    private static Map<String, Weapon> libraryWeapon = new HashMap<String, Weapon>();
+    private String additionalName;
 
     private Weapon() {
-    }
-
-    @Override
-    public void update() {
-        //primary weapon
-        if (onShootPrimary) {
-            //id relaod complited
-            if (reloadingTimerPrimary < 0) {
-                //create shoot
-
-                Ammo ammo;
-                for (int i = 0; i < countAmmoPrimaryPerShoot; i++) {
-                    //hack new Vector2f(0,0) - Artiom
-                    ammo = Ammo.getAmmo(new Vector2f(0, 0), new Vector2f(0, 0), level, nameAmmoPrimary);
-                    float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / ammo.getPhysicObject().getMass());
-                    Vector2f shell_speed_vector =
-                            new Vector2f(
-                                    (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
-                                    (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
-                    Vector2f shell_position = new Vector2f(position.x +
-                            MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON + ammo.getRadius(), 0, angle),
-                            position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON + ammo.getRadius(), 0, angle));
-                    ammo.getPhysicObject().setSpeed(shell_speed_vector);
-                    ammo.getPhysicObject().setPosition(shell_position);
-                    ammo.getPhysicObject().setAngle(angle);
-                    level.getNotAddedGameObjects().add(ammo);
-                }
-
-
-                //RubberBall rubberBall = new RubberBall(shell_position, shell_speed_vector, level);
-                //action for game logic
-                reloadingTimerPrimary = reloadTimePrimary;
-            }
-        }
-        //alternative weapon
-        if (onShootAlternative) {
-            //id relaod complited
-            if (reloadingTimerAlternative < 0) {
-                //create shoot
-
-                Vector2f shell_position = new Vector2f(position.x +
-                        MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle), position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle));
-                Ammo ammo;
-                for (int i = 0; i < countAmmoAlternativePerShoot; i++) {
-                    //hack new Vector2f(0,0) - Artiom
-                    ammo = Ammo.getAmmo(shell_position, new Vector2f(0, 0), level, nameAmmoAlternative);
-                    float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / ammo.getPhysicObject().getMass());
-                    Vector2f shell_speed_vector =
-                            new Vector2f(
-                                    (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
-                                    (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
-                    ammo.getPhysicObject().setSpeed(shell_speed_vector);
-                    ammo.getPhysicObject().setAngle(angle);
-                    level.getNotAddedGameObjects().add(ammo);
-                }
-                //RubberBall rubberBall = new RubberBall(shell_position, shell_speed_vector, level);
-                //action for game logic
-                reloadingTimerAlternative = reloadTimeAlternative;
-            }
-        }
-
-        onShootAlternative = false;
-        onShootPrimary = false;
-        reloadingTimerAlternative--;
-        reloadingTimerPrimary--;
-    }
-
-    @Override
-    public void move() {
-        position = fatherObj.getPosition();
-        Vector2f vector = level.getMousePosition();
-        if (level.getPlayer().getControlledObject() == fatherObj) {
-            angle = level.getAngleBetweenShipAndCursor();
-        }
-    }
-
-    @Override
-    public void draw() {
-        RenderUtil.drawLine(new Vector2f(position),
-                new Vector2f(position.x + MathUtil.newXTurn(width, 0, angle), position.y + MathUtil.newYTurn(width, 0, angle)), 5, (Color) Color.CYAN);
-    }
-
-    @Override
-    public void playSound() {
-    }
-
-    @Override
-    public void toThink() {
-
-    }
-
-    @Override
-    public boolean firePrimary() {
-        onShootPrimary = true;
-        return false;
-    }
-
-    @Override
-    public boolean fireAlternative() {
-        onShootAlternative = true;
-        return false;
-    }
-
-    @Override
-    public void destroy() {
-
     }
 
     public static void addWeaponToLibrary(SheetParse config) {
@@ -322,6 +217,121 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
         return listWeapon;
     }
 
+    @Override
+    public void update() {
+        //primary weapon
+        if (onShootPrimary) {
+            //id relaod complited
+            if (reloadingTimerPrimary < 0) {
+                //create shoot
+
+                Ammo ammo;
+                for (int i = 0; i < countAmmoPrimaryPerShoot; i++) {
+                    //hack new Vector2f(0,0) - Artiom
+                    ammo = Ammo.getAmmo(new Vector2f(0, 0), new Vector2f(0, 0), level, nameAmmoPrimary);
+                    float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / ammo.getPhysicObject().getMass());
+                    Vector2f shell_speed_vector =
+                            new Vector2f(
+                                    (float) (Math.cos(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed),
+                                    (float) Math.sin(angle + randomizeFirePrimary * Math.random() - randomizeFirePrimary / 2f) * shell_speed);
+                    Vector2f shell_position = new Vector2f(position.x +
+                            MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON + ammo.getRadius(), 0, angle),
+                            position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON + ammo.getRadius(), 0, angle));
+                    ammo.getPhysicObject().setSpeed(shell_speed_vector);
+                    ammo.getPhysicObject().setPosition(shell_position);
+                    ammo.getPhysicObject().setAngle(angle);
+                    level.getNotAddedGameObjects().add(ammo);
+                }
+
+
+                //RubberBall rubberBall = new RubberBall(shell_position, shell_speed_vector, level);
+                //action for game logic
+                reloadingTimerPrimary = reloadTimePrimary;
+            }
+        }
+        //alternative weapon
+        if (onShootAlternative) {
+            //id relaod complited
+            if (reloadingTimerAlternative < 0) {
+                //create shoot
+
+                Vector2f shell_position = new Vector2f(position.x +
+                        MathUtil.newXTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle), position.y + MathUtil.newYTurn(width + LENGTH_BETWEEN_SPAWN_AREA_AMMO_AND_WEAPON, 0, angle));
+                Ammo ammo;
+                for (int i = 0; i < countAmmoAlternativePerShoot; i++) {
+                    //hack new Vector2f(0,0) - Artiom
+                    ammo = Ammo.getAmmo(shell_position, new Vector2f(0, 0), level, nameAmmoAlternative);
+                    float shell_speed = (float) Math.sqrt(2 * kineticEnergyPrimary / ammo.getPhysicObject().getMass());
+                    Vector2f shell_speed_vector =
+                            new Vector2f(
+                                    (float) (Math.cos(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed),
+                                    (float) Math.sin(angle + randomizeFireAlternative * Math.random() - randomizeFireAlternative / 2f) * shell_speed);
+                    ammo.getPhysicObject().setSpeed(shell_speed_vector);
+                    ammo.getPhysicObject().setAngle(angle);
+                    level.getNotAddedGameObjects().add(ammo);
+                }
+                //RubberBall rubberBall = new RubberBall(shell_position, shell_speed_vector, level);
+                //action for game logic
+                reloadingTimerAlternative = reloadTimeAlternative;
+            }
+        }
+
+        onShootAlternative = false;
+        onShootPrimary = false;
+        reloadingTimerAlternative--;
+        reloadingTimerPrimary--;
+    }
+
+    @Override
+    public void move() {
+        position = fatherObj.getPosition();
+        Vector2f vector = level.getMousePosition();
+        if (level.getPlayer().getControlledObject() == fatherObj) {
+            angle = level.getAngleBetweenShipAndCursor();
+        }
+    }
+
+    @Override
+    public void draw() {
+        RenderUtil.drawLine(new Vector2f(position),
+                new Vector2f(position.x + MathUtil.newXTurn(width, 0, angle), position.y + MathUtil.newYTurn(width, 0, angle)), 5, (Color) Color.CYAN);
+    }
+
+    @Override
+    public void playSound() {
+    }
+
+    @Override
+    public void toThink() {
+
+    }
+
+    @Override
+    public String getAdditionalName() {
+        return additionalName;
+    }
+
+    @Override
+    public String getMyClassName() {
+        return CLASS_NAME;
+    }
+
+    @Override
+    public boolean firePrimary() {
+        onShootPrimary = true;
+        return false;
+    }
+
+    @Override
+    public boolean fireAlternative() {
+        onShootAlternative = true;
+        return false;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
 
     //copy all field nead
     public Weapon clone() {
