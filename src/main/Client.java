@@ -16,6 +16,8 @@ import java.util.List;
 
 public final class Client {
 
+    private static Client client;
+
     private Game game;
 
     private Sound sound;
@@ -40,6 +42,8 @@ public final class Client {
 
     // States
 
+    boolean testMode;
+
     public static int ERROR = -1;
 
     public static int LOAD_RESOURCES = 1;
@@ -48,9 +52,11 @@ public final class Client {
 
     public static int GAME = 3;
 
+    public static int GLOBAL_WORLD = 4;
+
     public static int EXIT = 13;
 
-    public Client() {
+    private Client() {
         state = LOAD_RESOURCES;
         configsLibrary = ConfigsLibrary.get();
         inputToAction = InputToAction.get();
@@ -66,10 +72,15 @@ public final class Client {
         ai = new AI();
         controller = Controller.createController(this);
         state = GAME;
-        // TODO change this line by call construktor with good parametrs - type of level
-        // , physic const, logic const
         game = new Game(this);
 
+    }
+
+    public static Client get() {
+        if (client == null) {
+            client = new Client();
+        }
+        return client;
     }
 
     private void cleanup() {
@@ -135,6 +146,13 @@ public final class Client {
 
     // TODO add commands parametrs to start with there
     public static void main(String args[]) {
+        /*if(args.length>0)  {
+            for (int i = 0; i < ; i++) {
+                
+            }
+            
+            args[0]
+        } */
         Client client = new Client();
         client.start();
     }

@@ -96,7 +96,7 @@ public class Game {
                 logic.tick();
                 ai.tick();
                 sound.tick();
-                    render.tick();
+                render.tick();
 
                 if (Global.realTime) {
                     render.syncFps(Global.FPS);
@@ -197,7 +197,8 @@ public class Game {
                             level.getPlayer().getControlledObject()
                                     .doAction(InputToAction.nextWeapon);
                             break;
-                        }case InputToAction.previousWeapon: {
+                        }
+                        case InputToAction.previousWeapon: {
                             level.getPlayer().getControlledObject()
                                     .doAction(InputToAction.previousWeapon);
                             break;
@@ -258,7 +259,7 @@ public class Game {
 
     public float getAngleBetweenShipAndCursor() {
         if (render.getStateViewPort() == Render.VIEWPORT_ON_PLAYER) {
-            return (float) (Math.PI + Math.atan2(render.getHeight()/ 2 - controller.getMousePosition().y, render.getWidth() / 2
+            return (float) (Math.PI + Math.atan2(render.getHeight() / 2 - controller.getMousePosition().y, render.getWidth() / 2
                     - controller.getMousePosition().x));
         }
 
