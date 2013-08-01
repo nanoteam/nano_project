@@ -214,7 +214,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
         //get random ammo
         if (nameAmmo.equals("any")) {
             //calculate random ammo from list,
-            int randomAmmo = Global.random.nextInt(libraryAmmo.size());
+            int randomAmmo = MathUtil.random.nextInt(libraryAmmo.size());
             //get name for get obj ammo
             nameAmmo = new String((String) libraryAmmo.keySet().toArray()[randomAmmo]);
         }
@@ -320,12 +320,12 @@ public class Ammo extends GamePhysicObject implements IsClonable {
         physicObject.destroy();
         if (haveWarHead) {
             for (int i = 0; i < countParticle; i++) {
-                float angle = (float) (Global.random.nextFloat() * 2f * Math.PI);
-                float speedRandom = Global.random.nextFloat() * speedParticle;
+                float angle = (float) (MathUtil.random.nextFloat() * 2f * Math.PI);
+                float speedRandom = MathUtil.random.nextFloat() * speedParticle;
                 Vector2f speedParticleVector = new Vector2f((float) (Math.cos(angle) * speedRandom + speedFatherShell.x),
                         (float) (Math.sin(angle) * speedRandom + speedFatherShell.y));
                 //magic constant for disable collise between particle
-                level.getNotAddedGameObjects().add(Ammo.getAmmo(new Vector2f(position.x + Global.random.nextInt((int) radius), position.y + Global.random.nextInt((int) radius)), speedParticleVector, level, ammoWarHead));
+                level.getNotAddedGameObjects().add(Ammo.getAmmo(new Vector2f(position.x + MathUtil.random.nextInt((int) radius), position.y + MathUtil.random.nextInt((int) radius)), speedParticleVector, level, ammoWarHead));
                 //level.getNotAddedGameObjects().add(new Particle(new Vector2f(position), speedParticleVector, 5, 300, color));
             }
         }
@@ -348,7 +348,7 @@ public class Ammo extends GamePhysicObject implements IsClonable {
         cloneAmmo.percentageAntiMass = percentageAntiMass;
         cloneAmmo.impulseToDestruction = impulseToDestruction;
         cloneAmmo.impulseToDetonate = impulseToDetonate;
-        cloneAmmo.timeToDetonate = (timeToDetonate) + Global.random.nextInt((int) (timeToDetonate / 10f));
+        cloneAmmo.timeToDetonate = (timeToDetonate) + MathUtil.random.nextInt((int) (timeToDetonate / 10f));
         cloneAmmo.airResistant = airResistant;
         cloneAmmo.haveTimer = haveTimer;
         cloneAmmo.haveForceTraction = haveForceTraction;

@@ -1,5 +1,6 @@
 package controller;
 
+import resourses.configuration.ConfigsLibrary;
 import resourses.configuration.SheetParse;
 import util.LightInteger;
 
@@ -26,10 +27,8 @@ public final class InputToAction {
 
     public final static int specialAction = 6;
 
-
     public final static int previousWeapon = 30;
     public final static int nextWeapon = 31;
-
 
     //not use by player
 
@@ -73,34 +72,18 @@ public final class InputToAction {
 
     private static InputToAction inputToAction;
 
-    // name of action must be equals name action in files!!!
+
     private InputToAction() {
-        // low level action
+        fillNameToAction();
+        initByConfig();
+    }
+
+    // name of action must be equals name action in files!!!
+    private void fillNameToAction() {
         nameToAction.put("Left", new LightInteger(left));
         nameToAction.put("Right", new LightInteger(right));
         nameToAction.put("Up", new LightInteger(up));
         nameToAction.put("Down", new LightInteger(down));
-        /*
-        nameToAction.put("LeftEngineOn", new LightInteger(leftEngineOn));
-        nameToAction.put("RightEngineOn", new LightInteger(rightEngineOn));
-
-        nameToAction.put("LeftEngineLeft", new LightInteger(leftEngineLeft));
-        nameToAction.put("LeftEngineRight", new LightInteger(leftEngineRight));
-        nameToAction.put("RightEngineLeft", new LightInteger(rightEngineLeft));
-        nameToAction.put("RightEngineRight", new LightInteger(rightEngineRight));
-
-        nameToAction.put("LeftEngineOn", new LightInteger(leftEngineOn));
-        nameToAction.put("RightEngineOn", new LightInteger(rightEngineOn));
-
-
-        nameToAction.put("Spec2", new LightInteger(spec2));
-
-        nameToAction.put("Move", new LightInteger(move));
-        nameToAction.put("Fire", new LightInteger(fire));
-
-        nameToAction.put("ComboChoiseFirst", new LightInteger(comboChoiseFirst));
-        nameToAction.put("ComboChoiseSecond", new LightInteger(comboChoiseSecond));
-        nameToAction.put("ComboChoiseStop", new LightInteger(comboChoiseStop));*/
 
         nameToAction.put("SpecialAction", new LightInteger(specialAction));
 
@@ -114,17 +97,33 @@ public final class InputToAction {
 
         nameToAction.put("PreviousWeapon", new LightInteger(previousWeapon));
         nameToAction.put("NextWeapon", new LightInteger(nextWeapon));
-    }
 
-    public static InputToAction get() {
-        if (inputToAction == null) {
-            inputToAction = new InputToAction();
-        }
-        return inputToAction;
+        /*
+        nameToAction.put("LeftEngineOn", new LightInteger(leftEngineOn));
+        nameToAction.put("RightEngineOn", new LightInteger(rightEngineOn));
+
+        nameToAction.put("LeftEngineLeft", new LightInteger(leftEngineLeft));
+        nameToAction.put("LeftEngineRight", new LightInteger(leftEngineRight));
+        nameToAction.put("RightEngineLeft", new LightInteger(rightEngineLeft));
+        nameToAction.put("RightEngineRight", new LightInteger(rightEngineRight));
+
+        nameToAction.put("LeftEngineOn", new LightInteger(leftEngineOn));
+        nameToAction.put("RightEngineOn", new LightInteger(rightEngineOn));
+
+        nameToAction.put("Spec2", new LightInteger(spec2));
+
+        nameToAction.put("Move", new LightInteger(move));
+        nameToAction.put("Fire", new LightInteger(fire));
+
+        nameToAction.put("ComboChoiseFirst", new LightInteger(comboChoiseFirst));
+        nameToAction.put("ComboChoiseSecond", new LightInteger(comboChoiseSecond));
+        nameToAction.put("ComboChoiseStop", new LightInteger(comboChoiseStop));*/
     }
 
     // filling keyboardEventToAction
-    public void init(SheetParse sheetParse) {
+    //work with SheetParse
+    public void initByConfig() {
+        SheetParse sheetParse = ConfigsLibrary.get().getConfig(ConfigsLibrary.pathToSetting);
         SheetParse player = sheetParse.findSheetParseByName("Input");
         player = player.findSheetParseByName("Player1");
 
@@ -220,7 +219,6 @@ public final class InputToAction {
         return -10;
     }
 
-    //need to
     public void configKeys() {
         HashMap<String, String> list = new HashMap<String, String>();
         boolean complite;
@@ -257,5 +255,12 @@ public final class InputToAction {
             new Exception("InputToAction.getAllCodeKey - InputToAction not initialized");
         }
         return null;
+    }
+
+    public static InputToAction get() {
+        if (inputToAction == null) {
+            inputToAction = new InputToAction();
+        }
+        return inputToAction;
     }
 }

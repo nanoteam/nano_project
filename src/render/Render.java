@@ -4,100 +4,114 @@
  */
 package render;
 
-import logic.Level;
 import logic.entity.GameObject;
 import main.Engine;
-import main.Global;
+import main.Game;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-
 import org.lwjgl.util.vector.Vector2f;
-
+import resourses.configuration.ConfigsLibrary;
+import resourses.configuration.SheetParse;
 
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Render implements Engine {
-    private Level level;
+    private Game game;
     public static final int VIEWPORT_GLOBAL_WORLD = 0;
     public static final int VIEWPORT_ON_PLAYER = 1;
     private int stateViewPort = 0;
     private static float zoom = 1;
-
     private float left, right, top, bottom;
-    private int width, height;
+
+    private int resolutionX = 100, resolutionY = 100;
+    private boolean fullScreen = false;
+    private int renderFps = 60;
 
     //TODO add avto detecting optimal working set display, 1600x900x32 or 640x480x16 or ...
     public Render() {
+        initByConfig();
         stateViewPort = Render.VIEWPORT_ON_PLAYER;
         try {
-            Display.setFullscreen(Global.FULLSCREEN);
-            if (Global.FULLSCREEN) {
+            Display.setFullscreen(fullScreen);
+            if (fullScreen) {
                 Display.create();
-                width = Display.getWidth();
-                height = Display.getHeight();
+                resolutionX = Display.getWidth();
+                resolutionY = Display.getHeight();
             } else {
-                width = Global.DEFAULT_RESOLUTION_X;
-                height = Global.DEFAULT_RESOLUTION_Y;
-                Display.setDisplayMode(new DisplayMode(width,height));
+                Display.setDisplayMode(new DisplayMode(resolutionX, resolutionY));
                 Display.create();
             }
             // Enable vsync if we can
             //Display.setVSyncEnabled(true);
         } catch (LWJGLException e) {
             e.printStackTrace();
+            System.exit(-1);
         }
         //without this part of code render not working correctly!
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
+        glOrtho(0.0, resolutionX, 0.0, resolutionY, -1.0, 1.0);
         //glMatrixMode(GL_MODELVIEW);
         //glLoadIdentity();
-        //glViewport(0, 0, Display.getDisplayMode().getWidth(), Display
-        //		.getDisplayMode().getHeight());
+        //glViewport(0, 0, Display.getDisplayMode().getResolutionX(), Display
+        //		.getDisplayMode().getResolutionY());
         //glViewport(0, 0,3200,1800);
         setZoom(1);
     }
 
-    public Level getLevel() {
-        return level;
+    private void initByConfig() {
+        SheetParse setting = ConfigsLibrary.get().getConfig(ConfigsLibrary.pathToSetting);
+        try {
+            resolutionX = Integer.parseInt(setting.findSheetParseByName("ResolutionX").getValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            resolutionY = Integer.parseInt(setting.findSheetParseByName("ResolutionY").getValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            fullScreen = Boolean.parseBoolean(setting.findSheetParseByName("FullScreen").getValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            renderFps = Integer.parseInt(setting.findSheetParseByName("RenderFps").getValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
+    //todo create mechanizm update OpenGL setting only after changing setting
     @Override
     public void tick() {
         if (stateViewPort == VIEWPORT_ON_PLAYER) {
-            Vector2f p = level.getPlayer().getControlledObject().getPosition();
-
-
-
-
-            float left = -width / 2;
-            float right = width / 2;
-            float bottom = -height / 2;
-            float top = height / 2;
+            Vector2f p = game.getPlayer().getControlledObject().getPosition();
+            float left = -resolutionX / 2;
+            float right = resolutionX / 2;
+            float bottom = -resolutionY / 2;
+            float top = resolutionY / 2;
             //glOrtho(left, right, bottom, top, -1, 1);
 
-            glViewport(0, 0, width, height);
+            glViewport(0, 0, resolutionX, resolutionY);
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(0, width, 0, height, -1, 1);
+            glOrtho(0, resolutionX, 0, resolutionY, -1, 1);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             glScalef(zoom, zoom, zoom);
-            glTranslatef((int) (-p.x + width / 2 / zoom), (int) (-p.y + height / 2 / zoom), 0);
+            glTranslatef((int) (-p.x + resolutionX / 2 / zoom), (int) (-p.y + resolutionY / 2 / zoom), 0);
         } else {
             zoom = 1;
             //glViewport(0, 1600, 0, 900);
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
 
-            glOrtho(0, width, 0, height, -1, 1);
+            glOrtho(0, resolutionX, 0, resolutionY, -1, 1);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             glScalef(1, 1, 1);
@@ -112,46 +126,28 @@ public class Render implements Engine {
         //glSelectBuffer();
         //
         glPushMatrix();
-        List<GameObject> game_objects = level.getGameObjects();
-        for (GameObject game_object : game_objects) {
-            game_object.draw();
+
+        if (game.getState() == Game.STATE_LOCAL_GAME) {
+            List<GameObject> game_objects = game.getLevel().getGameObjects();
+            for (GameObject game_object : game_objects) {
+                game_object.draw();
+            }
+        }
+
+        if (game.getState() == Game.STATE_GLOBAL_GAME) {
+            List<GameObject> game_objects = game.getGlobalWorld().getGameObjects();
+            for (GameObject game_object : game_objects) {
+                game_object.draw();
+            }
+        }
+
+        if (game.getState() == Game.STATE_GAME_MENU) {
+
         }
         glPopMatrix();
+
+
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -186,16 +182,29 @@ public class Render implements Engine {
         }
     }
 
-    // TODO move this method in other classs
-    public void syncFps(int frameRate) {
-        Display.sync(frameRate);
+    public void syncFps() {
+        Display.sync(renderFps);
     }
 
-    public int getWidth() {
-        return width;
+
+    public int getResolutionX() {
+        return resolutionX;
     }
 
-    public int getHeight() {
-        return height;
+    public int getResolutionY() {
+        return resolutionY;
     }
+
+    public boolean isFullScreen() {
+        return fullScreen;
+    }
+
+    public int getRenderFps() {
+        return renderFps;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
 }

@@ -1,6 +1,6 @@
 package ai.nnga;
 
-import main.Global;
+import util.MathUtil;
 
 class Chromosome {
     public final static float MIN_KOOF = -3;
@@ -20,7 +20,7 @@ class Chromosome {
     public Chromosome() {
         for (int k = 0; k < NUMBER_N; k++) {
             for (int i = 0; i < NUMBER_GEN; i++) {
-                gens[k][i] = MIN_KOOF + Global.random.nextFloat() * (MAX_KOOF - MIN_KOOF);
+                gens[k][i] = MIN_KOOF + MathUtil.random.nextFloat() * (MAX_KOOF - MIN_KOOF);
             }
         }
         complexMark = new float[NUMBER_TEST][NUMBER_COMPLEX_MARK];
@@ -44,17 +44,17 @@ class Chromosome {
         for (int k = 0; k < NUMBER_N; k++) {
             for (int i = 0; i < NUMBER_GEN; i++) {
                 //crossover
-                if (Global.random.nextFloat() > 0.5f) {
+                if (MathUtil.random.nextFloat() > 0.5f) {
                     if (parents1.getGen(k, i) > parents2.gens[k][i]) {
-                        newBox[k][i] = parents2.gens[k][i] + (parents1.gens[k][i] - parents2.gens[k][i]) * Global.random.nextFloat();
+                        newBox[k][i] = parents2.gens[k][i] + (parents1.gens[k][i] - parents2.gens[k][i]) * MathUtil.random.nextFloat();
                     } else {
-                        newBox[k][i] = parents1.gens[k][i] + (parents2.gens[k][i] - parents1.gens[k][i]) * Global.random.nextFloat();
+                        newBox[k][i] = parents1.gens[k][i] + (parents2.gens[k][i] - parents1.gens[k][i]) * MathUtil.random.nextFloat();
                     }
                     continue;
                 }
                 //easy turn gen
                 else {
-                    if (Global.random.nextFloat() > 0.5f) {
+                    if (MathUtil.random.nextFloat() > 0.5f) {
                         newBox[0][i] = parents1.gens[0][i];
                         newBox[1][i] = parents1.gens[1][i];
                     } else {
@@ -63,16 +63,16 @@ class Chromosome {
                     }
                 }
                 //passive gen to active
-                if (Global.random.nextFloat() > 0.3) {
+                if (MathUtil.random.nextFloat() > 0.3) {
                     float t = newBox[1][i];
                     newBox[1][i] = newBox[0][i];
                     newBox[0][i] = t;
                 }
 
                 //mutation
-                if (Global.random.nextFloat() > 0.3) {
-                    newBox[0][i] += (Global.random.nextFloat() - 0.5f);
-                    newBox[1][i] += (Global.random.nextFloat() - 0.5f);
+                if (MathUtil.random.nextFloat() > 0.3) {
+                    newBox[0][i] += (MathUtil.random.nextFloat() - 0.5f);
+                    newBox[1][i] += (MathUtil.random.nextFloat() - 0.5f);
                 }
             }
 
@@ -104,13 +104,13 @@ class Chromosome {
 
 
     public String getComplexMarkToString() {
-        return ("test1 main mark = " + complexMark[0][0] +" "+ complexMark[1][0] +" "+ complexMark[2][0] + "\n" +
-                " timeFly = " + complexMark[0][1] +" "+ complexMark[1][1] +" "+ complexMark[2][1] + "\n" +
-                " energoCoast = " + complexMark[0][2] +" "+ complexMark[1][2] +" "+ complexMark[2][2] + "\n" +
-                " sopriagenie = " + complexMark[0][3] +" "+ complexMark[1][3] +" "+ complexMark[2][3] + "\n" +
-                " dxy = " + complexMark[0][4] +" "+ complexMark[1][4] +" "+ complexMark[2][4] + "\n" +
-                " warningAngle = " + complexMark[0][5] +" "+ complexMark[1][5] +" "+ complexMark[2][5] + "\n" + " " +
-                "rotateAngle = " + complexMark[0][6] +" "+ complexMark[1][6] +" "+ complexMark[2][6] + "\n");
+        return ("test1 main mark = " + complexMark[0][0] + " " + complexMark[1][0] + " " + complexMark[2][0] + "\n" +
+                " timeFly = " + complexMark[0][1] + " " + complexMark[1][1] + " " + complexMark[2][1] + "\n" +
+                " energoCoast = " + complexMark[0][2] + " " + complexMark[1][2] + " " + complexMark[2][2] + "\n" +
+                " sopriagenie = " + complexMark[0][3] + " " + complexMark[1][3] + " " + complexMark[2][3] + "\n" +
+                " dxy = " + complexMark[0][4] + " " + complexMark[1][4] + " " + complexMark[2][4] + "\n" +
+                " warningAngle = " + complexMark[0][5] + " " + complexMark[1][5] + " " + complexMark[2][5] + "\n" + " " +
+                "rotateAngle = " + complexMark[0][6] + " " + complexMark[1][6] + " " + complexMark[2][6] + "\n");
     }
 
 

@@ -26,17 +26,17 @@ public class Controller implements Engine {
     private List<StateMouse> stateMouseList;
     private List<StateKeyboard> stateKeyboardList;
 
-	private Controller(Client client) {
-		keyboard = new Keyboard(this, client.getInputToAction().getAllNeedKeybKeys());
+	private Controller() {
+		keyboard = new Keyboard(this, InputToAction.get().getAllNeedKeybKeys());
         keyboardOn = true;
         mouseOn = true;
 		mouse = new Mouse(this);
-		this.client = client;
+        client = Client.get();
 	}
 
-    public static Controller createController(Client client) {
+    public static Controller get() {
         if (controller == null) {
-            controller = new Controller(client);
+            controller = new Controller();
         }
         return controller;
     }

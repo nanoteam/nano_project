@@ -12,6 +12,7 @@ import controller.Controller;
 import controller.InputToAction;
 import controller.StateKeyboard;
 import controller.StateMouse;
+import logic.GlobalWorld;
 import logic.Level;
 import logic.Logic;
 import logic.entity.Player;
@@ -29,7 +30,6 @@ public class Game {
 
     private boolean finished;
 
-    private Level level;
 
     private Sound sound;
 
@@ -42,10 +42,21 @@ public class Game {
     private Controller controller;
 
     private AI ai;
-    // TODO add more good code to change work Game with Player
+
     private Player player;
 
     private InputToAction inputToAction;
+
+    private GlobalWorld globalWorld;
+
+    private Level level;
+
+    public static final int STATE_INIT_GAME = 0;
+    public static final int STATE_LOCAL_GAME = 1;
+    public static final int STATE_GLOBAL_GAME = 2;
+    public static final int STATE_GAME_MENU = 3;
+
+    private int state;
 
     public boolean isFinished() {
         return finished;
@@ -55,27 +66,34 @@ public class Game {
         this.finished = finished;
     }
 
-    // TODO add mechanizm creating level with parametrs from Client
-    public Game(Client client) {
-        this.player = new Player();
-        level = Level.getLevel(this, "any");
+    public Game(Client client, boolean isTest) {
+        if (isTest) {
+            state = STATE_INIT_GAME;
+            this.client = client;
+            sound = client.getSound();
+            render = client.getRender();
+            physic = client.getPhysic();
+            logic = client.getLogic();
+            controller = client.getController();
+            inputToAction = client.getInputToAction();
+            ai = client.getAI();
 
-        //level.testLevelStudyAI();
-        level.testInitLevel();
+            player = new Player();
+            globalWorld = GlobalWorld.get();
+            level = Level.getLevel(this, "any");
+            level.testInitLevel();
 
-        this.client = client;
-        sound = client.getSound();
-        render = client.getRender();
-        physic = client.getPhysic();
-        logic = client.getLogic();
-        controller = client.getController();
-        ai = client.getAI();
-        sound.setLevel(level);
-        render.setLevel(level);
-        physic.setLevel(level);
-        logic.setLevel(level);
-        ai.setLevel(level);
-        inputToAction = client.getInputToAction();
+            sound.setGame(this);
+            render.setGame(this);
+            physic.setGame(this);
+            logic.setGame(this);
+            ai.setGame(this);
+            state = STATE_GLOBAL_GAME;
+        } else {
+            System.out.println("Auto exit, method Game(Client client, boolean isTest)");
+            System.exit(0);
+        }
+        //start();
     }
 
     /**
@@ -99,7 +117,7 @@ public class Game {
                 render.tick();
 
                 if (Global.realTime) {
-                    render.syncFps(Global.FPS);
+                    render.syncFps();
                 }
             } else {
                 //go sleep game! game go to menu!
@@ -111,7 +129,7 @@ public class Game {
                 ai.tick();
                 sound.tick();
                 if (Global.realTime) {
-                    render.syncFps(Global.FPS);
+                    render.syncFps();
                 }
                 /*
          if (Display.isVisible() || Display.isDirty()) {
@@ -259,7 +277,7 @@ public class Game {
 
     public float getAngleBetweenShipAndCursor() {
         if (render.getStateViewPort() == Render.VIEWPORT_ON_PLAYER) {
-            return (float) (Math.PI + Math.atan2(render.getHeight() / 2 - controller.getMousePosition().y, render.getWidth() / 2
+            return (float) (Math.PI + Math.atan2(render.getResolutionY() / 2 - controller.getMousePosition().y, render.getResolutionX() / 2
                     - controller.getMousePosition().x));
         }
 
@@ -268,5 +286,21 @@ public class Game {
                     - controller.getMousePosition().x));
         }
         return 0;
+    }
+
+    private void goToMainMenu() {
+
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public GlobalWorld getGlobalWorld() {
+        return globalWorld;
     }
 }

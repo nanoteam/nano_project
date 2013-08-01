@@ -4,50 +4,63 @@
  */
 package logic;
 
+import logic.entity.GameObject;
+import main.Engine;
+import main.Game;
+
 import java.util.List;
 
-import logic.entity.GameObject;
-import main.Client;
-import main.Engine;
-
 public class Logic implements Engine {
-	private Level level;
-	private Client client;
+    private Game game;
 
-	public Logic(Client client) {
-		this.client = client;
-	}
 
-	public Level getLevel() {
-		return level;
-	}
+    public Logic() {
+    }
 
-	public void setLevel(Level level) {
-		this.level = level;
-	}
+    public Level getLevel() {
+        return game.getLevel();
+    }
 
-	@Override
-	public void tick() {
-		List<GameObject> game_objects = level.getGameObjects();
-		for (GameObject game_object : game_objects) {
-			game_object.update();
-			if (!game_object.isLive()){
-				level.getNotDeletedGameObjects().add(game_object);
-			}
-		}
-		// add some objects which created while foreach is going
-		level.deleteNotDeletedObjects();
-		level.addNotAddedObjects();
-        // ai code - GA
-        /*
-        if(level.getPlayer().getControlledObject()==null){
-            level.restartShip();
+
+    @Override
+    public void tick() {
+        // add some objects which created while foreach is going
+        if (game.getState() == Game.STATE_LOCAL_GAME) {
+            List<GameObject> game_objects = game.getLevel().getGameObjects();
+            for (GameObject game_object : game_objects) {
+                game_object.update();
+                if (!game_object.isLive()) {
+                    game.getLevel().getNotDeletedGameObjects().add(game_object);
+                }
+            }
+            game_objects = game.getGlobalWorld().getGameObjects();
+            for (GameObject game_object : game_objects) {
+                game_object.update();
+                if (!game_object.isLive()) {
+                    game.getLevel().getNotDeletedGameObjects().add(game_object);
+                }
+            }
         }
-        */
 
-	}
+        if (game.getState() == Game.STATE_GLOBAL_GAME) {
+            List<GameObject> game_objects = game.getGlobalWorld().getGameObjects();
+            for (GameObject game_object : game_objects) {
+                game_object.update();
+                if (!game_object.isLive()) {
+                    game.getLevel().getNotDeletedGameObjects().add(game_object);
+                }
+            }
+        }
 
-	@Override
-	public void cleanUp() {
-	}
+        game.getLevel().deleteNotDeletedObjects();
+        game.getLevel().addNotAddedObjects();
+    }
+
+    @Override
+    public void cleanUp() {
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 }

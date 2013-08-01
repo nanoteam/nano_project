@@ -5,6 +5,7 @@ import logic.entity.ship.Ship;
 import main.Global;
 import org.lwjgl.util.Color;
 import org.lwjgl.util.vector.Vector2f;
+import physic.Physic;
 import physic.RayCastClosestCallback;
 
 import java.util.*;
@@ -134,7 +135,7 @@ public class BotShip {
         RayCastClosestCallback rayCastClosestCallback = new RayCastClosestCallback();
 
         ship.getLevel().getWorld().raycast(rayCastClosestCallback,
-                ship.getPhysicObject().getBody().getPosition(), Global.convertToVec2(ship.getLevel().getPlayer().getControlledObject().getPosition()));
+                ship.getPhysicObject().getBody().getPosition(), Physic.convertToVec2(ship.getLevel().getPlayer().getControlledObject().getPosition()));
 
         if (rayCastClosestCallback.isVisible()) {
             scream();

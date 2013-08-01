@@ -16,6 +16,7 @@ import org.lwjgl.util.vector.Vector2f;
 import physic.PhysicObject;
 import resourses.configuration.SheetParse;
 import util.LightInteger;
+import util.MathUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +77,6 @@ public class Level {
         //Bot bot = new Bot(ship2);
         //gameObjects.add(ship2);
         //gameObjects.add(bot);
-
 
         //border
         Wall leftWall = new Wall(0, 0, 0, heightLevel, 10, this);
@@ -170,10 +170,10 @@ public class Level {
         // gameObjects.add(new Chain(this, ship.getBody(), ship.getPosition(),
         // ship.getBody(), new Vector2f(100, 200)));
 
-// ManipulareTool mt = new ManipulareTool(this, new Vector2f(670f, 500f));
-//		gameObjects.add(mt);
-//		gameObjects.add(new Chain(this, upWall.getBody(),
-//				new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));     */
+        // ManipulareTool mt = new ManipulareTool(this, new Vector2f(670f, 500f));
+        //		gameObjects.add(mt);
+        //		gameObjects.add(new Chain(this, upWall.getBody(),
+        //				new Vector2f(670, 797), mt.getBody(), new Vector2f(670, 480)));     */
     }
 
     public Player getPlayer() {
@@ -643,7 +643,7 @@ public class Level {
         //get random level
         if (nameLevel.equals("any")) {
             //calculate random level from list,
-            int randomLevel = Global.random.nextInt(libraryLevel.size());
+            int randomLevel = MathUtil.random.nextInt(libraryLevel.size());
             //get name for get obj level
             nameLevel = new String((String) libraryLevel.keySet().toArray()[randomLevel]);
         }

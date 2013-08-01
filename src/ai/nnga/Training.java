@@ -1,6 +1,7 @@
 package ai.nnga;
 
 import main.Global;
+import util.MathUtil;
 
 public class Training {
     //number elite + number child = number all
@@ -227,9 +228,9 @@ public class Training {
         int k;
         for (int i = 0; i < CHILD_NUMBER_CROMSONE; i++) {
             //i,k - parents chromosome
-            k = Global.random.nextInt(ALL_NUMBER_CROMSONE);
+            k = MathUtil.random.nextInt(ALL_NUMBER_CROMSONE);
             while (k == i) {
-                k = Global.random.nextInt(ALL_NUMBER_CROMSONE);
+                k = MathUtil.random.nextInt(ALL_NUMBER_CROMSONE);
             }
             Chromosome cromsone;
             cromsone = Chromosome.newChild(eliteChromosomeList[i], eliteChromosomeList[k]);

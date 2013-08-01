@@ -1,14 +1,15 @@
 package logic;
 
 
-import main.Engine;
-import main.Global;
+import logic.entity.GameObject;
+import util.MathUtil;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GlobalWorld implements Engine {
+public class GlobalWorld extends GameObject {
+    private static GlobalWorld globalWorld;
 
     private static final int NUMBER_BY_X_LEVELS = 5;
     private static final int NUMBER_BY_Y_LEVELS = 5;
@@ -18,7 +19,7 @@ public class GlobalWorld implements Engine {
     private static final int DISTANCE_BETWEEN_WORLDS = 60;
     private static final int DISTANCE_BETWEEN_WORLDS_DEVIATION = 20;
 
-    private static GlobalWorld globalWorld;
+    private List<GameObject> gameObjects = new ArrayList<GameObject>();
     private List<GlobalLevel> globalLevels = new ArrayList<GlobalLevel>();
     private ArrayDeque<GlobalLevel> dequeForTeleport = new ArrayDeque<GlobalLevel>();
 
@@ -26,20 +27,15 @@ public class GlobalWorld implements Engine {
         int orderNumber = 0;
         for (int i = 0; i < NUMBER_BY_X_LEVELS; i++)
             for (int j = 0; j < NUMBER_BY_Y_LEVELS; j++) {
-                globalLevels.add(new GlobalLevel(i * DISTANCE_BETWEEN_WORLDS + DISTANCE_BETWEEN_WORLDS_DEVIATION / 2 - Global.random.nextInt(DISTANCE_BETWEEN_WORLDS_DEVIATION),
-                                                 j * DISTANCE_BETWEEN_WORLDS + DISTANCE_BETWEEN_WORLDS_DEVIATION / 2 - Global.random.nextInt(DISTANCE_BETWEEN_WORLDS_DEVIATION),
-                                                 orderNumber++, Global.random.nextInt(MAX_TIME_FOR_TIMER)));
+                globalLevels.add(new GlobalLevel(i * DISTANCE_BETWEEN_WORLDS + DISTANCE_BETWEEN_WORLDS_DEVIATION / 2 - MathUtil.random.nextInt(DISTANCE_BETWEEN_WORLDS_DEVIATION),
+                        j * DISTANCE_BETWEEN_WORLDS + DISTANCE_BETWEEN_WORLDS_DEVIATION / 2 - MathUtil.random.nextInt(DISTANCE_BETWEEN_WORLDS_DEVIATION),
+                        orderNumber++, MathUtil.random.nextInt(MAX_TIME_FOR_TIMER)));
             }
+        gameObjects.add(this);
     }
 
-    public static GlobalWorld get() {
-        if (globalWorld == null) {
-            globalWorld = new GlobalWorld();
-        }
-        return globalWorld;
-    }
-
-    public void tick() {
+    @Override
+    public void update() {
         for (GlobalLevel globalLevel : globalLevels) {
             globalLevel.update();
             if (globalLevel.isReadyToTeleport()) {
@@ -49,10 +45,40 @@ public class GlobalWorld implements Engine {
                 }
             }
         }
+    }
+
+    @Override
+    public void move() {
+
+    }
+
+    @Override
+    public void draw() {
         for (GlobalLevel globalLevel : globalLevels) {
             globalLevel.draw();
         }
+    }
 
+    @Override
+    public void playSound() {
+
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    @Override
+    public void toThink() {
+
+    }
+
+    public static GlobalWorld get() {
+        if (globalWorld == null) {
+            globalWorld = new GlobalWorld();
+        }
+        return globalWorld;
     }
 
     public void cleanUp() {
@@ -60,18 +86,26 @@ public class GlobalWorld implements Engine {
     }
 
     //add emmiter effects
-    public void exchange(GlobalLevel globalLevel1, GlobalLevel globalLevel2) {
+    private void exchange(GlobalLevel globalLevel1, GlobalLevel globalLevel2) {
         int x = globalLevel1.getX(), y = globalLevel1.getY();
-
         globalLevel1.setX(globalLevel2.getX());
         globalLevel1.setY(globalLevel2.getY());
         globalLevel2.setX(x);
         globalLevel2.setY(y);
-        globalLevel1.setTimeBeforeTeleport(Global.random.nextInt(MAX_TIME_FOR_TIMER));
-        globalLevel2.setTimeBeforeTeleport(Global.random.nextInt(MAX_TIME_FOR_TIMER));
-
-
+        globalLevel1.setTimeBeforeTeleport(MathUtil.random.nextInt(MAX_TIME_FOR_TIMER));
+        globalLevel2.setTimeBeforeTeleport(MathUtil.random.nextInt(MAX_TIME_FOR_TIMER));
     }
 
+    public String getAdditionalName() {
+        return null;
+    }
 
+    @Override
+    public String getMyClassName() {
+        return null;
+    }
+
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
+    }
 }

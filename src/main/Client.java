@@ -10,6 +10,7 @@ import physic.Physic;
 import render.Render;
 import resourses.ResourcesManager;
 import resourses.configuration.ConfigsLibrary;
+import resourses.configuration.SheetParse;
 import sound.Sound;
 
 import java.util.List;
@@ -42,45 +43,67 @@ public final class Client {
 
     // States
 
-    boolean testMode;
+    boolean testMode = true;
 
-    public static int ERROR = -1;
+    public static int STATE_ERROR = -1;
 
-    public static int LOAD_RESOURCES = 1;
+    public static int STATE_LOAD_RESOURCES = 1;
 
-    public static int MAIN_MENU = 2;
+    public static int STATE_MAIN_MENU = 2;
 
-    public static int GAME = 3;
+    public static int STATE_GAME = 3;
 
-    public static int GLOBAL_WORLD = 4;
-
-    public static int EXIT = 13;
+    public static int STATE_EXIT = 13;
 
     private Client() {
-        state = LOAD_RESOURCES;
+        //by this line singleton must work as planed
+        //if delete, there are two instance of Client
+        client = this;
+        state = STATE_LOAD_RESOURCES;
         configsLibrary = ConfigsLibrary.get();
         inputToAction = InputToAction.get();
-        inputToAction.init(configsLibrary.getConfig(ConfigsLibrary.pathToSetting));
+
         //must call first, before entity with resources
         resourcesManager = ResourcesManager.get();
-        state = MAIN_MENU;
+        state = STATE_MAIN_MENU;
         // menu = new Menu();
-        logic = new Logic(this);
+        logic = new Logic();
         physic = new Physic();
-        render = new Render();
         sound = new Sound();
         ai = new AI();
-        controller = Controller.createController(this);
-        state = GAME;
-        game = new Game(this);
+        render = new Render();
+        controller = Controller.get();
 
     }
 
+    public void start() {
+        if (isTestMode()) {
+            state = STATE_GAME;
+            game = new Game(this, true);
+            game.start();
+        } else {
+            new MainMenu();
+        }
+    }
+
+
     public static Client get() {
         if (client == null) {
+            System.out.println("!!!!!!!");
             client = new Client();
+
         }
         return client;
+    }
+
+    private boolean isTestMode() {
+        SheetParse setting = ConfigsLibrary.get().getConfig(ConfigsLibrary.pathToSetting);
+        try {
+            return Boolean.parseBoolean(setting.findSheetParseByName("TestMode").getValue());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void cleanup() {
@@ -90,10 +113,6 @@ public final class Client {
         render.cleanUp();
         logic.cleanUp();
         ai.cleanUp();
-    }
-
-    void start() {
-        game.start();
     }
 
     public int getState() {
@@ -130,11 +149,11 @@ public final class Client {
     }
 
     public void sendStatesInput(List<StateKeyboard> eventsKeyboard, List<StateMouse> eventsMouse) {
-        if (state == Client.MAIN_MENU) {
+        if (state == Client.STATE_MAIN_MENU) {
             return;
         }
 
-        if (state == Client.GAME) {
+        if (state == Client.STATE_GAME) {
             game.sendStatesInput(eventsKeyboard, eventsMouse);
             return;
         }
@@ -144,16 +163,7 @@ public final class Client {
         return inputToAction;
     }
 
-    // TODO add commands parametrs to start with there
     public static void main(String args[]) {
-        /*if(args.length>0)  {
-            for (int i = 0; i < ; i++) {
-                
-            }
-            
-            args[0]
-        } */
-        Client client = new Client();
-        client.start();
+        new Client().start();
     }
 }

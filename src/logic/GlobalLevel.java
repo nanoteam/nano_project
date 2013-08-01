@@ -2,15 +2,24 @@ package logic;
 
 
 import logic.entity.GameObject;
+import org.lwjgl.util.Color;
+import org.lwjgl.util.vector.Vector2f;
+import render.RenderUtil;
+import util.MathUtil;
 
 public class GlobalLevel extends GameObject {
     private int x, y;
     private int orderNumber;
     private int timeBeforeTeleport;
     private boolean readyToTeleport;
+    private Color color;
 
     public GlobalLevel(int x, int y, int orderNumber, int timeBeforeTeleport) {
-
+        this.x = x;
+        this.y = y;
+        this.orderNumber = orderNumber;
+        this.timeBeforeTeleport = timeBeforeTeleport;
+        color = new Color(MathUtil.random.nextInt(255), MathUtil.random.nextInt(255), MathUtil.random.nextInt(255));
     }
 
     public int getX() {
@@ -61,36 +70,36 @@ public class GlobalLevel extends GameObject {
 
     @Override
     public void move() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public void draw() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        RenderUtil.drawCircle(new Vector2f(x, y), 30, 3, color);
     }
 
     @Override
     public void playSound() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public void destroy() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public void toThink() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public String getAdditionalName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public String getMyClassName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 }

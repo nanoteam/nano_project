@@ -195,7 +195,7 @@ public class Weapon extends ArsenalGameObject implements IsClonable {
         //get random weapon
         if (nameWeapon.equals("any")) {
             //calculate random weapon from list,
-            int randomWeapon = Global.random.nextInt(libraryWeapon.size());
+            int randomWeapon = MathUtil.random.nextInt(libraryWeapon.size());
             //get name for get obj Weapon
             nameWeapon = new String((String) libraryWeapon.keySet().toArray()[randomWeapon]);
         }

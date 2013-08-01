@@ -125,8 +125,8 @@ public class RenderUtil {
                                  float angle, float zoom, Image image) {
         GL11.glColor4ub((byte) 255, (byte) 255, (byte) 255, (byte) 0f);
         float actual_width, actual_height;
-        // actual_width = image.getTexture().getWidth();
-        // actual_height = image.getTexture().getHeight();
+        // actual_width = image.getTexture().getResolutionX();
+        // actual_height = image.getTexture().getResolutionY();
 
         actual_width = image.getTWidth();
         actual_height = image.getHeight();

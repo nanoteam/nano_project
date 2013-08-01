@@ -9,7 +9,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-//singlton
 public final class ConfigsLibrary {
     private static ConfigsLibrary configsLibrary;
     private Parser parser;
@@ -25,6 +24,7 @@ public final class ConfigsLibrary {
         getConfig(pathToSetting);
 
         //dir weapon
+        //parse all file in this dir
         File dirWeapons = new File(pathToWeaponFolder);
         File[] fileWeapon = dirWeapons.listFiles();
 
@@ -36,6 +36,7 @@ public final class ConfigsLibrary {
         }
 
         //dir ammo
+        //parse all file in this dir
         File dirAmmo = new File(pathToAmmoFolder);
         File[] fileAmmo = dirAmmo.listFiles();
 
@@ -47,6 +48,7 @@ public final class ConfigsLibrary {
         }
 
         //dir level
+        //parse all file in this dir
         File dirLevel = new File(pathToLevelFolder);
         File[] fileLevel = dirLevel.listFiles();
 

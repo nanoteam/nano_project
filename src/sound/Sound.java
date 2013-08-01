@@ -1,51 +1,47 @@
 /**
-* @author Andreyuk Artyom happydroidx@gmail.com
-* @version 1.0
-*/
+ * @author Andreyuk Artyom happydroidx@gmail.com
+ * @version 1.0
+ */
 package sound;
 
-import java.util.List;
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.openal.AL;
-
 import logic.Level;
-import logic.entity.GameObject;
 import main.Engine;
+import main.Game;
 
 public class Sound implements Engine {
-	private Level level;
+    private Game game;
 
-	@Override
-	public void tick() {  /*
-		List<GameObject> gameObjects = level.getGameObjects();
+    @Override
+    public void tick() {  /*
+        List<GameObject> gameObjects = level.getGameObjects();
 		for (GameObject gameObject : gameObjects) {
             gameObject.playSound();
 		}                   */
-	}
+    }
 
-	
-	public Sound() {
-		// Start up the sound system
+
+    public Sound() {
+        // Start up the sound system
 
         /*
-		try {
+        try {
 			AL.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 		*/
-	}
+    }
 
-	public Level getLevel(){
-		return level;
-	}
-	public void setLevel(Level level){
-		this.level = level;
-	}
+    public Level getLevel() {
+        return game.getLevel();
+    }
 
-	@Override
-	public void cleanUp() {
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
-	}
+    @Override
+    public void cleanUp() {
+
+    }
 }
