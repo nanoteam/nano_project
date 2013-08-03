@@ -127,19 +127,19 @@ public class Render implements Engine {
         //
         glPushMatrix();
 
-//        if (game.getState() == Game.STATE_LOCAL_GAME) {
-//            List<GameObject> game_objects = game.getLevel().getGameObjects();
-//            for (GameObject game_object : game_objects) {
-//                game_object.draw();
-//            }
-//        }
+        if (game.getState() == Game.STATE_LOCAL_GAME) {
+            List<GameObject> game_objects = game.getLevel().getGameObjects();
+            for (GameObject game_object : game_objects) {
+                game_object.draw();
+            }
+        }
 
-//        if (game.getState() == Game.STATE_GLOBAL_GAME) {
+        if (game.getState() == Game.STATE_GLOBAL_GAME) {
             List<GameObject> game_objects = game.getGlobalWorld().getGameObjects();
             for (GameObject game_object : game_objects) {
                 game_object.draw();
             }
-  //      }
+        }
 
         if (game.getState() == Game.STATE_GAME_MENU) {
 
