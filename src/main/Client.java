@@ -17,153 +17,167 @@ import java.util.List;
 
 public final class Client {
 
-    private static Client client;
+	private static Client client;
+	
+	MainMenu mainMenu;
 
-    private Game game;
+	private Game game;
 
-    private Sound sound;
+	private Sound sound;
 
-    private Render render;
+	private Render render;
 
-    private Physic physic;
+	private Physic physic;
 
-    private Logic logic;
+	private Logic logic;
 
-    private AI ai;
+	private AI ai;
 
-    private ResourcesManager resourcesManager;
+	private ResourcesManager resourcesManager;
 
-    private Controller controller;
+	private Controller controller;
 
-    private InputToAction inputToAction;
+	private InputToAction inputToAction;
 
-    private ConfigsLibrary configsLibrary;
+	private ConfigsLibrary configsLibrary;
 
-    private int state;
+	private int state;
 
-    // States
+	// States
 
-    boolean testMode = true;
+	boolean testMode = true;
 
-    public static int STATE_ERROR = -1;
+	public static int STATE_ERROR = -1;
 
-    public static int STATE_LOAD_RESOURCES = 1;
+	public static int STATE_LOAD_RESOURCES = 1;
 
-    public static int STATE_MAIN_MENU = 2;
+	public static int STATE_MAIN_MENU = 2;
 
-    public static int STATE_GAME = 3;
+	public static int STATE_GAME = 3;
 
-    public static int STATE_EXIT = 13;
+	public static int STATE_EXIT = 13;
 
-    private Client() {
-        //by this line singleton must work as planed
-        //if delete, there are two instance of Client
-        client = this;
-        state = STATE_LOAD_RESOURCES;
-        configsLibrary = ConfigsLibrary.get();
-        inputToAction = InputToAction.get();
+	private Client() {
+		// by this line singleton must work as planed
+		// if delete, there are two instance of Client
+		client = this;
+		state = STATE_LOAD_RESOURCES;
+		configsLibrary = ConfigsLibrary.get();
+		inputToAction = InputToAction.get();
 
-        //must call first, before entity with resources
-        resourcesManager = ResourcesManager.get();
-        state = STATE_MAIN_MENU;
-        // menu = new Menu();
-        logic = new Logic();
-        physic = new Physic();
-        sound = new Sound();
-        ai = new AI();
-        render = new Render();
-        controller = Controller.get();
+		// must call first, before entity with resources
+		resourcesManager = ResourcesManager.get();
+		state = STATE_MAIN_MENU;
+		logic = new Logic();
+		physic = new Physic();
+		sound = new Sound();
+		ai = new AI();
+		render = new Render();
+		mainMenu = new MainMenu(this);
+		controller = Controller.get();
 
-    }
+	}
 
-    public void start() {
-        if (isTestMode()) {
-            state = STATE_GAME;
-            game = new Game(this, true);
-            game.start();
-        } else {
-            new MainMenu();
-        }
-    }
+	public void start() {
+		if (isTestMode()) {
+			state = STATE_GAME;
+			game = new Game(this, true);
+			game.start();
+		} else {
+			if (state == STATE_MAIN_MENU) {
+				mainMenu.start();
+			}
+			if(state == STATE_GAME){
+				game = new Game(this, true);
+				game.start();
+			}
+		}
+	}
 
+	public static Client get() {
+		if (client == null) {
+			System.out.println("!!!!!!!");
+			client = new Client();
 
-    public static Client get() {
-        if (client == null) {
-            System.out.println("!!!!!!!");
-            client = new Client();
+		}
+		return client;
+	}
 
-        }
-        return client;
-    }
+	public boolean isTestMode() {
+		SheetParse setting = ConfigsLibrary.get().getConfig(
+				ConfigsLibrary.pathToSetting);
+		try {
+			return Boolean.parseBoolean(setting
+					.findSheetParseByName("TestMode").getValue());
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-    private boolean isTestMode() {
-        SheetParse setting = ConfigsLibrary.get().getConfig(ConfigsLibrary.pathToSetting);
-        try {
-            return Boolean.parseBoolean(setting.findSheetParseByName("TestMode").getValue());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+	private void cleanup() {
+		// TODO: save anything you want to disk here
+		physic.cleanUp();
+		sound.cleanUp();
+		render.cleanUp();
+		logic.cleanUp();
+		ai.cleanUp();
+	}
 
-    private void cleanup() {
-        // TODO: save anything you want to disk here
-        physic.cleanUp();
-        sound.cleanUp();
-        render.cleanUp();
-        logic.cleanUp();
-        ai.cleanUp();
-    }
+	public int getState() {
+		return state;
+	}
 
-    public int getState() {
-        return state;
-    }
+	public void setState(int newState) {
+		this.state = newState;
+	}
 
-    public void exit() {
-        cleanup();
-        System.exit(0);
-    }
+	public void exit() {
+		cleanup();
+		System.exit(0);
+	}
 
-    Sound getSound() {
-        return sound;
-    }
+	Sound getSound() {
+		return sound;
+	}
 
-    Render getRender() {
-        return render;
-    }
+	Render getRender() {
+		return render;
+	}
 
-    Physic getPhysic() {
-        return physic;
-    }
+	Physic getPhysic() {
+		return physic;
+	}
 
-    Logic getLogic() {
-        return logic;
-    }
+	Logic getLogic() {
+		return logic;
+	}
 
-    Controller getController() {
-        return controller;
-    }
+	Controller getController() {
+		return controller;
+	}
 
-    AI getAI() {
-        return ai;
-    }
+	AI getAI() {
+		return ai;
+	}
 
-    public void sendStatesInput(List<StateKeyboard> eventsKeyboard, List<StateMouse> eventsMouse) {
-        if (state == Client.STATE_MAIN_MENU) {
-            return;
-        }
+	public void sendStatesInput(List<StateKeyboard> eventsKeyboard,
+			List<StateMouse> eventsMouse) {
+		if (state == Client.STATE_MAIN_MENU) {
+			return;
+		}
 
-        if (state == Client.STATE_GAME) {
-            game.sendStatesInput(eventsKeyboard, eventsMouse);
-            return;
-        }
-    }
+		if (state == Client.STATE_GAME) {
+			game.sendStatesInput(eventsKeyboard, eventsMouse);
+			return;
+		}
+	}
 
-    public InputToAction getInputToAction() {
-        return inputToAction;
-    }
+	public InputToAction getInputToAction() {
+		return inputToAction;
+	}
 
-    public static void main(String args[]) {
-        new Client().start();
-    }
+	public static void main(String args[]) {
+		new Client().start();
+	}
 }

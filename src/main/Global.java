@@ -3,6 +3,8 @@ package main;
 import org.jbox2d.common.Vec2;
 import org.lwjgl.util.vector.Vector2f;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Global {
@@ -13,5 +15,6 @@ public class Global {
     public static boolean realTime = true;
     public static boolean studyOn = false;
     public static boolean shipHaveAllWeapon = true;
+    public static List<String> consoleText = new ArrayList<String>();
     //end wtf
 }

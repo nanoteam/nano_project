@@ -21,7 +21,7 @@ public class Image {
 	private float tOffsetY = 0;
 	private String ref;
 
-	public void LoadPNG(String file) throws IOException {
+	public Image LoadPNG(String file) throws IOException {
 		texture = TextureLoader.getTexture("PNG",
 				ResourceLoader.getResourceAsStream(file));
 		if (texture != null) {
@@ -30,6 +30,7 @@ public class Image {
 			tWidth = texture.getWidth();
 			tHeight = texture.getHeight();
 		}
+		return this;
 	}
 
 	public void LoadGIF(String file) throws IOException {
