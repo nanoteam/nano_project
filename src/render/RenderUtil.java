@@ -100,6 +100,7 @@ public class RenderUtil {
 
 	public static void drawCircle(Vector2f position, float radius,
 			float witdthLine, Color color) {
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
 		int numberPointsInCircle = 100;
 		Vector2f[] box = new Vector2f[numberPointsInCircle];
 		float angle;
@@ -116,6 +117,7 @@ public class RenderUtil {
 			GL11.glVertex2f(box[i].x, box[i].y);
 		}
 		GL11.glEnd();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
 	public static void drawImage(float x, float y, float width, float height,

@@ -92,7 +92,7 @@ public class Game {
 			physic.setGame(this);
 			logic.setGame(this);
 			ai.setGame(this);
-			state = STATE_GLOBAL_GAME;
+			state = STATE_LOCAL_GAME;
 		} else {
 			System.out
 					.println("Auto exit, method Game(Client client, boolean isTest)");
